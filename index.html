@@ -25,6 +25,7 @@
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { overflow-x: hidden; }
 
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -59,6 +60,7 @@
       padding: 1.25rem 2rem;
       border-bottom: 1px solid var(--border);
       flex-wrap: wrap;
+      overflow: hidden;
     }
 
     .summary-stat {
@@ -128,6 +130,8 @@
       border: 1px solid var(--border);
       border-radius: 12px;
       padding: 1.25rem;
+      min-width: 0;
+      overflow: hidden;
     }
 
     .card.full-width {
@@ -169,7 +173,8 @@
     /* Data table */
     .table-wrapper {
       max-height: 500px;
-      overflow-y: auto;
+      overflow: auto;
+      -webkit-overflow-scrolling: touch;
       border-radius: 8px;
     }
 
@@ -431,6 +436,11 @@
       line-height: 1.5;
     }
 
+    #houseEffectsTable {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
     .he-table {
       width: 100%;
       border-collapse: collapse;
@@ -476,11 +486,206 @@
       border-radius: 7px;
     }
 
+    /* Tablet */
     @media (max-width: 900px) {
       .dashboard { grid-template-columns: 1fr; }
       .header h1 { font-size: 1.4rem; }
       .summary-strip { gap: 1rem; }
-      .model-factors { grid-template-columns: 1fr; }
+      .model-factors { grid-template-columns: 1fr 1fr; }
+    }
+
+    /* Mobile */
+    @media (max-width: 600px) {
+      .header {
+        padding: 1.25rem 1rem 0.75rem;
+      }
+
+      .header h1 {
+        font-size: 1.2rem;
+        letter-spacing: -0.3px;
+      }
+
+      .header .subtitle {
+        font-size: 0.8rem;
+      }
+
+      .summary-strip {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 0.5rem 0.75rem;
+        padding: 0.75rem 1rem;
+      }
+
+      .summary-stat .label {
+        font-size: 0.6rem;
+        letter-spacing: 0.5px;
+      }
+
+      .summary-stat .value {
+        font-size: 1.15rem;
+      }
+
+      #dateRange { font-size: 0.85rem !important; }
+
+      .filters {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        padding: 0.75rem 1rem;
+        gap: 0.4rem 0.5rem;
+        align-items: center;
+      }
+
+      .filters label {
+        font-size: 0.7rem;
+        text-align: right;
+      }
+
+      .filters select {
+        font-size: 0.8rem;
+        padding: 0.35rem 0.5rem;
+        width: 100%;
+      }
+
+      .dashboard {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+        padding: 0.75rem;
+      }
+
+      .card {
+        padding: 0.75rem;
+        border-radius: 8px;
+      }
+
+      .card h2 {
+        font-size: 0.85rem;
+      }
+
+      .card h2 .badge {
+        font-size: 0.6rem;
+        padding: 1px 6px;
+        margin-left: 4px;
+      }
+
+      .chart-container {
+        height: 240px;
+      }
+
+      .chart-container.tall {
+        height: 300px;
+      }
+
+      .chart-container.short {
+        height: 200px;
+      }
+
+      .model-factors {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+      }
+
+      .factor-item {
+        padding: 0.5rem 0.75rem;
+      }
+
+      .factor-name {
+        font-size: 0.7rem;
+      }
+
+      .factor-desc {
+        font-size: 0.72rem;
+      }
+
+      /* House effects table — horizontal scroll */
+      #houseEffectsTable {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .he-table {
+        font-size: 0.7rem;
+        min-width: 500px;
+      }
+
+      .he-table th,
+      .he-table td {
+        padding: 0.3rem 0.5rem;
+      }
+
+      /* Event analysis */
+      .event-header h2 {
+        font-size: 0.95rem;
+      }
+
+      .event-header h2 small {
+        font-size: 0.68rem;
+      }
+
+      .comparison-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 0.5rem;
+      }
+
+      .comparison-box {
+        padding: 0.75rem 0.5rem;
+      }
+
+      .comparison-box .big-number {
+        font-size: 1.5rem;
+      }
+
+      .comparison-box .period-label {
+        font-size: 0.6rem;
+      }
+
+      .comparison-box .detail {
+        font-size: 0.65rem;
+      }
+
+      .finding {
+        font-size: 0.78rem;
+        padding: 0.5rem 0.75rem;
+      }
+
+      /* Event sub-charts — stack vertically on mobile */
+      .event-section .comparison-grid:last-of-type {
+        grid-template-columns: 1fr;
+      }
+
+      .pollster-shift-row {
+        font-size: 0.72rem;
+      }
+
+      .pollster-shift-row .ps-bar-wrapper {
+        width: 80px;
+      }
+
+      .pollster-shift-row .ps-value {
+        width: 40px;
+        font-size: 0.7rem;
+      }
+
+      /* Data table — horizontal scroll */
+      .table-wrapper {
+        max-height: 350px;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      table {
+        font-size: 0.7rem;
+        min-width: 600px;
+      }
+
+      th, td {
+        padding: 0.4rem 0.5rem;
+      }
+
+      /* Footer */
+      .footer {
+        padding: 1rem;
+        font-size: 0.7rem;
+      }
     }
   </style>
 </head>
@@ -628,7 +833,7 @@
       <p style="font-size:0.78rem;color:var(--text-muted);margin-bottom:0.75rem">Only pollsters with data both before and after the event. This eliminates composition effects from different pollsters being active in different periods.</p>
       <div id="pollsterShiftList"></div>
 
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1.25rem">
+      <div class="comparison-grid" style="margin-top:1.25rem">
         <div>
           <h2 style="margin-bottom:0.5rem">By Population Type <span class="badge">Non-partisan</span></h2>
           <div class="chart-container short"><canvas id="eventPopChart"></canvas></div>
@@ -665,6 +870,14 @@
   </div>
 
   <script>
+    // ─── Mobile detection & Chart.js defaults ────────────────
+    const isMobile = window.innerWidth <= 600;
+    if (isMobile) {
+      Chart.defaults.font.size = 10;
+      Chart.defaults.plugins.legend.labels.padding = 8;
+      Chart.defaults.plugins.legend.labels.boxWidth = 12;
+    }
+
     // ─── Parse CSV ────────────────────────────────────────────
     // Local cached copy — refreshed daily via update-data.sh or GitHub Actions
     const CSV_PATH = 'president.csv';
@@ -1103,7 +1316,7 @@
               label: 'Approve (polls)',
               data: filtered.map(d => ({ x: d.end_date_obj, y: d.yes })),
               borderColor: 'rgba(46, 125, 50, 0.25)',
-              pointRadius: 2.5,
+              pointRadius: window.innerWidth <= 600 ? 1.5 : 2.5,
               pointBackgroundColor: 'rgba(76, 175, 80, 0.35)',
               borderWidth: 0,
               showLine: false,
@@ -1113,7 +1326,7 @@
               label: 'Disapprove (polls)',
               data: filtered.map(d => ({ x: d.end_date_obj, y: d.no })),
               borderColor: 'rgba(198, 40, 40, 0.25)',
-              pointRadius: 2.5,
+              pointRadius: window.innerWidth <= 600 ? 1.5 : 2.5,
               pointBackgroundColor: 'rgba(239, 83, 80, 0.35)',
               borderWidth: 0,
               showLine: false,
@@ -1124,7 +1337,7 @@
               label: approveLabel,
               data: est.map(e => ({ x: e.date, y: e.approve })),
               borderColor: '#4caf50',
-              borderWidth: 3,
+              borderWidth: window.innerWidth <= 600 ? 2 : 3,
               pointRadius: 0,
               tension: 0.2,
               fill: false,
@@ -1134,7 +1347,7 @@
               label: disapproveLabel,
               data: est.map(e => ({ x: e.date, y: e.disapprove })),
               borderColor: '#ef5350',
-              borderWidth: 3,
+              borderWidth: window.innerWidth <= 600 ? 2 : 3,
               pointRadius: 0,
               tension: 0.2,
               fill: false,
@@ -1292,7 +1505,7 @@
       charts.pop = new Chart(document.getElementById('popChart'), {
         type: 'bar',
         data: {
-          labels: labels.map((l, i) => l + ' (n=' + counts[i] + ')'),
+          labels: labels.map((l, i) => window.innerWidth <= 600 ? l : l + ' (n=' + counts[i] + ')'),
           datasets: [
             { label: 'Approve', data: approvals, backgroundColor: 'rgba(76, 175, 80, 0.7)', borderRadius: 4 },
             { label: 'Disapprove', data: disapprovals, backgroundColor: 'rgba(239, 83, 80, 0.7)', borderRadius: 4 }
@@ -1338,7 +1551,7 @@
           responsive: true,
           maintainAspectRatio: false,
           plugins: {
-            legend: { position: 'right', labels: { padding: 8, font: { size: 10 } } },
+            legend: { position: window.innerWidth <= 600 ? 'bottom' : 'right', labels: { padding: 6, font: { size: window.innerWidth <= 600 ? 9 : 10 }, boxWidth: window.innerWidth <= 600 ? 10 : 40 } },
             tooltip: { callbacks: { label: ctx => ctx.label + ': ' + ctx.parsed + ' polls' } }
           }
         }
