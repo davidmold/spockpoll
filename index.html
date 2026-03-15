@@ -1,0 +1,1806 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Presidential Approval Polling Dashboard</title>
+  <meta name="description" content="Interactive tracker of Donald Trump's presidential job approval polls. Filterable charts, trends, and full data table updated with the latest polling data.">
+  <meta property="og:title" content="Presidential Approval Polling Dashboard">
+  <meta property="og:description" content="Interactive tracker of Trump's presidential job approval polls with trend lines, pollster comparisons, and filterable data.">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+  <style>
+    :root {
+      --approve: #2e7d32;
+      --disapprove: #c62828;
+      --net: #1565c0;
+      --bg: #0f1117;
+      --card: #1a1d27;
+      --border: #2a2d3a;
+      --text: #e4e6eb;
+      --text-muted: #8b8fa3;
+      --accent: #6c63ff;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    .header {
+      padding: 2rem 2rem 1rem;
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, #1a1d27 0%, var(--bg) 100%);
+    }
+
+    .header h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      margin-bottom: 0.25rem;
+    }
+
+    .header .subtitle {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    .summary-strip {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      padding: 1.25rem 2rem;
+      border-bottom: 1px solid var(--border);
+      flex-wrap: wrap;
+    }
+
+    .summary-stat {
+      text-align: center;
+    }
+
+    .summary-stat .label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-muted);
+      margin-bottom: 2px;
+    }
+
+    .summary-stat .value {
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+
+    .summary-stat .value.approve { color: var(--approve); }
+    .summary-stat .value.disapprove { color: var(--disapprove); }
+    .summary-stat .value.net { color: var(--net); }
+
+    .filters {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      padding: 1rem 2rem;
+      border-bottom: 1px solid var(--border);
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .filters label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .filters select {
+      background: var(--card);
+      color: var(--text);
+      border: 1px solid var(--border);
+      padding: 0.4rem 0.8rem;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+
+    .filters select:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    .dashboard {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+      padding: 1.25rem;
+      max-width: 1600px;
+      margin: 0 auto;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.25rem;
+    }
+
+    .card.full-width {
+      grid-column: 1 / -1;
+    }
+
+    .card h2 {
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+      color: var(--text);
+    }
+
+    .card h2 .badge {
+      font-size: 0.7rem;
+      font-weight: 400;
+      color: var(--text-muted);
+      background: var(--bg);
+      padding: 2px 8px;
+      border-radius: 10px;
+      margin-left: 8px;
+      vertical-align: middle;
+    }
+
+    .chart-container {
+      position: relative;
+      width: 100%;
+      height: 340px;
+    }
+
+    .chart-container.tall {
+      height: 440px;
+    }
+
+    .chart-container.short {
+      height: 280px;
+    }
+
+    /* Data table */
+    .table-wrapper {
+      max-height: 500px;
+      overflow-y: auto;
+      border-radius: 8px;
+    }
+
+    .table-wrapper::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .table-wrapper::-webkit-scrollbar-track {
+      background: var(--bg);
+    }
+
+    .table-wrapper::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 3px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.8rem;
+    }
+
+    th {
+      position: sticky;
+      top: 0;
+      background: var(--bg);
+      color: var(--text-muted);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-size: 0.7rem;
+      padding: 0.6rem 0.75rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+      white-space: nowrap;
+      user-select: none;
+    }
+
+    th:hover { color: var(--text); }
+    th.sorted-asc::after { content: ' ▲'; }
+    th.sorted-desc::after { content: ' ▼'; }
+
+    td {
+      padding: 0.5rem 0.75rem;
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+    }
+
+    tr:hover td { background: rgba(108, 99, 255, 0.05); }
+
+    .pill {
+      display: inline-block;
+      padding: 1px 8px;
+      border-radius: 10px;
+      font-size: 0.7rem;
+      font-weight: 600;
+    }
+
+    .pill.rv { background: rgba(33, 150, 243, 0.15); color: #64b5f6; }
+    .pill.a { background: rgba(156, 39, 176, 0.15); color: #ce93d8; }
+    .pill.lv { background: rgba(255, 152, 0, 0.15); color: #ffb74d; }
+
+    .footer {
+      border-top: 1px solid var(--border);
+      padding: 1.5rem 2rem;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.78rem;
+      line-height: 1.8;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .footer a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    .footer a:hover {
+      text-decoration: underline;
+    }
+
+    .footer .attribution {
+      margin-bottom: 0.5rem;
+    }
+
+    .footer .license-icons {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      vertical-align: middle;
+    }
+
+    .footer .license-icons img {
+      height: 18px;
+      vertical-align: middle;
+    }
+
+    .last-updated {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 0.15rem;
+    }
+
+    /* Event analysis section */
+    .event-section {
+      border-top: 2px solid var(--accent);
+      margin-top: 0.5rem;
+    }
+
+    .event-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+
+    .event-header .event-marker {
+      width: 4px;
+      height: 32px;
+      background: var(--accent);
+      border-radius: 2px;
+      flex-shrink: 0;
+    }
+
+    .event-header h2 {
+      font-size: 1.1rem;
+      margin-bottom: 0;
+    }
+
+    .event-header h2 small {
+      display: block;
+      font-size: 0.75rem;
+      font-weight: 400;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .comparison-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .comparison-box {
+      background: var(--bg);
+      border-radius: 8px;
+      padding: 1rem;
+      text-align: center;
+    }
+
+    .comparison-box .period-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+    }
+
+    .comparison-box .big-number {
+      font-size: 2rem;
+      font-weight: 700;
+      line-height: 1;
+      margin-bottom: 0.25rem;
+    }
+
+    .comparison-box .detail {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .finding {
+      background: var(--bg);
+      border-left: 3px solid var(--accent);
+      border-radius: 0 8px 8px 0;
+      padding: 0.75rem 1rem;
+      margin-bottom: 0.75rem;
+      font-size: 0.85rem;
+      line-height: 1.6;
+    }
+
+    .finding strong {
+      color: var(--text);
+    }
+
+    .finding .shift-negative { color: #ef5350; }
+    .finding .shift-positive { color: #66bb6a; }
+    .finding .shift-flat { color: #ffb74d; }
+
+    .pollster-shift-row {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.4rem 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.8rem;
+    }
+
+    .pollster-shift-row:last-child { border-bottom: none; }
+
+    .pollster-shift-row .ps-name {
+      flex: 1;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .pollster-shift-row .ps-bar-wrapper {
+      width: 140px;
+      height: 18px;
+      background: var(--bg);
+      border-radius: 9px;
+      position: relative;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+
+    .pollster-shift-row .ps-bar {
+      position: absolute;
+      top: 0;
+      height: 100%;
+      border-radius: 9px;
+    }
+
+    .pollster-shift-row .ps-value {
+      width: 50px;
+      text-align: right;
+      font-weight: 600;
+      flex-shrink: 0;
+    }
+
+    .model-factors {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 0.75rem;
+    }
+
+    .factor-item {
+      background: var(--bg);
+      border-radius: 8px;
+      padding: 0.75rem;
+    }
+
+    .factor-name {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 0.25rem;
+    }
+
+    .factor-desc {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .he-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.8rem;
+    }
+
+    .he-table th {
+      position: sticky;
+      top: 0;
+      background: var(--card);
+      color: var(--text-muted);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-size: 0.7rem;
+      padding: 0.5rem 0.75rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .he-table td {
+      padding: 0.4rem 0.75rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .he-bar-cell {
+      width: 120px;
+    }
+
+    .he-bar-wrapper {
+      width: 100%;
+      height: 14px;
+      background: var(--bg);
+      border-radius: 7px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .he-bar {
+      position: absolute;
+      top: 0;
+      height: 100%;
+      border-radius: 7px;
+    }
+
+    @media (max-width: 900px) {
+      .dashboard { grid-template-columns: 1fr; }
+      .header h1 { font-size: 1.4rem; }
+      .summary-strip { gap: 1rem; }
+      .model-factors { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>Presidential Approval Polling</h1>
+    <p class="subtitle">Donald Trump &mdash; Job Approval Tracking</p>
+    <p class="last-updated" id="lastUpdated"></p>
+  </div>
+
+  <div class="summary-strip" id="summaryStrip">
+    <div class="summary-stat"><div class="label">Total Polls</div><div class="value" id="totalPolls">—</div></div>
+    <div class="summary-stat"><div class="label">Approve (latest)</div><div class="value approve" id="avgApprove">—</div></div>
+    <div class="summary-stat"><div class="label">Disapprove (latest)</div><div class="value disapprove" id="avgDisapprove">—</div></div>
+    <div class="summary-stat"><div class="label">Net Approval</div><div class="value net" id="netApproval">—</div></div>
+    <div class="summary-stat"><div class="label">Date Range</div><div class="value" id="dateRange" style="font-size:1rem">—</div></div>
+    <div class="summary-stat"><div class="label">Pollsters</div><div class="value" id="pollsterCount">—</div></div>
+  </div>
+
+  <div class="filters">
+    <label for="popFilter">Population</label>
+    <select id="popFilter">
+      <option value="all">All</option>
+      <option value="rv">Registered Voters</option>
+      <option value="a">Adults</option>
+      <option value="lv">Likely Voters</option>
+    </select>
+    <label for="partisanFilter">Sponsor</label>
+    <select id="partisanFilter">
+      <option value="all">All Polls</option>
+      <option value="nonpartisan">Non-Partisan Only</option>
+      <option value="REP">Republican-Sponsored</option>
+    </select>
+  </div>
+
+  <div class="dashboard">
+    <!-- Weighted trend -->
+    <div class="card full-width">
+      <h2>Weighted Polling Average <span class="badge" id="trendCount"></span></h2>
+      <p style="font-size:0.78rem;color:var(--text-muted);margin-bottom:0.75rem">
+        An updating polling average accounting for each poll's recency, sample size, methodology quality, population type, partisan lean, and pollster house effects. Shaded region shows where 90% of polls are expected to fall.
+      </p>
+      <div class="chart-container tall"><canvas id="trendChart"></canvas></div>
+    </div>
+
+    <!-- Net approval -->
+    <div class="card full-width">
+      <h2>Weighted Net Approval <span class="badge">Approve − Disapprove</span></h2>
+      <div class="chart-container"><canvas id="netChart"></canvas></div>
+    </div>
+
+    <!-- Model transparency -->
+    <div class="card full-width">
+      <h2>Model Transparency <span class="badge">How the weights work</span></h2>
+      <div class="model-panel">
+        <div class="model-explanation">
+          <div class="model-factors">
+            <div class="factor-item">
+              <div class="factor-name">Recency</div>
+              <div class="factor-desc">14-day half-life exponential decay. A poll from 2 weeks ago counts 50%.</div>
+            </div>
+            <div class="factor-item">
+              <div class="factor-name">Sample Size</div>
+              <div class="factor-desc">Weight scales with √n. A 4,000-person poll counts ~2.6× more than a 600-person poll.</div>
+            </div>
+            <div class="factor-item">
+              <div class="factor-name">Methodology</div>
+              <div class="factor-desc">Probability-based polling: 100%. Mixed methods: 85%. Nonprobability panels: 70%. Unknown: 65%.</div>
+            </div>
+            <div class="factor-item">
+              <div class="factor-name">Population</div>
+              <div class="factor-desc">Likely voters: 100%. Registered voters: 95%. All adults: 80%.</div>
+            </div>
+            <div class="factor-item">
+              <div class="factor-name">Partisan Lean</div>
+              <div class="factor-desc">Party-sponsored polls (REP/DEM) receive 50% weight.</div>
+            </div>
+            <div class="factor-item">
+              <div class="factor-name">House Effects</div>
+              <div class="factor-desc">Each pollster's systematic bias is estimated and corrected using an iterative algorithm with Bayesian shrinkage.</div>
+            </div>
+          </div>
+        </div>
+        <h2 style="margin-top:1.25rem;margin-bottom:0.5rem">Estimated House Effects <span class="badge">Pollster bias</span></h2>
+        <p style="font-size:0.78rem;color:var(--text-muted);margin-bottom:0.75rem">
+          How much each pollster deviates from the consensus. Positive = more favourable to Trump. Values are adjusted for approve and disapprove independently, with shrinkage toward zero for pollsters with few polls.
+        </p>
+        <div id="houseEffectsTable"></div>
+      </div>
+    </div>
+
+    <!-- By population type -->
+    <div class="card">
+      <h2>Average by Population Type</h2>
+      <div class="chart-container short"><canvas id="popChart"></canvas></div>
+    </div>
+
+    <!-- Methodology breakdown -->
+    <div class="card">
+      <h2>Polls by Methodology</h2>
+      <div class="chart-container short"><canvas id="methChart"></canvas></div>
+    </div>
+
+    <!-- Top pollsters -->
+    <div class="card">
+      <h2>Average Approval by Pollster <span class="badge">Top 15</span></h2>
+      <div class="chart-container tall"><canvas id="pollsterChart"></canvas></div>
+    </div>
+
+    <!-- Sample size vs. approval scatter -->
+    <div class="card">
+      <h2>Sample Size vs. Net Approval</h2>
+      <div class="chart-container tall"><canvas id="scatterChart"></canvas></div>
+    </div>
+
+    <!-- Monthly trend bars -->
+    <div class="card full-width">
+      <h2>Monthly Average Approve / Disapprove</h2>
+      <div class="chart-container"><canvas id="monthlyChart"></canvas></div>
+    </div>
+
+    <!-- Event Analysis -->
+    <div class="card full-width event-section">
+      <div class="event-header">
+        <div class="event-marker"></div>
+        <h2>Event Analysis: Iran Strikes <small>Comparing 30 days before vs. after Feb 28, 2026 &mdash; non-partisan polls only</small></h2>
+      </div>
+
+      <div class="comparison-grid">
+        <div class="comparison-box">
+          <div class="period-label">Pre-Iran &mdash; Net Approval</div>
+          <div class="big-number" id="preNet" style="color:var(--disapprove)">—</div>
+          <div class="detail" id="preDetail"></div>
+        </div>
+        <div class="comparison-box">
+          <div class="period-label">Post-Iran &mdash; Net Approval</div>
+          <div class="big-number" id="postNet" style="color:var(--disapprove)">—</div>
+          <div class="detail" id="postDetail"></div>
+        </div>
+      </div>
+
+      <div id="eventFindings"></div>
+
+      <h2 style="margin-top:1.25rem;margin-bottom:0.5rem">Same-Pollster Shift <span class="badge">Controls for pollster lean</span></h2>
+      <p style="font-size:0.78rem;color:var(--text-muted);margin-bottom:0.75rem">Only pollsters with data both before and after the event. This eliminates composition effects from different pollsters being active in different periods.</p>
+      <div id="pollsterShiftList"></div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1.25rem">
+        <div>
+          <h2 style="margin-bottom:0.5rem">By Population Type <span class="badge">Non-partisan</span></h2>
+          <div class="chart-container short"><canvas id="eventPopChart"></canvas></div>
+        </div>
+        <div>
+          <h2 style="margin-bottom:0.5rem">Zoomed Trend <span class="badge">Jan–Mar 2026</span></h2>
+          <div class="chart-container short"><canvas id="eventZoomChart"></canvas></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Data table -->
+    <div class="card full-width">
+      <h2>Poll Data <span class="badge" id="tableCount"></span></h2>
+      <div class="table-wrapper">
+        <table id="dataTable">
+          <thead>
+            <tr>
+              <th data-col="end_date">Date</th>
+              <th data-col="pollster">Pollster</th>
+              <th data-col="sponsors">Sponsor</th>
+              <th data-col="population">Pop.</th>
+              <th data-col="sample_size">Sample</th>
+              <th data-col="yes">Approve</th>
+              <th data-col="no">Disapprove</th>
+              <th data-col="net">Net</th>
+              <th data-col="methodology">Methodology</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ─── Parse CSV ────────────────────────────────────────────
+    // Local cached copy — refreshed daily via update-data.sh or GitHub Actions
+    const CSV_PATH = 'president.csv';
+    let allData = [];
+    let charts = {};
+
+    async function loadData() {
+      const resp = await fetch(CSV_PATH);
+      const text = await resp.text();
+      const lines = text.trim().split('\n');
+      const headers = parseCSVLine(lines[0]);
+
+      for (let i = 1; i < lines.length; i++) {
+        const vals = parseCSVLine(lines[i]);
+        const row = {};
+        headers.forEach((h, idx) => row[h] = vals[idx] || '');
+        // Parse numeric fields
+        row.yes = parseFloat(row.yes) || 0;
+        row.no = parseFloat(row.no) || 0;
+        row.net = row.yes - row.no;
+        row.sample_size = parseInt(row.sample_size) || null;
+        row.start_date_obj = parseDate(row.start_date);
+        row.end_date_obj = parseDate(row.end_date);
+        // Midpoint date for temporal placement
+        if (row.start_date_obj && row.end_date_obj) {
+          row.mid_date_obj = new Date((row.start_date_obj.getTime() + row.end_date_obj.getTime()) / 2);
+        } else {
+          row.mid_date_obj = row.end_date_obj;
+        }
+        allData.push(row);
+      }
+
+      // Sort by end date
+      allData.sort((a, b) => (a.end_date_obj || 0) - (b.end_date_obj || 0));
+      applyFilters();
+    }
+
+    function parseCSVLine(line) {
+      const result = [];
+      let current = '';
+      let inQuotes = false;
+      for (let i = 0; i < line.length; i++) {
+        const ch = line[i];
+        if (ch === '"') {
+          if (inQuotes && line[i + 1] === '"') { current += '"'; i++; }
+          else inQuotes = !inQuotes;
+        } else if (ch === ',' && !inQuotes) {
+          result.push(current.trim());
+          current = '';
+        } else {
+          current += ch;
+        }
+      }
+      result.push(current.trim());
+      return result;
+    }
+
+    function parseDate(str) {
+      if (!str) return null;
+      const parts = str.split('/');
+      if (parts.length === 3) {
+        let yr = parseInt(parts[2]);
+        if (yr < 100) yr += 2000;
+        return new Date(yr, parseInt(parts[0]) - 1, parseInt(parts[1]));
+      }
+      return null;
+    }
+
+    // ─── Filters ──────────────────────────────────────────────
+    function getFilteredData() {
+      let data = [...allData];
+      const pop = document.getElementById('popFilter').value;
+      const partisan = document.getElementById('partisanFilter').value;
+      if (pop !== 'all') data = data.filter(d => d.population === pop);
+      if (partisan === 'nonpartisan') data = data.filter(d => !d.partisan);
+      else if (partisan !== 'all') data = data.filter(d => d.partisan === partisan);
+      return data;
+    }
+
+    function applyFilters() {
+      const data = getFilteredData();
+      updateSummary(data);
+      renderTrendChart(data);
+      renderNetChart(data);
+      renderPopChart(data);
+      renderMethChart(data);
+      renderPollsterChart(data);
+      renderScatterChart(data);
+      renderMonthlyChart(data);
+      renderEventAnalysis(data);
+      renderTable(data);
+    }
+
+    document.getElementById('popFilter').addEventListener('change', applyFilters);
+    document.getElementById('partisanFilter').addEventListener('change', applyFilters);
+
+    // ─── Summary ──────────────────────────────────────────────
+    function updateSummary(data) {
+      const avgYes = data.reduce((s, d) => s + d.yes, 0) / data.length;
+      const avgNo = data.reduce((s, d) => s + d.no, 0) / data.length;
+      document.getElementById('totalPolls').textContent = data.length;
+      document.getElementById('avgApprove').textContent = avgYes.toFixed(1) + '%';
+      document.getElementById('avgDisapprove').textContent = avgNo.toFixed(1) + '%';
+      document.getElementById('netApproval').textContent = (avgYes - avgNo > 0 ? '+' : '') + (avgYes - avgNo).toFixed(1);
+      const dates = data.filter(d => d.end_date_obj).map(d => d.end_date_obj);
+      if (dates.length) {
+        const fmt = d => d.toLocaleDateString('en-US', { month: 'short', year: '2-digit' });
+        document.getElementById('dateRange').textContent = fmt(dates[0]) + ' – ' + fmt(dates[dates.length - 1]);
+      }
+      const pollsters = new Set(data.map(d => d.pollster));
+      document.getElementById('pollsterCount').textContent = pollsters.size;
+    }
+
+    // ─── Chart defaults ───────────────────────────────────────
+    Chart.defaults.color = '#8b8fa3';
+    Chart.defaults.borderColor = 'rgba(42, 45, 58, 0.6)';
+    Chart.defaults.font.family = '-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif';
+    Chart.defaults.font.size = 11;
+
+    function destroyChart(id) {
+      if (charts[id]) { charts[id].destroy(); delete charts[id]; }
+    }
+
+    // ─── Weighted Polling Model ─────────────────────────────
+    const MODEL_CONFIG = {
+      halfLife: 14,
+      lambda: Math.LN2 / 14,
+      sampleSizeRef: 600,
+      sampleSizeCap: 10000,
+      sampleSizeDefault: 1000,
+      methodologyWeights: {
+        'Live Phone': 1.0,
+        'Probability Panel': 1.0,
+        'IVR': 1.0,
+        'Live Phone/Text-to-Web': 0.85,
+        'Live Phone/Text/Nonprobability Panel': 0.85,
+        'Live Phone/Nonprobability Panel': 0.85,
+        'Text/IVR': 0.85,
+        'Probability Panel/Nonprobability Panel/Text-to-Web': 0.80,
+        'Live Phone/Nonprobability Panel/Text-to-Web': 0.85,
+        'Live Phone/Text-to-Web/Nonprobability Panel': 0.85,
+        'Nonprobability Panel': 0.70,
+        'App Panel': 0.70,
+        'Text-to-Web': 0.70,
+        'Text-to-Web/Nonprobability Panel': 0.70,
+        'Nonprobability Panel/Live Phone/Text-to-Web': 0.80,
+        '': 0.65
+      },
+      populationWeights: { lv: 1.0, rv: 0.95, a: 0.80 },
+      partisanWeights: { '': 1.0, 'REP': 0.50, 'DEM': 0.50 },
+      populationPriority: ['lv', 'rv', 'a'],
+      houseEffectShrinkage: 10,
+      houseEffectIterations: 5,
+      bandZ: 1.645,       // 90% band
+      bandInflation: 1.3,
+    };
+
+    let modelCache = null;
+
+    function getMethodologyWeight(meth) {
+      if (!meth) return 0.65;
+      if (MODEL_CONFIG.methodologyWeights[meth] !== undefined) return MODEL_CONFIG.methodologyWeights[meth];
+      // Heuristic: if it contains 'Probability' but not 'Non', it's good
+      if (/Probability/i.test(meth) && !/Non/i.test(meth)) return 1.0;
+      if (/Live Phone/i.test(meth)) return 0.85;
+      if (/Non|App|Text/i.test(meth)) return 0.70;
+      return 0.65;
+    }
+
+    function preprocessPolls(data) {
+      const withDates = data.filter(d => d.mid_date_obj);
+      // Deduplicate by poll_id: keep best population per poll
+      const byPollId = {};
+      withDates.forEach(d => {
+        const pid = d.poll_id;
+        if (!pid) { byPollId[Math.random()] = d; return; }
+        if (!byPollId[pid]) { byPollId[pid] = d; return; }
+        const prio = MODEL_CONFIG.populationPriority;
+        const existingIdx = prio.indexOf(byPollId[pid].population);
+        const newIdx = prio.indexOf(d.population);
+        if (newIdx >= 0 && (existingIdx < 0 || newIdx < existingIdx)) {
+          byPollId[pid] = d;
+        }
+      });
+      const polls = Object.values(byPollId);
+      // Precompute static weights
+      polls.forEach(p => {
+        const n = p.sample_size || MODEL_CONFIG.sampleSizeDefault;
+        const nEff = Math.min(n, MODEL_CONFIG.sampleSizeCap);
+        p._wSample = Math.sqrt(nEff / MODEL_CONFIG.sampleSizeRef);
+        p._wMeth = getMethodologyWeight(p.methodology);
+        p._wPop = MODEL_CONFIG.populationWeights[p.population] || 0.80;
+        p._wPartisan = MODEL_CONFIG.partisanWeights[p.partisan] || 1.0;
+        p._midTime = p.mid_date_obj.getTime();
+      });
+      return polls;
+    }
+
+    function computeDailyEstimates(polls, houseEffects) {
+      if (!polls.length) return [];
+      const times = polls.map(p => p._midTime);
+      const minT = Math.min(...times);
+      const maxT = Math.max(...times);
+      const DAY = 86400000;
+      const results = [];
+
+      for (let t = minT; t <= maxT; t += DAY) {
+        let sumW = 0, sumWY = 0, sumWN = 0;
+        let sumW2 = 0, sumWdY2 = 0, sumWdN2 = 0;
+        const weights = [];
+
+        for (let i = 0; i < polls.length; i++) {
+          const p = polls[i];
+          const delta = Math.abs(p._midTime - t) / DAY;
+          const wRecency = Math.exp(-MODEL_CONFIG.lambda * delta);
+          const w = wRecency * p._wSample * p._wMeth * p._wPop * p._wPartisan;
+          if (w < 0.001) continue; // skip negligible contributions
+
+          const he = houseEffects[p.pollster] || { yes: 0, no: 0 };
+          const adjYes = p.yes - he.yes;
+          const adjNo = p.no - he.no;
+
+          sumW += w;
+          sumW2 += w * w;
+          sumWY += w * adjYes;
+          sumWN += w * adjNo;
+          weights.push({ w, adjYes, adjNo });
+        }
+
+        if (sumW < 0.01) continue;
+
+        const estY = sumWY / sumW;
+        const estN = sumWN / sumW;
+
+        // Weighted variance
+        for (const { w, adjYes, adjNo } of weights) {
+          sumWdY2 += w * (adjYes - estY) ** 2;
+          sumWdN2 += w * (adjNo - estN) ** 2;
+        }
+
+        const nEff = (sumW * sumW) / sumW2;
+        const denom = sumW - sumW2 / sumW;
+        const varY = denom > 0 ? sumWdY2 / denom : sumWdY2 / sumW;
+        const varN = denom > 0 ? sumWdN2 / denom : sumWdN2 / sumW;
+        // Prediction interval: where individual polls fall (not SE of mean)
+        const seY = Math.sqrt(varY) * MODEL_CONFIG.bandInflation;
+        const seN = Math.sqrt(varN) * MODEL_CONFIG.bandInflation;
+
+        results.push({
+          date: new Date(t),
+          approve: estY,
+          disapprove: estN,
+          net: estY - estN,
+          approveUpper: estY + MODEL_CONFIG.bandZ * seY,
+          approveLower: estY - MODEL_CONFIG.bandZ * seY,
+          disapproveUpper: estN + MODEL_CONFIG.bandZ * seN,
+          disapproveLower: estN - MODEL_CONFIG.bandZ * seN,
+          netUpper: (estY + MODEL_CONFIG.bandZ * seY) - (estN - MODEL_CONFIG.bandZ * seN),
+          netLower: (estY - MODEL_CONFIG.bandZ * seY) - (estN + MODEL_CONFIG.bandZ * seN),
+          nEff
+        });
+      }
+      return results;
+    }
+
+    function estimateHouseEffects(polls, config) {
+      // Iterative: compute daily avg -> compute house effects -> repeat
+      let houseEffects = {};
+      const pollsters = [...new Set(polls.map(p => p.pollster))];
+
+      for (let iter = 0; iter < config.houseEffectIterations; iter++) {
+        // Step 1: compute daily estimates with current house effects
+        const estimates = computeDailyEstimates(polls, houseEffects);
+        if (!estimates.length) return {};
+
+        // Build a lookup: date -> estimate (nearest day)
+        const estByDay = {};
+        estimates.forEach(e => { estByDay[Math.round(e.date.getTime() / 86400000)] = e; });
+
+        // Step 2: compute house effects
+        const newHE = {};
+        for (const pName of pollsters) {
+          const pPolls = polls.filter(p => p.pollster === pName);
+          if (pPolls.length < 3) continue;
+
+          let sumW = 0, sumDevY = 0, sumDevN = 0;
+          for (const p of pPolls) {
+            const dayKey = Math.round(p._midTime / 86400000);
+            // Find nearest estimate
+            let est = estByDay[dayKey];
+            if (!est) {
+              // Find closest
+              let minDist = Infinity;
+              for (const e of estimates) {
+                const d = Math.abs(e.date.getTime() - p._midTime);
+                if (d < minDist) { minDist = d; est = e; }
+              }
+            }
+            if (!est) continue;
+
+            const he = houseEffects[pName] || { yes: 0, no: 0 };
+            const w = p._wSample * p._wMeth * p._wPop * p._wPartisan;
+            sumW += w;
+            sumDevY += w * ((p.yes - he.yes) - est.approve);
+            sumDevN += w * ((p.no - he.no) - est.disapprove);
+          }
+
+          if (sumW > 0) {
+            const rawY = sumDevY / sumW;
+            const rawN = sumDevN / sumW;
+            // Shrinkage
+            const shrink = pPolls.length / (pPolls.length + config.houseEffectShrinkage);
+            newHE[pName] = {
+              yes: rawY * shrink,
+              no: rawN * shrink,
+              nPolls: pPolls.length,
+              shrinkage: shrink
+            };
+          }
+        }
+        houseEffects = newHE;
+      }
+      return houseEffects;
+    }
+
+    function runModel(data) {
+      const polls = preprocessPolls(data);
+      const houseEffects = estimateHouseEffects(polls, MODEL_CONFIG);
+      const estimates = computeDailyEstimates(polls, houseEffects);
+      modelCache = { polls, houseEffects, estimates };
+      return modelCache;
+    }
+
+    function renderHouseEffectsTable(houseEffects) {
+      const container = document.getElementById('houseEffectsTable');
+      if (!container) return;
+      const entries = Object.entries(houseEffects)
+        .map(([name, he]) => ({ name, ...he, netBias: he.yes - he.no }))
+        .sort((a, b) => b.netBias - a.netBias);
+      if (!entries.length) { container.innerHTML = '<p style="color:var(--text-muted)">Not enough data.</p>'; return; }
+      const maxAbs = Math.max(...entries.map(e => Math.abs(e.netBias)), 1);
+
+      container.innerHTML = `<table class="he-table">
+        <thead><tr>
+          <th>Pollster</th><th>Polls</th><th>Approve Bias</th><th>Disapprove Bias</th><th>Net Lean</th><th style="width:120px">Visual</th>
+        </tr></thead>
+        <tbody>${entries.map(e => {
+          const netColor = e.netBias > 0.3 ? '#66bb6a' : e.netBias < -0.3 ? '#ef5350' : '#ffb74d';
+          const barPct = Math.abs(e.netBias) / maxAbs * 50;
+          const barSide = e.netBias >= 0
+            ? `left:50%;width:${barPct}%;background:rgba(102,187,106,0.6)`
+            : `right:50%;width:${barPct}%;background:rgba(239,83,80,0.6)`;
+          return `<tr>
+            <td>${e.name}</td>
+            <td>${e.nPolls}</td>
+            <td style="color:${e.yes > 0.3 ? '#66bb6a' : e.yes < -0.3 ? '#ef5350' : 'var(--text-muted)'}">${e.yes > 0 ? '+' : ''}${e.yes.toFixed(1)}</td>
+            <td style="color:${e.no > 0.3 ? '#ef5350' : e.no < -0.3 ? '#66bb6a' : 'var(--text-muted)'}">${e.no > 0 ? '+' : ''}${e.no.toFixed(1)}</td>
+            <td style="color:${netColor};font-weight:600">${e.netBias > 0 ? '+' : ''}${e.netBias.toFixed(1)}</td>
+            <td class="he-bar-cell"><div class="he-bar-wrapper">
+              <div style="position:absolute;left:50%;top:0;width:1px;height:100%;background:var(--border)"></div>
+              <div class="he-bar" style="${barSide}"></div>
+            </div></td>
+          </tr>`;
+        }).join('')}</tbody></table>`;
+    }
+
+    function updateWeightedSummary(model) {
+      if (!model.estimates.length) return;
+      const latest = model.estimates[model.estimates.length - 1];
+      document.getElementById('avgApprove').textContent = latest.approve.toFixed(1) + '%';
+      document.getElementById('avgDisapprove').textContent = latest.disapprove.toFixed(1) + '%';
+      const net = latest.net;
+      document.getElementById('netApproval').textContent = (net > 0 ? '+' : '') + net.toFixed(1);
+    }
+
+    // ─── Trend Chart ──────────────────────────────────────────
+    function renderTrendChart(data) {
+      destroyChart('trend');
+      const filtered = data.filter(d => d.end_date_obj);
+      const model = runModel(filtered);
+      const est = model.estimates;
+      document.getElementById('trendCount').textContent = filtered.length + ' polls → ' + est.length + ' daily estimates';
+
+      // Latest values for labels
+      const latest = est[est.length - 1];
+      const approveLabel = latest ? `Approve ${latest.approve.toFixed(1)}%` : 'Approve';
+      const disapproveLabel = latest ? `Disapprove ${latest.disapprove.toFixed(1)}%` : 'Disapprove';
+
+      charts.trend = new Chart(document.getElementById('trendChart'), {
+        type: 'line',
+        data: {
+          datasets: [
+            // Confidence bands (must come first for fill to work)
+            {
+              label: '90% band',
+              data: est.map(e => ({ x: e.date, y: e.approveUpper })),
+              borderColor: 'transparent',
+              backgroundColor: 'rgba(76, 175, 80, 0.15)',
+              fill: '+1',
+              pointRadius: 0,
+              borderWidth: 0,
+              order: 4
+            },
+            {
+              label: '_approveLower',
+              data: est.map(e => ({ x: e.date, y: e.approveLower })),
+              borderColor: 'transparent',
+              backgroundColor: 'transparent',
+              fill: false,
+              pointRadius: 0,
+              borderWidth: 0,
+              order: 4
+            },
+            {
+              label: '_disapproveUpper',
+              data: est.map(e => ({ x: e.date, y: e.disapproveUpper })),
+              borderColor: 'transparent',
+              backgroundColor: 'rgba(239, 83, 80, 0.15)',
+              fill: '+1',
+              pointRadius: 0,
+              borderWidth: 0,
+              order: 4
+            },
+            {
+              label: '_disapproveLower',
+              data: est.map(e => ({ x: e.date, y: e.disapproveLower })),
+              borderColor: 'transparent',
+              backgroundColor: 'transparent',
+              fill: false,
+              pointRadius: 0,
+              borderWidth: 0,
+              order: 4
+            },
+            // Raw poll dots
+            {
+              label: 'Approve (polls)',
+              data: filtered.map(d => ({ x: d.end_date_obj, y: d.yes })),
+              borderColor: 'rgba(46, 125, 50, 0.25)',
+              pointRadius: 2.5,
+              pointBackgroundColor: 'rgba(76, 175, 80, 0.35)',
+              borderWidth: 0,
+              showLine: false,
+              order: 3
+            },
+            {
+              label: 'Disapprove (polls)',
+              data: filtered.map(d => ({ x: d.end_date_obj, y: d.no })),
+              borderColor: 'rgba(198, 40, 40, 0.25)',
+              pointRadius: 2.5,
+              pointBackgroundColor: 'rgba(239, 83, 80, 0.35)',
+              borderWidth: 0,
+              showLine: false,
+              order: 3
+            },
+            // Weighted average lines
+            {
+              label: approveLabel,
+              data: est.map(e => ({ x: e.date, y: e.approve })),
+              borderColor: '#4caf50',
+              borderWidth: 3,
+              pointRadius: 0,
+              tension: 0.2,
+              fill: false,
+              order: 1
+            },
+            {
+              label: disapproveLabel,
+              data: est.map(e => ({ x: e.date, y: e.disapprove })),
+              borderColor: '#ef5350',
+              borderWidth: 3,
+              pointRadius: 0,
+              tension: 0.2,
+              fill: false,
+              order: 1
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          interaction: { mode: 'nearest', intersect: false },
+          scales: {
+            x: {
+              type: 'time',
+              time: { unit: 'month', tooltipFormat: 'MMM d, yyyy' },
+              grid: { display: false }
+            },
+            y: {
+              min: 25,
+              max: 70,
+              ticks: { callback: v => v + '%' }
+            }
+          },
+          plugins: {
+            filler: { propagate: true },
+            tooltip: {
+              filter: item => !item.dataset.label.startsWith('_') && item.dataset.label !== '90% band',
+              callbacks: { label: ctx => ctx.dataset.label + ': ' + ctx.parsed.y.toFixed(1) + '%' }
+            },
+            legend: {
+              position: 'top',
+              labels: {
+                usePointStyle: true,
+                padding: 16,
+                filter: item => !item.text.startsWith('_') && item.text !== '90% band'
+              }
+            }
+          }
+        }
+      });
+
+      // Render house effects table
+      renderHouseEffectsTable(model.houseEffects);
+      // Update summary with weighted latest
+      updateWeightedSummary(model);
+    }
+
+    function rollingAvg(arr, window) {
+      return arr.map((_, i) => {
+        const start = Math.max(0, i - Math.floor(window / 2));
+        const end = Math.min(arr.length, i + Math.ceil(window / 2));
+        const slice = arr.slice(start, end);
+        return slice.reduce((s, v) => s + v, 0) / slice.length;
+      });
+    }
+
+    // ─── Net Approval Chart ───────────────────────────────────
+    function renderNetChart(data) {
+      destroyChart('net');
+      const filtered = data.filter(d => d.end_date_obj);
+      const est = modelCache ? modelCache.estimates : [];
+
+      charts.net = new Chart(document.getElementById('netChart'), {
+        type: 'line',
+        data: {
+          datasets: [
+            // Confidence band
+            {
+              label: '_netUpper',
+              data: est.map(e => ({ x: e.date, y: e.netUpper })),
+              borderColor: 'transparent',
+              backgroundColor: 'rgba(66, 165, 245, 0.15)',
+              fill: '+1',
+              pointRadius: 0,
+              borderWidth: 0,
+              order: 4
+            },
+            {
+              label: '_netLower',
+              data: est.map(e => ({ x: e.date, y: e.netLower })),
+              borderColor: 'transparent',
+              backgroundColor: 'transparent',
+              fill: false,
+              pointRadius: 0,
+              borderWidth: 0,
+              order: 4
+            },
+            // Raw poll dots
+            {
+              label: 'Net Approval (polls)',
+              data: filtered.map(d => ({ x: d.end_date_obj, y: d.net })),
+              borderWidth: 0,
+              pointRadius: 2.5,
+              pointBackgroundColor: filtered.map(d => d.net >= 0 ? 'rgba(76, 175, 80, 0.4)' : 'rgba(239, 83, 80, 0.4)'),
+              showLine: false,
+              order: 3
+            },
+            // Weighted net line
+            {
+              label: 'Weighted Net',
+              data: est.map(e => ({ x: e.date, y: e.net })),
+              borderColor: '#42a5f5',
+              borderWidth: 3,
+              pointRadius: 0,
+              tension: 0.2,
+              fill: false,
+              order: 1
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          interaction: { mode: 'nearest', intersect: false },
+          scales: {
+            x: {
+              type: 'time',
+              time: { unit: 'month', tooltipFormat: 'MMM d, yyyy' },
+              grid: { display: false }
+            },
+            y: {
+              ticks: { callback: v => (v > 0 ? '+' : '') + v },
+              grid: {
+                color: ctx => ctx.tick.value === 0 ? 'rgba(255,255,255,0.3)' : 'rgba(42, 45, 58, 0.6)'
+              }
+            }
+          },
+          plugins: {
+            filler: { propagate: true },
+            tooltip: {
+              filter: item => !item.dataset.label.startsWith('_'),
+              callbacks: { label: ctx => (ctx.parsed.y > 0 ? '+' : '') + ctx.parsed.y.toFixed(1) }
+            },
+            legend: { display: false }
+          }
+        }
+      });
+    }
+
+    // ─── Population Type Chart ────────────────────────────────
+    function renderPopChart(data) {
+      destroyChart('pop');
+      const pops = ['a', 'rv', 'lv'];
+      const labels = ['Adults', 'Reg. Voters', 'Likely Voters'];
+      const approvals = pops.map(p => {
+        const subset = data.filter(d => d.population === p);
+        return subset.length ? subset.reduce((s, d) => s + d.yes, 0) / subset.length : 0;
+      });
+      const disapprovals = pops.map(p => {
+        const subset = data.filter(d => d.population === p);
+        return subset.length ? subset.reduce((s, d) => s + d.no, 0) / subset.length : 0;
+      });
+      const counts = pops.map(p => data.filter(d => d.population === p).length);
+
+      charts.pop = new Chart(document.getElementById('popChart'), {
+        type: 'bar',
+        data: {
+          labels: labels.map((l, i) => l + ' (n=' + counts[i] + ')'),
+          datasets: [
+            { label: 'Approve', data: approvals, backgroundColor: 'rgba(76, 175, 80, 0.7)', borderRadius: 4 },
+            { label: 'Disapprove', data: disapprovals, backgroundColor: 'rgba(239, 83, 80, 0.7)', borderRadius: 4 }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            tooltip: { callbacks: { label: ctx => ctx.dataset.label + ': ' + ctx.parsed.y.toFixed(1) + '%' } },
+            legend: { position: 'top', labels: { usePointStyle: true, padding: 12 } }
+          },
+          scales: {
+            y: { min: 0, max: 70, ticks: { callback: v => v + '%' } },
+            x: { grid: { display: false } }
+          }
+        }
+      });
+    }
+
+    // ─── Methodology Chart ────────────────────────────────────
+    function renderMethChart(data) {
+      destroyChart('meth');
+      const counts = {};
+      data.forEach(d => {
+        const m = d.methodology || 'Not specified';
+        counts[m] = (counts[m] || 0) + 1;
+      });
+      const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+      const palette = ['#6c63ff', '#42a5f5', '#66bb6a', '#ffa726', '#ef5350', '#ab47bc', '#26c6da', '#8d6e63', '#78909c', '#d4e157'];
+
+      charts.meth = new Chart(document.getElementById('methChart'), {
+        type: 'doughnut',
+        data: {
+          labels: sorted.map(s => s[0]),
+          datasets: [{
+            data: sorted.map(s => s[1]),
+            backgroundColor: sorted.map((_, i) => palette[i % palette.length]),
+            borderWidth: 0
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { position: 'right', labels: { padding: 8, font: { size: 10 } } },
+            tooltip: { callbacks: { label: ctx => ctx.label + ': ' + ctx.parsed + ' polls' } }
+          }
+        }
+      });
+    }
+
+    // ─── Pollster Chart ───────────────────────────────────────
+    function renderPollsterChart(data) {
+      destroyChart('pollster');
+      const pollsters = {};
+      data.forEach(d => {
+        if (!pollsters[d.pollster]) pollsters[d.pollster] = { yes: 0, no: 0, count: 0 };
+        pollsters[d.pollster].yes += d.yes;
+        pollsters[d.pollster].no += d.no;
+        pollsters[d.pollster].count++;
+      });
+
+      const sorted = Object.entries(pollsters)
+        .filter(([, v]) => v.count >= 2)
+        .map(([name, v]) => ({
+          name,
+          avgYes: v.yes / v.count,
+          avgNo: v.no / v.count,
+          count: v.count
+        }))
+        .sort((a, b) => (b.avgYes - b.avgNo) - (a.avgYes - a.avgNo))
+        .slice(0, 15);
+
+      charts.pollster = new Chart(document.getElementById('pollsterChart'), {
+        type: 'bar',
+        data: {
+          labels: sorted.map(s => s.name + ' (' + s.count + ')'),
+          datasets: [
+            { label: 'Approve', data: sorted.map(s => s.avgYes), backgroundColor: 'rgba(76, 175, 80, 0.7)', borderRadius: 3 },
+            { label: 'Disapprove', data: sorted.map(s => s.avgNo), backgroundColor: 'rgba(239, 83, 80, 0.7)', borderRadius: 3 }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          indexAxis: 'y',
+          plugins: {
+            tooltip: { callbacks: { label: ctx => ctx.dataset.label + ': ' + ctx.parsed.x.toFixed(1) + '%' } },
+            legend: { position: 'top', labels: { usePointStyle: true, padding: 12 } }
+          },
+          scales: {
+            x: { min: 0, max: 70, ticks: { callback: v => v + '%' } },
+            y: { grid: { display: false } }
+          }
+        }
+      });
+    }
+
+    // ─── Scatter Chart ────────────────────────────────────────
+    function renderScatterChart(data) {
+      destroyChart('scatter');
+      const pts = data.filter(d => d.sample_size && d.sample_size > 0).map(d => ({
+        x: d.sample_size,
+        y: d.net,
+        pollster: d.pollster
+      }));
+
+      charts.scatter = new Chart(document.getElementById('scatterChart'), {
+        type: 'scatter',
+        data: {
+          datasets: [{
+            label: 'Polls',
+            data: pts,
+            backgroundColor: pts.map(p => p.y >= 0 ? 'rgba(76, 175, 80, 0.5)' : 'rgba(239, 83, 80, 0.5)'),
+            pointRadius: 5,
+            pointHoverRadius: 7
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            x: {
+              title: { display: true, text: 'Sample Size' },
+              type: 'logarithmic',
+              ticks: {
+                callback: v => {
+                  if ([200, 500, 1000, 2000, 5000].includes(v)) return v.toLocaleString();
+                  return '';
+                }
+              }
+            },
+            y: {
+              title: { display: true, text: 'Net Approval (Approve − Disapprove)' },
+              ticks: { callback: v => (v > 0 ? '+' : '') + v },
+              grid: {
+                color: ctx => ctx.tick.value === 0 ? 'rgba(255,255,255,0.2)' : 'rgba(42, 45, 58, 0.6)'
+              }
+            }
+          },
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              callbacks: {
+                label: ctx => {
+                  const pt = ctx.raw;
+                  return pt.pollster + ' | n=' + pt.x.toLocaleString() + ' | Net: ' + (pt.y > 0 ? '+' : '') + pt.y.toFixed(1);
+                }
+              }
+            }
+          }
+        }
+      });
+    }
+
+    // ─── Monthly Chart ────────────────────────────────────────
+    function renderMonthlyChart(data) {
+      destroyChart('monthly');
+      const months = {};
+      data.forEach(d => {
+        if (!d.end_date_obj) return;
+        const key = d.end_date_obj.getFullYear() + '-' + String(d.end_date_obj.getMonth() + 1).padStart(2, '0');
+        if (!months[key]) months[key] = { yes: 0, no: 0, count: 0 };
+        months[key].yes += d.yes;
+        months[key].no += d.no;
+        months[key].count++;
+      });
+
+      const keys = Object.keys(months).sort();
+      const monthLabels = keys.map(k => {
+        const [y, m] = k.split('-');
+        return new Date(y, m - 1, 1).toLocaleDateString('en-US', { month: 'short', year: '2-digit' });
+      });
+
+      charts.monthly = new Chart(document.getElementById('monthlyChart'), {
+        type: 'bar',
+        data: {
+          labels: monthLabels,
+          datasets: [
+            {
+              label: 'Approve',
+              data: keys.map(k => months[k].yes / months[k].count),
+              backgroundColor: 'rgba(76, 175, 80, 0.7)',
+              borderRadius: 4
+            },
+            {
+              label: 'Disapprove',
+              data: keys.map(k => months[k].no / months[k].count),
+              backgroundColor: 'rgba(239, 83, 80, 0.7)',
+              borderRadius: 4
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            tooltip: {
+              callbacks: {
+                afterTitle: (items) => {
+                  const idx = items[0].dataIndex;
+                  return months[keys[idx]].count + ' polls';
+                },
+                label: ctx => ctx.dataset.label + ': ' + ctx.parsed.y.toFixed(1) + '%'
+              }
+            },
+            legend: { position: 'top', labels: { usePointStyle: true, padding: 16 } }
+          },
+          scales: {
+            y: { min: 0, max: 70, ticks: { callback: v => v + '%' } },
+            x: { grid: { display: false } }
+          }
+        }
+      });
+    }
+
+    // ─── Data Table ───────────────────────────────────────────
+    let sortCol = 'end_date';
+    let sortDir = 'desc';
+
+    function renderTable(data) {
+      const sorted = [...data].sort((a, b) => {
+        let av = a[sortCol], bv = b[sortCol];
+        if (sortCol === 'end_date') { av = a.end_date_obj || 0; bv = b.end_date_obj || 0; }
+        if (sortCol === 'net') { av = a.net; bv = b.net; }
+        if (typeof av === 'number' && typeof bv === 'number') return sortDir === 'asc' ? av - bv : bv - av;
+        if (av instanceof Date && bv instanceof Date) return sortDir === 'asc' ? av - bv : bv - av;
+        return sortDir === 'asc' ? String(av).localeCompare(String(bv)) : String(bv).localeCompare(String(av));
+      });
+
+      document.getElementById('tableCount').textContent = sorted.length + ' rows';
+
+      const popLabels = { rv: 'RV', a: 'A', lv: 'LV' };
+      const tbody = document.getElementById('tableBody');
+      tbody.innerHTML = sorted.map(d => `
+        <tr>
+          <td>${d.end_date_obj ? d.end_date_obj.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: '2-digit' }) : '—'}</td>
+          <td>${d.pollster}</td>
+          <td>${d.sponsors || '—'}</td>
+          <td><span class="pill ${d.population}">${popLabels[d.population] || d.population}</span></td>
+          <td>${d.sample_size ? d.sample_size.toLocaleString() : '—'}</td>
+          <td style="color:var(--approve);font-weight:600">${d.yes.toFixed(1)}%</td>
+          <td style="color:var(--disapprove);font-weight:600">${d.no.toFixed(1)}%</td>
+          <td style="color:${d.net >= 0 ? 'var(--approve)' : 'var(--disapprove)'};font-weight:600">${d.net > 0 ? '+' : ''}${d.net.toFixed(1)}</td>
+          <td>${d.methodology || '—'}</td>
+        </tr>
+      `).join('');
+
+      // Update sort indicators
+      document.querySelectorAll('#dataTable th').forEach(th => {
+        th.classList.remove('sorted-asc', 'sorted-desc');
+        if (th.dataset.col === sortCol) th.classList.add(sortDir === 'asc' ? 'sorted-asc' : 'sorted-desc');
+      });
+    }
+
+    document.querySelectorAll('#dataTable th').forEach(th => {
+      th.addEventListener('click', () => {
+        const col = th.dataset.col;
+        if (sortCol === col) sortDir = sortDir === 'asc' ? 'desc' : 'asc';
+        else { sortCol = col; sortDir = 'desc'; }
+        applyFilters();
+      });
+    });
+
+    // ─── Event Analysis: Iran Strikes ─────────────────────────
+    function renderEventAnalysis(data) {
+      const EVENT = new Date(2026, 1, 28); // Feb 28 2026
+      const WINDOW = 30; // days
+      const preStart = new Date(EVENT); preStart.setDate(preStart.getDate() - WINDOW);
+      const postEnd = new Date(EVENT); postEnd.setDate(postEnd.getDate() + WINDOW);
+
+      // Non-partisan only
+      const np = data.filter(d => !d.partisan && d.end_date_obj);
+      const pre = np.filter(d => d.end_date_obj >= preStart && d.end_date_obj < EVENT);
+      const post = np.filter(d => d.end_date_obj >= EVENT && d.end_date_obj <= postEnd);
+
+      if (!pre.length || !post.length) return;
+
+      const avg = (arr, key) => arr.reduce((s, d) => s + d[key], 0) / arr.length;
+
+      const preNetVal = avg(pre, 'net');
+      const postNetVal = avg(post, 'net');
+      const shift = postNetVal - preNetVal;
+
+      document.getElementById('preNet').textContent = (preNetVal > 0 ? '+' : '') + preNetVal.toFixed(1);
+      document.getElementById('postNet').textContent = (postNetVal > 0 ? '+' : '') + postNetVal.toFixed(1);
+      document.getElementById('preDetail').textContent =
+        pre.length + ' polls · Approve ' + avg(pre, 'yes').toFixed(1) + '% · Disapprove ' + avg(pre, 'no').toFixed(1) + '%';
+      document.getElementById('postDetail').textContent =
+        post.length + ' polls · Approve ' + avg(post, 'yes').toFixed(1) + '% · Disapprove ' + avg(post, 'no').toFixed(1) + '%';
+
+      // Findings
+      const findings = document.getElementById('eventFindings');
+      const shiftClass = shift < -0.5 ? 'shift-negative' : shift > 0.5 ? 'shift-positive' : 'shift-flat';
+      const shiftWord = shift < -0.5 ? 'declined' : shift > 0.5 ? 'improved' : 'was unchanged';
+
+      // Same-pollster comparison
+      const preByPollster = {}, postByPollster = {};
+      pre.forEach(d => { (preByPollster[d.pollster] = preByPollster[d.pollster] || []).push(d); });
+      post.forEach(d => { (postByPollster[d.pollster] = postByPollster[d.pollster] || []).push(d); });
+      const shared = Object.keys(preByPollster).filter(p => postByPollster[p]);
+
+      const shifts = shared.map(p => ({
+        name: p,
+        preNet: avg(preByPollster[p], 'net'),
+        postNet: avg(postByPollster[p], 'net'),
+        shift: avg(postByPollster[p], 'net') - avg(preByPollster[p], 'net'),
+        prePollCount: preByPollster[p].length,
+        postPollCount: postByPollster[p].length
+      })).sort((a, b) => a.shift - b.shift);
+
+      const avgShift = shifts.reduce((s, d) => s + d.shift, 0) / shifts.length;
+      const improved = shifts.filter(s => s.shift > 0.5).length;
+      const worsened = shifts.filter(s => s.shift < -0.5).length;
+
+      findings.innerHTML = `
+        <div class="finding">
+          <strong>Overall:</strong> Net approval among non-partisan polls
+          <span class="${shiftClass}">${shiftWord} by ${Math.abs(shift).toFixed(1)} points</span>
+          after the Iran strikes (${preNetVal.toFixed(1)} → ${postNetVal.toFixed(1)}).
+        </div>
+        <div class="finding">
+          <strong>Controlled for pollster:</strong> Of ${shared.length} pollsters with data in both periods,
+          <span class="shift-negative">${worsened} showed a decline</span>,
+          <span class="shift-positive">${improved} showed improvement</span>,
+          and ${shared.length - improved - worsened} were roughly flat.
+          The average same-pollster shift was <span class="${avgShift < -0.5 ? 'shift-negative' : avgShift > 0.5 ? 'shift-positive' : 'shift-flat'}">${avgShift > 0 ? '+' : ''}${avgShift.toFixed(1)} points</span>.
+        </div>
+        <div class="finding">
+          <strong>Key insight:</strong> Any appearance of improving approval is likely a
+          <strong>pollster composition effect</strong> — the mix of which firms happen to be polling
+          shifts between periods. When you compare each pollster to itself, the picture is flat to slightly negative.
+        </div>
+      `;
+
+      // Pollster shift bars
+      const maxAbsShift = Math.max(...shifts.map(s => Math.abs(s.shift)), 1);
+      const shiftList = document.getElementById('pollsterShiftList');
+      shiftList.innerHTML = shifts.map(s => {
+        const pct = Math.abs(s.shift) / maxAbsShift * 50;
+        const isNeg = s.shift < 0;
+        const barStyle = isNeg
+          ? `right:50%;width:${pct}%;background:rgba(239,83,80,0.6)`
+          : `left:50%;width:${pct}%;background:rgba(102,187,106,0.6)`;
+        const valColor = s.shift < -0.5 ? '#ef5350' : s.shift > 0.5 ? '#66bb6a' : '#ffb74d';
+        return `<div class="pollster-shift-row">
+          <div class="ps-name" title="${s.name}">${s.name}</div>
+          <div class="ps-bar-wrapper">
+            <div style="position:absolute;left:50%;top:0;width:1px;height:100%;background:var(--border)"></div>
+            <div class="ps-bar" style="${barStyle}"></div>
+          </div>
+          <div class="ps-value" style="color:${valColor}">${s.shift > 0 ? '+' : ''}${s.shift.toFixed(1)}</div>
+        </div>`;
+      }).join('');
+
+      // By population type chart
+      renderEventPopChart(pre, post);
+
+      // Zoomed trend chart
+      renderEventZoomChart(np, EVENT);
+    }
+
+    function renderEventPopChart(pre, post) {
+      destroyChart('eventPop');
+      const pops = ['a', 'rv', 'lv'];
+      const labels = ['Adults', 'Reg. Voters', 'Likely Voters'];
+      const avg = (arr, key) => arr.length ? arr.reduce((s, d) => s + d[key], 0) / arr.length : null;
+
+      const preNets = pops.map(p => avg(pre.filter(d => d.population === p), 'net'));
+      const postNets = pops.map(p => avg(post.filter(d => d.population === p), 'net'));
+
+      charts.eventPop = new Chart(document.getElementById('eventPopChart'), {
+        type: 'bar',
+        data: {
+          labels,
+          datasets: [
+            { label: 'Pre-Iran Net', data: preNets, backgroundColor: 'rgba(66, 165, 245, 0.6)', borderRadius: 4 },
+            { label: 'Post-Iran Net', data: postNets, backgroundColor: 'rgba(171, 71, 188, 0.6)', borderRadius: 4 }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { position: 'top', labels: { usePointStyle: true, padding: 12 } },
+            tooltip: { callbacks: { label: ctx => ctx.dataset.label + ': ' + (ctx.parsed.y > 0 ? '+' : '') + ctx.parsed.y.toFixed(1) } }
+          },
+          scales: {
+            y: {
+              ticks: { callback: v => (v > 0 ? '+' : '') + v },
+              grid: { color: ctx => ctx.tick.value === 0 ? 'rgba(255,255,255,0.2)' : 'rgba(42, 45, 58, 0.6)' }
+            },
+            x: { grid: { display: false } }
+          }
+        }
+      });
+    }
+
+    function renderEventZoomChart(npData, eventDate) {
+      destroyChart('eventZoom');
+      const zoomStart = new Date(2026, 0, 1);
+      const zoomEnd = new Date(2026, 2, 31);
+      const zoomed = npData.filter(d => d.end_date_obj >= zoomStart && d.end_date_obj <= zoomEnd);
+      if (!zoomed.length) return;
+
+      const netRA = rollingAvg(zoomed.map(d => d.net), 5);
+
+      charts.eventZoom = new Chart(document.getElementById('eventZoomChart'), {
+        type: 'line',
+        data: {
+          labels: zoomed.map(d => d.end_date_obj),
+          datasets: [
+            {
+              label: 'Net Approval',
+              data: zoomed.map(d => d.net),
+              borderWidth: 0,
+              showLine: false,
+              pointRadius: 4,
+              pointBackgroundColor: zoomed.map(d => d.net >= 0 ? 'rgba(76, 175, 80, 0.5)' : 'rgba(239, 83, 80, 0.5)'),
+              order: 2
+            },
+            {
+              label: 'Trend',
+              data: netRA,
+              borderColor: '#42a5f5',
+              borderWidth: 2.5,
+              pointRadius: 0,
+              tension: 0.3,
+              order: 1
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: { callbacks: { label: ctx => (ctx.parsed.y > 0 ? '+' : '') + ctx.parsed.y.toFixed(1) } },
+            annotation: {}
+          },
+          scales: {
+            x: {
+              type: 'time',
+              time: { unit: 'week', tooltipFormat: 'MMM d' },
+              grid: { display: false }
+            },
+            y: {
+              ticks: { callback: v => (v > 0 ? '+' : '') + v },
+              grid: { color: ctx => ctx.tick.value === 0 ? 'rgba(255,255,255,0.2)' : 'rgba(42, 45, 58, 0.6)' }
+            }
+          }
+        },
+        plugins: [{
+          id: 'eventLine',
+          afterDraw(chart) {
+            const xScale = chart.scales.x;
+            const yScale = chart.scales.y;
+            const x = xScale.getPixelForValue(eventDate);
+            if (x >= xScale.left && x <= xScale.right) {
+              const ctx = chart.ctx;
+              ctx.save();
+              ctx.beginPath();
+              ctx.setLineDash([4, 4]);
+              ctx.strokeStyle = 'rgba(108, 99, 255, 0.7)';
+              ctx.lineWidth = 2;
+              ctx.moveTo(x, yScale.top);
+              ctx.lineTo(x, yScale.bottom);
+              ctx.stroke();
+              ctx.setLineDash([]);
+              ctx.fillStyle = 'rgba(108, 99, 255, 0.9)';
+              ctx.font = '10px -apple-system, sans-serif';
+              ctx.textAlign = 'center';
+              ctx.fillText('Iran strikes', x, yScale.top - 6);
+              ctx.restore();
+            }
+          }
+        }]
+      });
+    }
+
+    // ─── Last Updated ─────────────────────────────────────────
+    function updateLastUpdated(data) {
+      const dates = data.filter(d => d.end_date_obj).map(d => d.end_date_obj);
+      if (dates.length) {
+        const latest = new Date(Math.max(...dates));
+        const el = document.getElementById('lastUpdated');
+        el.textContent = 'Latest poll: ' + latest.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+      }
+    }
+
+    // ─── Init ─────────────────────────────────────────────────
+    loadData().then(() => updateLastUpdated(allData));
+  </script>
+
+  <footer class="footer">
+    <div class="attribution">
+      Data: <a href="https://www.nytimes.com/interactive/2024/us/elections/polls/approval-rating/donald-trump.html" target="_blank" rel="noopener">FiveThirtyEight / The New York Times</a> presidential approval polls.
+      Adapted and visualized from the original dataset.
+    </div>
+    <div>
+      Licensed under
+      <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">Creative Commons Attribution 4.0 International</a>
+      <span class="license-icons">
+        <img src="https://mirrors.creativecommons.org/presskit/icons/cc.svg" alt="CC">
+        <img src="https://mirrors.creativecommons.org/presskit/icons/by.svg" alt="BY">
+      </span>
+    </div>
+  </footer>
+</body>
+</html>

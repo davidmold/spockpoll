@@ -1,0 +1,36 @@
+# Fetch latest presidential approval polling data from NYT daily
+# Data: CC BY 4.0 — https://creativecommons.org/licenses/by/4.0/
+
+name: Update Polling Data
+
+on:
+  schedule:
+    # Run at 06:00 UTC every day (early morning US time, after overnight polls land)
+    - cron: '0 6 * * *'
+  workflow_dispatch:  # Allow manual trigger from GitHub UI
+
+permissions:
+  contents: write
+
+jobs:
+  update-csv:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Fetch latest data
+        run: ./update-data.sh
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add president.csv
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            POLL_COUNT=$(tail -n +2 president.csv | wc -l)
+            git commit -m "data: update polling data (${POLL_COUNT} polls) — $(date -u +%Y-%m-%d)"
+            git push
+          fi
