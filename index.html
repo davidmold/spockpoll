@@ -1078,9 +1078,10 @@
 
     function computeDailyEstimates(polls, houseEffects) {
       if (!polls.length) return [];
-      const times = polls.map(p => p._midTime);
-      const minT = Math.min(...times);
-      const maxT = Math.max(...times);
+      const midTimes = polls.map(p => p._midTime);
+      const endTimes = polls.map(p => p.end_date_obj ? p.end_date_obj.getTime() : p._midTime);
+      const minT = Math.min(...midTimes);
+      const maxT = Math.max(...endTimes); // extend to latest end_date, not just midpoint
       const DAY = 86400000;
       const results = [];
 
