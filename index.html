@@ -156,6 +156,38 @@
       vertical-align: middle;
     }
 
+    .range-selector {
+      display: inline-flex;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      margin-bottom: 0.75rem;
+    }
+
+    .range-selector button {
+      background: transparent;
+      color: var(--text-muted);
+      border: none;
+      padding: 0.3rem 0.8rem;
+      font-size: 0.75rem;
+      font-family: inherit;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .range-selector button + button {
+      border-left: 1px solid var(--border);
+    }
+
+    .range-selector button:hover {
+      color: var(--text);
+    }
+
+    .range-selector button.active {
+      background: var(--accent);
+      color: #fff;
+    }
+
     .chart-container {
       position: relative;
       width: 100%;
@@ -319,6 +351,19 @@
       grid-template-columns: 1fr 1fr;
       gap: 1rem;
       margin-bottom: 1rem;
+    }
+
+    .momentum-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .big-number .arrow {
+      font-size: 1.2rem;
+      vertical-align: middle;
+      margin-left: 0.15rem;
     }
 
     .comparison-box {
@@ -596,6 +641,11 @@
         font-size: 0.72rem;
       }
 
+      .range-selector button {
+        padding: 0.25rem 0.55rem;
+        font-size: 0.68rem;
+      }
+
       /* House effects table — horizontal scroll */
       #houseEffectsTable {
         overflow-x: auto;
@@ -623,6 +673,11 @@
 
       .comparison-grid {
         grid-template-columns: 1fr 1fr;
+        gap: 0.5rem;
+      }
+
+      .momentum-grid {
+        grid-template-columns: 1fr;
         gap: 0.5rem;
       }
 
@@ -726,8 +781,15 @@
     <div class="card full-width">
       <h2>Weighted Polling Average <span class="badge" id="trendCount"></span></h2>
       <p style="font-size:0.78rem;color:var(--text-muted);margin-bottom:0.75rem">
-        An updating polling average accounting for each poll's recency, sample size, methodology quality, population type, partisan lean, and pollster house effects. Shaded region shows where 90% of polls are expected to fall.
+        A local-linear polling average accounting for each poll's recency, sample size, methodology quality, population type, partisan lean, and pollster house effects &mdash; with outlier polls downweighted and high-frequency trackers damped. Shaded region shows where 90% of polls are expected to fall.
       </p>
+      <div class="range-selector" id="rangeSelector">
+        <button data-days="all" class="active">Full term</button>
+        <button data-days="365">1Y</button>
+        <button data-days="180">6M</button>
+        <button data-days="90">90D</button>
+        <button data-days="30">30D</button>
+      </div>
       <div class="chart-container tall"><canvas id="trendChart"></canvas></div>
     </div>
 
@@ -766,6 +828,14 @@
             <div class="factor-item">
               <div class="factor-name">House Effects</div>
               <div class="factor-desc">Each pollster's systematic bias is estimated and corrected using an iterative algorithm with Bayesian shrinkage.</div>
+            </div>
+            <div class="factor-item">
+              <div class="factor-name">Trend Fitting</div>
+              <div class="factor-desc">Local-linear kernel regression. A flat moving average lags behind real shifts at the newest data; fitting a sloped line at each day removes that lag.</div>
+            </div>
+            <div class="factor-item">
+              <div class="factor-name">Outliers &amp; Trackers</div>
+              <div class="factor-desc">Polls landing more than 2.5&sigma; from the trend are downweighted, and each pollster's volume counts as &radic;n &mdash; so no single tracker dominates.</div>
             </div>
           </div>
         </div>
@@ -807,39 +877,57 @@
       <div class="chart-container"><canvas id="monthlyChart"></canvas></div>
     </div>
 
-    <!-- Event Analysis -->
+    <!-- Trend & Momentum -->
     <div class="card full-width event-section">
       <div class="event-header">
         <div class="event-marker"></div>
-        <h2>Event Analysis: Iran Strikes <small>Comparing 30 days before vs. after Feb 28, 2026 &mdash; non-partisan polls only</small></h2>
+        <h2>Trend &amp; Momentum <small>Where the model puts approval now and how it has moved &mdash; reflects the filters above</small></h2>
+      </div>
+
+      <div class="momentum-grid">
+        <div class="comparison-box">
+          <div class="period-label">Model Net &mdash; Now</div>
+          <div class="big-number" id="momNow">—</div>
+          <div class="detail" id="momNowDetail"></div>
+        </div>
+        <div class="comparison-box">
+          <div class="period-label">30-Day Change</div>
+          <div class="big-number" id="mom30">—</div>
+          <div class="detail" id="mom30Detail"></div>
+        </div>
+        <div class="comparison-box">
+          <div class="period-label">90-Day Change</div>
+          <div class="big-number" id="mom90">—</div>
+          <div class="detail" id="mom90Detail"></div>
+        </div>
       </div>
 
       <div class="comparison-grid">
         <div class="comparison-box">
-          <div class="period-label">Pre-Iran &mdash; Net Approval</div>
-          <div class="big-number" id="preNet" style="color:var(--disapprove)">—</div>
-          <div class="detail" id="preDetail"></div>
+          <div class="period-label">Term High &mdash; Net</div>
+          <div class="big-number" id="termHigh" style="color:var(--approve)">—</div>
+          <div class="detail" id="termHighDetail"></div>
         </div>
         <div class="comparison-box">
-          <div class="period-label">Post-Iran &mdash; Net Approval</div>
-          <div class="big-number" id="postNet" style="color:var(--disapprove)">—</div>
-          <div class="detail" id="postDetail"></div>
+          <div class="period-label">Term Low &mdash; Net</div>
+          <div class="big-number" id="termLow" style="color:var(--disapprove)">—</div>
+          <div class="detail" id="termLowDetail"></div>
         </div>
       </div>
 
-      <div id="eventFindings"></div>
+      <div id="momFindings"></div>
 
-      <h2 style="margin-top:1.25rem;margin-bottom:0.5rem">Same-Pollster Shift <span class="badge">Controls for pollster lean</span></h2>
-      <p style="font-size:0.78rem;color:var(--text-muted);margin-bottom:0.75rem">Only pollsters with data both before and after the event. This eliminates composition effects from different pollsters being active in different periods.</p>
+      <h2 style="margin-top:1.25rem;margin-bottom:0.5rem">Recent Shift <span class="badge">Last 30 days vs. prior 30 days</span></h2>
+      <p style="font-size:0.78rem;color:var(--text-muted);margin-bottom:0.75rem">Each pollster compared against <em>itself</em> across the two periods. Comparing a firm to its own past removes composition effects &mdash; an apparent move that's really just a change in <em>which</em> pollsters were active, not a change in opinion. Non-partisan polls only.</p>
       <div id="pollsterShiftList"></div>
 
       <div class="comparison-grid" style="margin-top:1.25rem">
         <div>
-          <h2 style="margin-bottom:0.5rem">By Population Type <span class="badge">Non-partisan</span></h2>
+          <h2 style="margin-bottom:0.5rem">Recent Shift by Population <span class="badge">Non-partisan</span></h2>
           <div class="chart-container short"><canvas id="eventPopChart"></canvas></div>
         </div>
         <div>
-          <h2 style="margin-bottom:0.5rem">Zoomed Trend <span class="badge">Jan–Mar 2026</span></h2>
+          <h2 style="margin-bottom:0.5rem">Last 90 Days <span class="badge">Net approval</span></h2>
           <div class="chart-container short"><canvas id="eventZoomChart"></canvas></div>
         </div>
       </div>
@@ -974,6 +1062,16 @@
     document.getElementById('popFilter').addEventListener('change', applyFilters);
     document.getElementById('partisanFilter').addEventListener('change', applyFilters);
 
+    document.querySelectorAll('#rangeSelector button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        trendRange = btn.dataset.days;
+        document.querySelectorAll('#rangeSelector button').forEach(b => b.classList.toggle('active', b === btn));
+        const data = getFilteredData();
+        renderTrendChart(data);
+        renderNetChart(data);
+      });
+    });
+
     // ─── Summary ──────────────────────────────────────────────
     function updateSummary(data) {
       const avgYes = data.reduce((s, d) => s + d.yes, 0) / data.length;
@@ -1033,9 +1131,12 @@
       houseEffectIterations: 5,
       bandZ: 1.645,       // 90% band
       bandInflation: 1.3,
+      outlierZ: 2.5,        // residuals beyond this many sigma get Huber-downweighted
+      minPollsForTrend: 5,  // below this effective n, fall back to a flat weighted mean
     };
 
     let modelCache = null;
+    const modelMemo = {};
 
     function getMethodologyWeight(meth) {
       if (!meth) return 0.65;
@@ -1076,6 +1177,64 @@
       return polls;
     }
 
+    // Weighted least-squares line y = a + b·x through the kernel-weighted polls.
+    // The intercept (x = 0 is the day being estimated) is the trend value. A flat
+    // weighted mean lags behind real shifts at the newest edge of the data; a
+    // local-linear fit removes that endpoint bias. Falls back to the flat mean
+    // when the effective poll count is too thin to support a slope.
+    function wlsFit(pts, key) {
+      let S0 = 0, S1 = 0, S2 = 0, T0 = 0, T1 = 0, SW2 = 0;
+      for (const pt of pts) {
+        const w = pt.w, x = pt.x, y = pt[key];
+        S0 += w; S1 += w * x; S2 += w * x * x;
+        T0 += w * y; T1 += w * x * y; SW2 += w * w;
+      }
+      if (S0 <= 0) return null;
+      const nEff = (S0 * S0) / SW2;
+      const denom = S0 * S2 - S1 * S1;
+      if (nEff < MODEL_CONFIG.minPollsForTrend || denom < 1e-6) {
+        return { a: T0 / S0, b: 0, S0, SW2 };
+      }
+      return {
+        a: (S2 * T0 - S1 * T1) / denom,
+        b: (S0 * T1 - S1 * T0) / denom,
+        S0, SW2
+      };
+    }
+
+    // Fit, Huber-downweight polls landing far from the line, refit.
+    function robustFit(pts, key) {
+      let fit = wlsFit(pts, key);
+      if (!fit) return null;
+      let weighted = pts;
+      let sw = 0, swr2 = 0;
+      for (const pt of pts) {
+        const r = pt[key] - (fit.a + fit.b * pt.x);
+        sw += pt.w; swr2 += pt.w * r * r;
+      }
+      const sigma = Math.sqrt(swr2 / sw);
+      if (sigma > 0.01) {
+        const cutoff = MODEL_CONFIG.outlierZ * sigma;
+        weighted = pts.map(pt => {
+          const r = Math.abs(pt[key] - (fit.a + fit.b * pt.x));
+          return r > cutoff ? { ...pt, w: pt.w * cutoff / r } : pt;
+        });
+        fit = wlsFit(weighted, key);
+        sw = 0; swr2 = 0;
+        for (const pt of weighted) {
+          const r = pt[key] - (fit.a + fit.b * pt.x);
+          sw += pt.w; swr2 += pt.w * r * r;
+        }
+      }
+      const denomV = sw - fit.SW2 / sw;
+      return {
+        est: fit.a,
+        variance: denomV > 0 ? swr2 / denomV : swr2 / sw,
+        S0: fit.S0,
+        SW2: fit.SW2
+      };
+    }
+
     function computeDailyEstimates(polls, houseEffects) {
       if (!polls.length) return [];
       const midTimes = polls.map(p => p._midTime);
@@ -1086,46 +1245,38 @@
       const results = [];
 
       for (let t = minT; t <= maxT; t += DAY) {
-        let sumW = 0, sumWY = 0, sumWN = 0;
-        let sumW2 = 0, sumWdY2 = 0, sumWdN2 = 0;
-        const weights = [];
-
+        // Pass 1: kernel weights + each pollster's total recency mass in the window
+        const active = [];
+        const pollsterMass = {};
         for (let i = 0; i < polls.length; i++) {
           const p = polls[i];
-          const delta = Math.abs(p._midTime - t) / DAY;
-          const wRecency = Math.exp(-MODEL_CONFIG.lambda * delta);
+          const x = (p._midTime - t) / DAY;
+          const wRecency = Math.exp(-MODEL_CONFIG.lambda * Math.abs(x));
           const w = wRecency * p._wSample * p._wMeth * p._wPop * p._wPartisan;
           if (w < 0.001) continue; // skip negligible contributions
 
           const he = houseEffects[p.pollster] || { yes: 0, no: 0 };
-          const adjYes = p.yes - he.yes;
-          const adjNo = p.no - he.no;
+          active.push({ w, x, yes: p.yes - he.yes, no: p.no - he.no, pollster: p.pollster });
+          pollsterMass[p.pollster] = (pollsterMass[p.pollster] || 0) + wRecency;
+        }
+        if (!active.length) continue;
 
-          sumW += w;
-          sumW2 += w * w;
-          sumWY += w * adjYes;
-          sumWN += w * adjNo;
-          weights.push({ w, adjYes, adjNo });
+        // Tracker damping: a firm's total weight scales with √(its recency mass),
+        // so a daily tracker can't dominate the average through sheer volume
+        for (const a of active) {
+          a.w /= Math.sqrt(Math.max(1, pollsterMass[a.pollster]));
         }
 
-        if (sumW < 0.01) continue;
+        const fy = robustFit(active, 'yes');
+        const fn = robustFit(active, 'no');
+        if (!fy || !fn || fy.S0 < 0.01) continue;
 
-        const estY = sumWY / sumW;
-        const estN = sumWN / sumW;
-
-        // Weighted variance
-        for (const { w, adjYes, adjNo } of weights) {
-          sumWdY2 += w * (adjYes - estY) ** 2;
-          sumWdN2 += w * (adjNo - estN) ** 2;
-        }
-
-        const nEff = (sumW * sumW) / sumW2;
-        const denom = sumW - sumW2 / sumW;
-        const varY = denom > 0 ? sumWdY2 / denom : sumWdY2 / sumW;
-        const varN = denom > 0 ? sumWdN2 / denom : sumWdN2 / sumW;
+        const estY = fy.est;
+        const estN = fn.est;
+        const nEff = (fy.S0 * fy.S0) / fy.SW2;
         // Prediction interval: where individual polls fall (not SE of mean)
-        const seY = Math.sqrt(varY) * MODEL_CONFIG.bandInflation;
-        const seN = Math.sqrt(varN) * MODEL_CONFIG.bandInflation;
+        const seY = Math.sqrt(fy.variance) * MODEL_CONFIG.bandInflation;
+        const seN = Math.sqrt(fn.variance) * MODEL_CONFIG.bandInflation;
 
         results.push({
           date: new Date(t),
@@ -1204,11 +1355,16 @@
       return houseEffects;
     }
 
-    function runModel(data) {
+    function runModel(data, cacheKey) {
+      if (cacheKey && modelMemo[cacheKey]) {
+        modelCache = modelMemo[cacheKey];
+        return modelCache;
+      }
       const polls = preprocessPolls(data);
       const houseEffects = estimateHouseEffects(polls, MODEL_CONFIG);
       const estimates = computeDailyEstimates(polls, houseEffects);
       modelCache = { polls, houseEffects, estimates };
+      if (cacheKey) modelMemo[cacheKey] = modelCache;
       return modelCache;
     }
 
@@ -1255,10 +1411,52 @@
     }
 
     // ─── Trend Chart ──────────────────────────────────────────
+
+    // Glowing dot + value label pinned to the newest point of a line dataset
+    function endpointMarkers(targets) {
+      return {
+        id: 'endpointMarkers',
+        afterDatasetsDraw(chart) {
+          const ctx = chart.ctx;
+          for (const tgt of targets) {
+            const meta = chart.getDatasetMeta(tgt.index);
+            if (!meta || meta.hidden || !meta.data.length) continue;
+            const pt = meta.data[meta.data.length - 1];
+            if (!pt || !isFinite(pt.x) || !isFinite(pt.y)) continue;
+            ctx.save();
+            ctx.shadowColor = tgt.color;
+            ctx.shadowBlur = 12;
+            ctx.fillStyle = tgt.color;
+            ctx.beginPath();
+            ctx.arc(pt.x, pt.y, isMobile ? 3 : 4, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.shadowBlur = 0;
+            ctx.font = `600 ${isMobile ? 9 : 11}px -apple-system, BlinkMacSystemFont, sans-serif`;
+            ctx.textAlign = 'left';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(tgt.text, pt.x + (isMobile ? 6 : 8), pt.y);
+            ctx.restore();
+          }
+        }
+      };
+    }
+
+    // Display range for the two trend charts ('all' or a number of days)
+    let trendRange = 'all';
+
+    function trendRangeStart(est) {
+      if (trendRange === 'all' || !est.length) return null;
+      return est[est.length - 1].date.getTime() - (+trendRange) * 86400000;
+    }
+
+    function getModelCacheKey() {
+      return document.getElementById('popFilter').value + '|' + document.getElementById('partisanFilter').value;
+    }
+
     function renderTrendChart(data) {
       destroyChart('trend');
       const filtered = data.filter(d => d.end_date_obj);
-      const model = runModel(filtered);
+      const model = runModel(filtered, getModelCacheKey());
       const est = model.estimates;
       document.getElementById('trendCount').textContent = filtered.length + ' polls → ' + est.length + ' daily estimates';
 
@@ -1266,6 +1464,27 @@
       const latest = est[est.length - 1];
       const approveLabel = latest ? `Approve ${latest.approve.toFixed(1)}%` : 'Approve';
       const disapproveLabel = latest ? `Disapprove ${latest.disapprove.toFixed(1)}%` : 'Disapprove';
+
+      // Zoom window: x-axis min plus a y-axis fitted to what's visible
+      const rangeStart = trendRangeStart(est);
+      let yMin = 25, yMax = 70;
+      let timeUnit = 'month';
+      if (rangeStart) {
+        const vals = [];
+        est.forEach(e => {
+          if (e.date.getTime() < rangeStart) return;
+          vals.push(e.approveLower, e.approveUpper, e.disapproveLower, e.disapproveUpper);
+        });
+        filtered.forEach(d => {
+          if (d.end_date_obj.getTime() < rangeStart) return;
+          vals.push(d.yes, d.no);
+        });
+        if (vals.length) {
+          yMin = Math.floor(Math.min(...vals) - 2);
+          yMax = Math.ceil(Math.max(...vals) + 2);
+        }
+        timeUnit = +trendRange <= 35 ? 'day' : +trendRange <= 100 ? 'week' : 'month';
+      }
 
       charts.trend = new Chart(document.getElementById('trendChart'), {
         type: 'line',
@@ -1360,15 +1579,17 @@
           responsive: true,
           maintainAspectRatio: false,
           interaction: { mode: 'nearest', intersect: false },
+          layout: { padding: { right: isMobile ? 38 : 52 } },
           scales: {
             x: {
               type: 'time',
-              time: { unit: 'month', tooltipFormat: 'MMM d, yyyy' },
+              min: rangeStart || undefined,
+              time: { unit: timeUnit, tooltipFormat: 'MMM d, yyyy' },
               grid: { display: false }
             },
             y: {
-              min: 25,
-              max: 70,
+              min: yMin,
+              max: yMax,
               ticks: { callback: v => v + '%' }
             }
           },
@@ -1387,7 +1608,11 @@
               }
             }
           }
-        }
+        },
+        plugins: latest ? [endpointMarkers([
+          { index: 6, color: '#4caf50', text: latest.approve.toFixed(1) + '%' },
+          { index: 7, color: '#ef5350', text: latest.disapprove.toFixed(1) + '%' }
+        ])] : []
       });
 
       // Render house effects table
@@ -1410,6 +1635,27 @@
       destroyChart('net');
       const filtered = data.filter(d => d.end_date_obj);
       const est = modelCache ? modelCache.estimates : [];
+      const latest = est[est.length - 1];
+
+      const rangeStart = trendRangeStart(est);
+      let yMin, yMax;
+      let timeUnit = 'month';
+      if (rangeStart) {
+        const vals = [];
+        est.forEach(e => {
+          if (e.date.getTime() < rangeStart) return;
+          vals.push(e.netLower, e.netUpper);
+        });
+        filtered.forEach(d => {
+          if (d.end_date_obj.getTime() < rangeStart) return;
+          vals.push(d.net);
+        });
+        if (vals.length) {
+          yMin = Math.floor(Math.min(...vals) - 2);
+          yMax = Math.ceil(Math.max(...vals) + 2);
+        }
+        timeUnit = +trendRange <= 35 ? 'day' : +trendRange <= 100 ? 'week' : 'month';
+      }
 
       charts.net = new Chart(document.getElementById('netChart'), {
         type: 'line',
@@ -1463,13 +1709,17 @@
           responsive: true,
           maintainAspectRatio: false,
           interaction: { mode: 'nearest', intersect: false },
+          layout: { padding: { right: isMobile ? 38 : 52 } },
           scales: {
             x: {
               type: 'time',
-              time: { unit: 'month', tooltipFormat: 'MMM d, yyyy' },
+              min: rangeStart || undefined,
+              time: { unit: timeUnit, tooltipFormat: 'MMM d, yyyy' },
               grid: { display: false }
             },
             y: {
+              min: yMin,
+              max: yMax,
               ticks: { callback: v => (v > 0 ? '+' : '') + v },
               grid: {
                 color: ctx => ctx.tick.value === 0 ? 'rgba(255,255,255,0.3)' : 'rgba(42, 45, 58, 0.6)'
@@ -1484,7 +1734,10 @@
             },
             legend: { display: false }
           }
-        }
+        },
+        plugins: latest ? [endpointMarkers([
+          { index: 3, color: '#42a5f5', text: (latest.net > 0 ? '+' : '') + latest.net.toFixed(1) }
+        ])] : []
       });
     }
 
@@ -1772,120 +2025,169 @@
       });
     });
 
-    // ─── Event Analysis: Iran Strikes ─────────────────────────
+    // ─── Trend & Momentum ─────────────────────────────────────
     function renderEventAnalysis(data) {
-      const EVENT = new Date(2026, 1, 28); // Feb 28 2026
-      const WINDOW = 30; // days
-      const preStart = new Date(EVENT); preStart.setDate(preStart.getDate() - WINDOW);
-      const postEnd = new Date(EVENT); postEnd.setDate(postEnd.getDate() + WINDOW);
+      renderMomentum();
+      renderRecentShift(data);
+    }
 
-      // Non-partisan only
+    const DAY_MS = 86400000;
+    const fmtNet = v => (v > 0 ? '+' : '') + v.toFixed(1);
+    const fmtShortDate = d => d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: '2-digit' });
+
+    // Top boxes: model-based current net, 30/90-day momentum, term high/low
+    function renderMomentum() {
+      const est = modelCache ? modelCache.estimates : [];
+      const setText = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+      const setHTML = (id, val) => { const el = document.getElementById(id); if (el) el.innerHTML = val; };
+
+      if (est.length < 2) {
+        ['momNow', 'mom30', 'mom90', 'termHigh', 'termLow'].forEach(id => setText(id, '—'));
+        ['momNowDetail', 'mom30Detail', 'mom90Detail', 'termHighDetail', 'termLowDetail', 'momFindings'].forEach(id => setHTML(id, ''));
+        return;
+      }
+
+      const last = est[est.length - 1];
+      // Nearest estimate at or before a target time (null if before the series starts)
+      const netAt = targetT => {
+        let best = null;
+        for (const e of est) { if (e.date.getTime() <= targetT) best = e; else break; }
+        return best;
+      };
+      const e30 = netAt(last.date.getTime() - 30 * DAY_MS);
+      const e90 = netAt(last.date.getTime() - 90 * DAY_MS);
+
+      // Current
+      const nowEl = document.getElementById('momNow');
+      nowEl.textContent = fmtNet(last.net);
+      nowEl.style.color = last.net >= 0 ? 'var(--approve)' : 'var(--disapprove)';
+      setText('momNowDetail', 'Approve ' + last.approve.toFixed(1) + '% · Disapprove ' + last.disapprove.toFixed(1) + '%');
+
+      // Change boxes — require enough history (estimate within ~5 days of the target)
+      const renderChange = (boxId, detailId, fromEst, days) => {
+        const box = document.getElementById(boxId);
+        const detail = document.getElementById(detailId);
+        const ok = fromEst && (last.date.getTime() - fromEst.date.getTime()) >= (days - 7) * DAY_MS;
+        if (!ok) {
+          box.textContent = '—';
+          box.style.color = 'var(--text-muted)';
+          detail.textContent = 'Not enough history';
+          return;
+        }
+        const change = last.net - fromEst.net;
+        const arrow = change > 0.2 ? '▲' : change < -0.2 ? '▼' : '▬';
+        box.innerHTML = (change > 0 ? '+' : '') + change.toFixed(1) + ' <span class="arrow">' + arrow + '</span>';
+        box.style.color = change > 0.2 ? '#66bb6a' : change < -0.2 ? '#ef5350' : '#ffb74d';
+        detail.textContent = 'from ' + fmtNet(fromEst.net) + ' on ' + fmtShortDate(fromEst.date);
+      };
+      renderChange('mom30', 'mom30Detail', e30, 30);
+      renderChange('mom90', 'mom90Detail', e90, 90);
+
+      // Term high / low water marks
+      let hi = est[0], lo = est[0];
+      for (const e of est) { if (e.net > hi.net) hi = e; if (e.net < lo.net) lo = e; }
+      setText('termHigh', fmtNet(hi.net));
+      setText('termHighDetail', fmtShortDate(hi.date));
+      setText('termLow', fmtNet(lo.net));
+      setText('termLowDetail', fmtShortDate(lo.date));
+
+      // Narrative
+      const ch30 = (e30 && (last.date.getTime() - e30.date.getTime()) >= 23 * DAY_MS) ? last.net - e30.net : null;
+      const dirWord = ch30 == null ? null : ch30 > 0.5 ? 'risen' : ch30 < -0.5 ? 'fallen' : 'held roughly steady';
+      const dirClass = ch30 == null ? '' : ch30 > 0.5 ? 'shift-positive' : ch30 < -0.5 ? 'shift-negative' : 'shift-flat';
+      setHTML('momFindings', `
+        <div class="finding">
+          <strong>Where things stand:</strong> the model puts net approval at
+          <span class="${last.net >= 0 ? 'shift-positive' : 'shift-negative'}">${fmtNet(last.net)}</span> as of ${fmtShortDate(last.date)}${dirWord ? `, having <span class="${dirClass}">${dirWord}</span> over the last 30 days` : ''}.
+        </div>
+        <div class="finding">
+          <strong>Across the term:</strong> net approval has swung ${(hi.net - lo.net).toFixed(1)} points &mdash; from a high of
+          <span class="shift-positive">${fmtNet(hi.net)}</span> (${fmtShortDate(hi.date)}) to a low of
+          <span class="shift-negative">${fmtNet(lo.net)}</span> (${fmtShortDate(lo.date)}).
+        </div>
+      `);
+    }
+
+    // Rolling same-pollster comparison: last 30 days vs. prior 30 days
+    function renderRecentShift(data) {
+      const shiftList = document.getElementById('pollsterShiftList');
       const np = data.filter(d => !d.partisan && d.end_date_obj);
-      const pre = np.filter(d => d.end_date_obj >= preStart && d.end_date_obj < EVENT);
-      const post = np.filter(d => d.end_date_obj >= EVENT && d.end_date_obj <= postEnd);
 
-      if (!pre.length || !post.length) return;
+      const clear = msg => {
+        shiftList.innerHTML = `<p style="color:var(--text-muted);font-size:0.8rem">${msg}</p>`;
+        destroyChart('eventPop');
+        destroyChart('eventZoom');
+      };
+
+      if (!np.length) { clear('No non-partisan polls in the current filter.'); return; }
+
+      const anchor = new Date(Math.max(...np.map(d => d.end_date_obj.getTime())));
+      const recentStart = new Date(anchor.getTime() - 30 * DAY_MS);
+      const priorStart = new Date(anchor.getTime() - 60 * DAY_MS);
+
+      const prior = np.filter(d => d.end_date_obj >= priorStart && d.end_date_obj < recentStart);
+      const recent = np.filter(d => d.end_date_obj >= recentStart && d.end_date_obj <= anchor);
+
+      if (!prior.length || !recent.length) {
+        clear('Not enough recent polling to compare the last 30 days against the prior 30.');
+        return;
+      }
 
       const avg = (arr, key) => arr.reduce((s, d) => s + d[key], 0) / arr.length;
 
-      const preNetVal = avg(pre, 'net');
-      const postNetVal = avg(post, 'net');
-      const shift = postNetVal - preNetVal;
-
-      document.getElementById('preNet').textContent = (preNetVal > 0 ? '+' : '') + preNetVal.toFixed(1);
-      document.getElementById('postNet').textContent = (postNetVal > 0 ? '+' : '') + postNetVal.toFixed(1);
-      document.getElementById('preDetail').textContent =
-        pre.length + ' polls · Approve ' + avg(pre, 'yes').toFixed(1) + '% · Disapprove ' + avg(pre, 'no').toFixed(1) + '%';
-      document.getElementById('postDetail').textContent =
-        post.length + ' polls · Approve ' + avg(post, 'yes').toFixed(1) + '% · Disapprove ' + avg(post, 'no').toFixed(1) + '%';
-
-      // Findings
-      const findings = document.getElementById('eventFindings');
-      const shiftClass = shift < -0.5 ? 'shift-negative' : shift > 0.5 ? 'shift-positive' : 'shift-flat';
-      const shiftWord = shift < -0.5 ? 'declined' : shift > 0.5 ? 'improved' : 'was unchanged';
-
       // Same-pollster comparison
-      const preByPollster = {}, postByPollster = {};
-      pre.forEach(d => { (preByPollster[d.pollster] = preByPollster[d.pollster] || []).push(d); });
-      post.forEach(d => { (postByPollster[d.pollster] = postByPollster[d.pollster] || []).push(d); });
-      const shared = Object.keys(preByPollster).filter(p => postByPollster[p]);
+      const priorByPollster = {}, recentByPollster = {};
+      prior.forEach(d => { (priorByPollster[d.pollster] = priorByPollster[d.pollster] || []).push(d); });
+      recent.forEach(d => { (recentByPollster[d.pollster] = recentByPollster[d.pollster] || []).push(d); });
+      const shared = Object.keys(priorByPollster).filter(p => recentByPollster[p]);
 
       const shifts = shared.map(p => ({
         name: p,
-        preNet: avg(preByPollster[p], 'net'),
-        postNet: avg(postByPollster[p], 'net'),
-        shift: avg(postByPollster[p], 'net') - avg(preByPollster[p], 'net'),
-        prePollCount: preByPollster[p].length,
-        postPollCount: postByPollster[p].length
+        shift: avg(recentByPollster[p], 'net') - avg(priorByPollster[p], 'net')
       })).sort((a, b) => a.shift - b.shift);
 
-      const avgShift = shifts.reduce((s, d) => s + d.shift, 0) / shifts.length;
-      const improved = shifts.filter(s => s.shift > 0.5).length;
-      const worsened = shifts.filter(s => s.shift < -0.5).length;
-
-      findings.innerHTML = `
-        <div class="finding">
-          <strong>Overall:</strong> Net approval among non-partisan polls
-          <span class="${shiftClass}">${shiftWord} by ${Math.abs(shift).toFixed(1)} points</span>
-          after the Iran strikes (${preNetVal.toFixed(1)} → ${postNetVal.toFixed(1)}).
-        </div>
-        <div class="finding">
-          <strong>Controlled for pollster:</strong> Of ${shared.length} pollsters with data in both periods,
-          <span class="shift-negative">${worsened} showed a decline</span>,
-          <span class="shift-positive">${improved} showed improvement</span>,
-          and ${shared.length - improved - worsened} were roughly flat.
-          The average same-pollster shift was <span class="${avgShift < -0.5 ? 'shift-negative' : avgShift > 0.5 ? 'shift-positive' : 'shift-flat'}">${avgShift > 0 ? '+' : ''}${avgShift.toFixed(1)} points</span>.
-        </div>
-        <div class="finding">
-          <strong>Key insight:</strong> Any appearance of improving approval is likely a
-          <strong>pollster composition effect</strong> — the mix of which firms happen to be polling
-          shifts between periods. When you compare each pollster to itself, the picture is flat to slightly negative.
-        </div>
-      `;
-
       // Pollster shift bars
-      const maxAbsShift = Math.max(...shifts.map(s => Math.abs(s.shift)), 1);
-      const shiftList = document.getElementById('pollsterShiftList');
-      shiftList.innerHTML = shifts.map(s => {
-        const pct = Math.abs(s.shift) / maxAbsShift * 50;
-        const isNeg = s.shift < 0;
-        const barStyle = isNeg
-          ? `right:50%;width:${pct}%;background:rgba(239,83,80,0.6)`
-          : `left:50%;width:${pct}%;background:rgba(102,187,106,0.6)`;
-        const valColor = s.shift < -0.5 ? '#ef5350' : s.shift > 0.5 ? '#66bb6a' : '#ffb74d';
-        return `<div class="pollster-shift-row">
-          <div class="ps-name" title="${s.name}">${s.name}</div>
-          <div class="ps-bar-wrapper">
-            <div style="position:absolute;left:50%;top:0;width:1px;height:100%;background:var(--border)"></div>
-            <div class="ps-bar" style="${barStyle}"></div>
-          </div>
-          <div class="ps-value" style="color:${valColor}">${s.shift > 0 ? '+' : ''}${s.shift.toFixed(1)}</div>
-        </div>`;
-      }).join('');
+      if (!shifts.length) {
+        shiftList.innerHTML = '<p style="color:var(--text-muted);font-size:0.8rem">No pollster surveyed in both the last 30 days and the prior 30 days, so a same-pollster comparison is not yet possible.</p>';
+      } else {
+        const maxAbsShift = Math.max(...shifts.map(s => Math.abs(s.shift)), 1);
+        shiftList.innerHTML = shifts.map(s => {
+          const pct = Math.abs(s.shift) / maxAbsShift * 50;
+          const barStyle = s.shift < 0
+            ? `right:50%;width:${pct}%;background:rgba(239,83,80,0.6)`
+            : `left:50%;width:${pct}%;background:rgba(102,187,106,0.6)`;
+          const valColor = s.shift < -0.5 ? '#ef5350' : s.shift > 0.5 ? '#66bb6a' : '#ffb74d';
+          return `<div class="pollster-shift-row">
+            <div class="ps-name" title="${s.name}">${s.name}</div>
+            <div class="ps-bar-wrapper">
+              <div style="position:absolute;left:50%;top:0;width:1px;height:100%;background:var(--border)"></div>
+              <div class="ps-bar" style="${barStyle}"></div>
+            </div>
+            <div class="ps-value" style="color:${valColor}">${s.shift > 0 ? '+' : ''}${s.shift.toFixed(1)}</div>
+          </div>`;
+        }).join('');
+      }
 
-      // By population type chart
-      renderEventPopChart(pre, post);
-
-      // Zoomed trend chart
-      renderEventZoomChart(np, EVENT);
+      renderEventPopChart(prior, recent);
+      renderEventZoomChart(np, anchor, recentStart);
     }
 
-    function renderEventPopChart(pre, post) {
+    function renderEventPopChart(prior, recent) {
       destroyChart('eventPop');
       const pops = ['a', 'rv', 'lv'];
       const labels = ['Adults', 'Reg. Voters', 'Likely Voters'];
       const avg = (arr, key) => arr.length ? arr.reduce((s, d) => s + d[key], 0) / arr.length : null;
 
-      const preNets = pops.map(p => avg(pre.filter(d => d.population === p), 'net'));
-      const postNets = pops.map(p => avg(post.filter(d => d.population === p), 'net'));
+      const priorNets = pops.map(p => avg(prior.filter(d => d.population === p), 'net'));
+      const recentNets = pops.map(p => avg(recent.filter(d => d.population === p), 'net'));
 
       charts.eventPop = new Chart(document.getElementById('eventPopChart'), {
         type: 'bar',
         data: {
           labels,
           datasets: [
-            { label: 'Pre-Iran Net', data: preNets, backgroundColor: 'rgba(66, 165, 245, 0.6)', borderRadius: 4 },
-            { label: 'Post-Iran Net', data: postNets, backgroundColor: 'rgba(171, 71, 188, 0.6)', borderRadius: 4 }
+            { label: 'Prior 30d Net', data: priorNets, backgroundColor: 'rgba(66, 165, 245, 0.6)', borderRadius: 4 },
+            { label: 'Last 30d Net', data: recentNets, backgroundColor: 'rgba(171, 71, 188, 0.6)', borderRadius: 4 }
           ]
         },
         options: {
@@ -1906,11 +2208,10 @@
       });
     }
 
-    function renderEventZoomChart(npData, eventDate) {
+    function renderEventZoomChart(npData, anchor, recentStart) {
       destroyChart('eventZoom');
-      const zoomStart = new Date(2026, 0, 1);
-      const zoomEnd = new Date(2026, 2, 31);
-      const zoomed = npData.filter(d => d.end_date_obj >= zoomStart && d.end_date_obj <= zoomEnd);
+      const zoomStart = new Date(anchor.getTime() - 90 * DAY_MS);
+      const zoomed = npData.filter(d => d.end_date_obj >= zoomStart && d.end_date_obj <= anchor);
       if (!zoomed.length) return;
 
       const netRA = rollingAvg(zoomed.map(d => d.net), 5);
@@ -1963,9 +2264,10 @@
         plugins: [{
           id: 'eventLine',
           afterDraw(chart) {
+            if (!recentStart) return;
             const xScale = chart.scales.x;
             const yScale = chart.scales.y;
-            const x = xScale.getPixelForValue(eventDate);
+            const x = xScale.getPixelForValue(recentStart);
             if (x >= xScale.left && x <= xScale.right) {
               const ctx = chart.ctx;
               ctx.save();
@@ -1980,7 +2282,7 @@
               ctx.fillStyle = 'rgba(108, 99, 255, 0.9)';
               ctx.font = '10px -apple-system, sans-serif';
               ctx.textAlign = 'center';
-              ctx.fillText('Iran strikes', x, yScale.top - 6);
+              ctx.fillText('last 30 days →', x, yScale.top - 6);
               ctx.restore();
             }
           }
