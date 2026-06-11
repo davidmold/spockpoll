@@ -11,6 +11,7 @@ A live, auto-updating tracker of Donald Trump's presidential job approval polls,
 - **Robust to outliers and trackers** — polls landing >2.5σ from the trend are Huber-downweighted, and high-frequency pollsters are √-damped so no single tracker dominates the average
 - **House effect estimation** — iterative algorithm with Bayesian shrinkage identifies each pollster's systematic bias
 - **Zoomable trend charts** — Full term / 1Y / 6M / 90D / 30D range selector with auto-fitted axes, plus live endpoint markers showing the model's current read
+- **Election Day forecast** — projected net approval for the 2026 midterms and the 2028 presidential election, with a widening 90% uncertainty fan
 - **Trend & momentum** — model-based current net approval, 30/90-day change, and term high/low-water marks, plus a rolling "last 30 days vs. prior 30 days" same-pollster comparison that controls for composition effects (is approval *actually* moving, or did the mix of active pollsters just change?)
 - **Interactive filters** — slice by population type (likely voters / registered voters / adults) and sponsor type
 - **Multiple visualizations** — trend charts, net approval, methodology breakdown, pollster comparison, sample size scatter, monthly averages
@@ -32,6 +33,14 @@ The weighted average uses a local-linear kernel regression with exponential deca
 | **Tracker damping** | Each pollster's total weight in the window scales with √(its recency mass), so daily trackers can't dominate through sheer volume |
 
 Confidence bands show the 90% prediction interval (where we'd expect individual polls to fall), inflated by 1.3× for model uncertainty — similar in spirit to the Silver Bulletin's approach.
+
+### Election Day forecast
+
+Net approval on the 2026 midterms and the 2028 presidential election is projected with a mean-reverting AR(1) (Ornstein–Uhlenbeck) process fitted to this term's daily model estimates:
+
+- **Point forecast** decays from today's level toward the trailing 180-day average (not the whole-term average, which the honeymoon period distorts), with persistence estimated from a 30-day lag regression
+- **Uncertainty fan** combines the observed 60-day wander of the trend (mean-reverting, saturates) with the RMS drift of the 180-day anchor itself (random walk, keeps growing) — so the 2028 band is honestly much wider than the midterm band — inflated 25% for events no statistical model can foresee
+- It is a statistical extrapolation of behavior so far this term, **not** a prediction of future news
 
 ## Tech stack
 

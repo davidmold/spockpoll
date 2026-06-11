@@ -799,6 +799,30 @@
       <div class="chart-container"><canvas id="netChart"></canvas></div>
     </div>
 
+    <!-- Election Day forecast -->
+    <div class="card full-width">
+      <h2>Election Day Forecast <span class="badge">Statistical projection &mdash; not a crystal ball</span></h2>
+      <p style="font-size:0.78rem;color:var(--text-muted);margin-bottom:0.75rem">
+        Where net approval is likely to stand on the two days it matters most, if it keeps behaving the way it has so far this term. Modeled as a mean-reverting AR(1) process fitted to the daily model estimates; the shaded fan is the 90% interval, widening with distance.
+      </p>
+      <div class="comparison-grid">
+        <div class="comparison-box">
+          <div class="period-label">Midterms &mdash; Nov 3, 2026</div>
+          <div class="big-number" id="fcMidterm">—</div>
+          <div class="detail" id="fcMidtermDetail"></div>
+          <div class="detail" id="fcMidtermRange"></div>
+        </div>
+        <div class="comparison-box">
+          <div class="period-label">Presidential Election &mdash; Nov 7, 2028</div>
+          <div class="big-number" id="fcElection">—</div>
+          <div class="detail" id="fcElectionDetail"></div>
+          <div class="detail" id="fcElectionRange"></div>
+        </div>
+      </div>
+      <div class="chart-container"><canvas id="forecastChart"></canvas></div>
+      <div id="fcNote"></div>
+    </div>
+
     <!-- Model transparency -->
     <div class="card full-width">
       <h2>Model Transparency <span class="badge">How the weights work</span></h2>
@@ -1050,6 +1074,7 @@
       updateSummary(data);
       renderTrendChart(data);
       renderNetChart(data);
+      renderForecast();
       renderPopChart(data);
       renderMethChart(data);
       renderPollsterChart(data);
@@ -1738,6 +1763,283 @@
         plugins: latest ? [endpointMarkers([
           { index: 3, color: '#42a5f5', text: (latest.net > 0 ? '+' : '') + latest.net.toFixed(1) }
         ])] : []
+      });
+    }
+
+    // ─── Election Day Forecast ────────────────────────────────
+    // Net approval is modeled as a mean-reverting AR(1) process fitted to this
+    // term's daily model estimates: the projection decays from today's level
+    // toward the recent-regime average, and the uncertainty fan is calibrated
+    // from how much the trend has actually wandered over 60-day windows.
+    const FORECAST_CONFIG = {
+      anchorDays: 180,     // mean-reversion target: trailing mean over this window
+                           // (not the whole-term mean, which the honeymoon period distorts)
+      lagDays: 30,         // lag used to estimate persistence
+      diffusionLag: 60,    // window for the empirical wander estimate
+      inflation: 1.25,     // band inflation for events no model can see coming
+      z: 1.645,            // 90% interval
+      minHistoryDays: 150
+    };
+
+    const FORECAST_TARGETS = [
+      { id: 'Midterm', label: 'Midterms', date: new Date(2026, 10, 3) },
+      { id: 'Election', label: '2028 Election', date: new Date(2028, 10, 7) }
+    ];
+
+    function fitAR1(series) {
+      const n = series.length;
+      const cfg = FORECAST_CONFIG;
+      const recent = series.slice(-Math.min(cfg.anchorDays, n));
+      const mu = recent.reduce((s, v) => s + v, 0) / recent.length;
+
+      // Persistence: lag regression through the origin on deviations from mu
+      let num = 0, den = 0;
+      for (let i = 0; i + cfg.lagDays < n; i++) {
+        num += (series[i] - mu) * (series[i + cfg.lagDays] - mu);
+        den += (series[i] - mu) ** 2;
+      }
+      let bLag = den > 0 ? num / den : 0.9;
+      bLag = Math.min(0.985, Math.max(0.2, bLag));
+      const phi = Math.pow(bLag, 1 / cfg.lagDays);
+
+      // Diffusion: empirical sd of k-day changes in the trend
+      const k = cfg.diffusionLag;
+      const kDiffScale = (arr, demean) => {
+        if (arr.length <= k + 30) return null;
+        const diffs = [];
+        for (let i = 0; i + k < arr.length; i++) diffs.push(arr[i + k] - arr[i]);
+        const m = demean ? diffs.reduce((s, v) => s + v, 0) / diffs.length : 0;
+        return Math.sqrt(diffs.reduce((s, v) => s + (v - m) ** 2, 0) / diffs.length);
+      };
+      // Noise of the level around the moving anchor: demeaned
+      const sdK = kDiffScale(series, true) ?? 3;
+
+      // The anchor itself wanders on multi-year timescales (regimes shift) —
+      // without this, far-future bands would be no wider than near-future ones.
+      // Calibrated as the RMS k-day movement of the rolling anchor-window mean:
+      // we take how fast the anchor has actually moved as the scale of possible
+      // future movement, agnostic about direction.
+      const anchors = [];
+      const win = Math.min(cfg.anchorDays, Math.max(30, Math.floor(n / 2)));
+      let runSum = 0;
+      for (let i = 0; i < n; i++) {
+        runSum += series[i];
+        if (i >= win) runSum -= series[i - win];
+        if (i >= win - 1) anchors.push(runSum / win);
+      }
+      const driftSdK = kDiffScale(anchors, false) ?? sdK / 2;
+
+      return { mu, phi, sdK, driftSdK, k };
+    }
+
+    function forecastAt(fit, current, hDays) {
+      const cfg = FORECAST_CONFIG;
+      const mean = fit.mu + (current - fit.mu) * Math.pow(fit.phi, hDays);
+      // OU variance around the anchor, scaled so the band at h = diffusionLag
+      // matches the observed wander...
+      const varScale = (1 - Math.pow(fit.phi, 2 * hDays)) / (1 - Math.pow(fit.phi, 2 * fit.k));
+      const varOU = fit.sdK ** 2 * Math.max(varScale, 0);
+      // ...plus random-walk variance of the anchor itself
+      const varDrift = fit.driftSdK ** 2 * (hDays / fit.k);
+      const sd = Math.sqrt(varOU + varDrift) * cfg.inflation;
+      return { mean, sd };
+    }
+
+    function renderForecast() {
+      destroyChart('forecast');
+      const est = modelCache ? modelCache.estimates : [];
+      const cfg = FORECAST_CONFIG;
+      const setText = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+
+      if (est.length < cfg.minHistoryDays) {
+        FORECAST_TARGETS.forEach(t => {
+          setText('fc' + t.id, '—');
+          setText('fc' + t.id + 'Detail', 'Not enough history');
+          setText('fc' + t.id + 'Range', '');
+        });
+        document.getElementById('fcNote').innerHTML = '';
+        return;
+      }
+
+      const fitNet = fitAR1(est.map(e => e.net));
+      const fitApp = fitAR1(est.map(e => e.approve));
+      const fitDis = fitAR1(est.map(e => e.disapprove));
+      const last = est[est.length - 1];
+      const lastT = last.date.getTime();
+
+      // Point forecast: approve and disapprove projected separately so the
+      // detail line and the headline net are consistent; interval from the net fit
+      const project = h => {
+        const app = forecastAt(fitApp, last.approve, h).mean;
+        const dis = forecastAt(fitDis, last.disapprove, h).mean;
+        return { app, dis, net: app - dis, sd: forecastAt(fitNet, last.net, h).sd };
+      };
+
+      const targetPoints = [];
+      FORECAST_TARGETS.forEach(t => {
+        const h = Math.round((t.date.getTime() - lastT) / DAY_MS);
+        const box = document.getElementById('fc' + t.id);
+        if (h <= 0) {
+          // Date has passed — report what the model estimated on the day
+          let nearest = est[0];
+          for (const e of est) if (Math.abs(e.date - t.date) < Math.abs(nearest.date - t.date)) nearest = e;
+          box.textContent = fmtNet(nearest.net);
+          box.style.color = nearest.net >= 0 ? 'var(--approve)' : 'var(--disapprove)';
+          setText('fc' + t.id + 'Detail', 'Approve ' + nearest.approve.toFixed(1) + '% · Disapprove ' + nearest.disapprove.toFixed(1) + '%');
+          setText('fc' + t.id + 'Range', 'Observed (model estimate on the day)');
+          targetPoints.push({ x: t.date, y: nearest.net, label: t.label });
+          return;
+        }
+        const f = project(h);
+        box.textContent = fmtNet(f.net);
+        box.style.color = f.net >= 0 ? 'var(--approve)' : 'var(--disapprove)';
+        setText('fc' + t.id + 'Detail', 'Approve ' + f.app.toFixed(1) + '% · Disapprove ' + f.dis.toFixed(1) + '%');
+        setText('fc' + t.id + 'Range', '90% interval: ' + fmtNet(f.net - cfg.z * f.sd) + ' to ' + fmtNet(f.net + cfg.z * f.sd));
+        targetPoints.push({ x: t.date, y: f.net, label: t.label });
+      });
+
+      // Weekly fan out to two weeks past the 2028 election
+      const fanEnd = FORECAST_TARGETS[FORECAST_TARGETS.length - 1].date.getTime() + 14 * DAY_MS;
+      const fan = [];
+      for (let t = lastT; t <= fanEnd; t += 7 * DAY_MS) {
+        const f = project((t - lastT) / DAY_MS);
+        fan.push({ x: new Date(t), mean: f.net, upper: f.net + cfg.z * f.sd, lower: f.net - cfg.z * f.sd });
+      }
+
+      document.getElementById('fcNote').innerHTML = `
+        <div class="finding" style="margin-top:0.75rem">
+          <strong>How to read this:</strong> the projection assumes approval keeps behaving as it has this term &mdash;
+          drifting back toward its recent average (${fmtNet(fitNet.mu)}) with daily persistence &phi; = ${fitNet.phi.toFixed(4)}.
+          Bands are calibrated from observed ${cfg.diffusionLag}-day swings (&plusmn;${fitNet.sdK.toFixed(1)} pts) plus the slow wander of
+          the term average itself, inflated ${Math.round((cfg.inflation - 1) * 100)}% for the events no model can see coming &mdash;
+          recessions, wars, and scandals are precisely why the far end of the fan is wide.
+        </div>`;
+
+      charts.forecast = new Chart(document.getElementById('forecastChart'), {
+        type: 'line',
+        data: {
+          datasets: [
+            {
+              label: '_fanUpper',
+              data: fan.map(f => ({ x: f.x, y: f.upper })),
+              borderColor: 'transparent',
+              backgroundColor: 'rgba(108, 99, 255, 0.13)',
+              fill: '+1',
+              pointRadius: 0,
+              borderWidth: 0,
+              order: 4
+            },
+            {
+              label: '_fanLower',
+              data: fan.map(f => ({ x: f.x, y: f.lower })),
+              borderColor: 'transparent',
+              backgroundColor: 'transparent',
+              fill: false,
+              pointRadius: 0,
+              borderWidth: 0,
+              order: 4
+            },
+            {
+              label: 'Model (history)',
+              data: est.map(e => ({ x: e.date, y: e.net })),
+              borderColor: '#42a5f5',
+              borderWidth: 2.5,
+              pointRadius: 0,
+              tension: 0.2,
+              fill: false,
+              order: 2
+            },
+            {
+              label: 'Forecast',
+              data: fan.map(f => ({ x: f.x, y: f.mean })),
+              borderColor: '#6c63ff',
+              borderWidth: 2.5,
+              borderDash: [6, 4],
+              pointRadius: 0,
+              tension: 0.2,
+              fill: false,
+              order: 1
+            },
+            {
+              label: 'Election days',
+              data: targetPoints,
+              showLine: false,
+              pointRadius: 5,
+              pointHoverRadius: 7,
+              pointBackgroundColor: '#6c63ff',
+              pointBorderColor: '#fff',
+              pointBorderWidth: 1.5,
+              order: 0
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          interaction: { mode: 'nearest', intersect: false },
+          layout: { padding: { top: 18 } },
+          scales: {
+            x: {
+              type: 'time',
+              time: { unit: 'quarter', tooltipFormat: 'MMM d, yyyy' },
+              grid: { display: false }
+            },
+            y: {
+              ticks: { callback: v => (v > 0 ? '+' : '') + v },
+              grid: {
+                color: ctx => ctx.tick.value === 0 ? 'rgba(255,255,255,0.3)' : 'rgba(42, 45, 58, 0.6)'
+              }
+            }
+          },
+          plugins: {
+            filler: { propagate: true },
+            tooltip: {
+              filter: item => !item.dataset.label.startsWith('_'),
+              callbacks: {
+                label: ctx => {
+                  const pt = ctx.raw;
+                  const val = (ctx.parsed.y > 0 ? '+' : '') + ctx.parsed.y.toFixed(1);
+                  return (pt.label ? pt.label + ': ' : ctx.dataset.label + ': ') + val;
+                }
+              }
+            },
+            legend: { display: false }
+          }
+        },
+        plugins: [{
+          id: 'electionLines',
+          afterDatasetsDraw(chart) {
+            const xScale = chart.scales.x;
+            const yScale = chart.scales.y;
+            const ctx = chart.ctx;
+            for (const tp of targetPoints) {
+              const x = xScale.getPixelForValue(tp.x.getTime());
+              if (x < xScale.left || x > xScale.right) continue;
+              ctx.save();
+              ctx.beginPath();
+              ctx.setLineDash([4, 4]);
+              ctx.strokeStyle = 'rgba(108, 99, 255, 0.5)';
+              ctx.lineWidth = 1.5;
+              ctx.moveTo(x, yScale.top);
+              ctx.lineTo(x, yScale.bottom);
+              ctx.stroke();
+              ctx.setLineDash([]);
+              ctx.textAlign = 'center';
+              const clampX = (text, cx) => {
+                const hw = ctx.measureText(text).width / 2;
+                return Math.max(xScale.left + hw, Math.min(xScale.right - hw, cx));
+              };
+              ctx.fillStyle = 'rgba(108, 99, 255, 0.9)';
+              ctx.font = `600 ${isMobile ? 9 : 10}px -apple-system, sans-serif`;
+              ctx.fillText(tp.label, clampX(tp.label, x), yScale.top - 8);
+              const y = yScale.getPixelForValue(tp.y);
+              ctx.fillStyle = '#e4e6eb';
+              ctx.font = `600 ${isMobile ? 9 : 11}px -apple-system, sans-serif`;
+              ctx.fillText(fmtNet(tp.y), clampX(fmtNet(tp.y), x), y - 12);
+              ctx.restore();
+            }
+          }
+        }]
       });
     }
 
