@@ -1,7 +1,6 @@
-# Fetch latest presidential approval polling data from NYT daily
-# Data: CC BY 4.0 — https://creativecommons.org/licenses/by/4.0/
+# Refresh presidential polling and U.S. economic data daily.
 
-name: Update Polling Data
+name: Update Dashboard Data
 
 on:
   schedule:
@@ -26,11 +25,12 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add president.csv
+          git add president.csv economic.csv
           if git diff --cached --quiet; then
             echo "No changes to commit"
           else
             POLL_COUNT=$(tail -n +2 president.csv | wc -l)
-            git commit -m "data: update polling data (${POLL_COUNT} polls) — $(date -u +%Y-%m-%d)"
+            ECON_COUNT=$(tail -n +2 economic.csv | wc -l)
+            git commit -m "data: refresh dashboard (${POLL_COUNT} polls, ${ECON_COUNT} economic observations) — $(date -u +%Y-%m-%d)"
             git push
           fi

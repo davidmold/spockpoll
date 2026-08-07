@@ -1,65 +1,99 @@
 #!/usr/bin/env bash
-# update-data.sh — Fetch latest presidential approval polling data from NYT
+# Refresh the dashboard's polling and economic data caches.
 #
 # Usage:
 #   ./update-data.sh              # fetch + report changes
 #   ./update-data.sh --quiet      # fetch silently (for cron)
-#
-# Data source: NYT / FiveThirtyEight presidential approval polls
-# License: CC BY 4.0 — https://creativecommons.org/licenses/by/4.0/
+
+# Sources:
+#   Polling: The New York Times / FiveThirtyEight
+#   Economic series: FRED, Federal Reserve Bank of St. Louis
 
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-CSV_FILE="$SCRIPT_DIR/president.csv"
-SOURCE_URL="https://www.nytimes.com/newsgraphics/polls/approval/president.csv"
+POLL_FILE="$SCRIPT_DIR/president.csv"
+ECON_FILE="$SCRIPT_DIR/economic.csv"
+POLL_URL="https://www.nytimes.com/newsgraphics/polls/approval/president.csv"
+FRED_URL="https://fred.stlouisfed.org/graph/fredgraph.csv"
 QUIET="${1:-}"
 
 log() {
   [[ "$QUIET" == "--quiet" ]] || echo "$@"
 }
 
-# Count rows before update
-BEFORE=0
-if [[ -f "$CSV_FILE" ]]; then
-  BEFORE=$(wc -l < "$CSV_FILE")
-fi
+TMP_DIR=$(mktemp -d)
+trap 'rm -rf "$TMP_DIR"' EXIT
 
-log "Fetching latest polling data from NYT..."
+download() {
+  local url="$1"
+  local target="$2"
+  local http_code
 
-# Download to temp file first, only overwrite if successful
-TMPFILE=$(mktemp)
-trap "rm -f $TMPFILE" EXIT
+  http_code=$(curl --fail --location --silent --show-error \
+    --write-out '%{http_code}' --output "$target" "$url")
 
-HTTP_CODE=$(curl -sS -w '%{http_code}' -o "$TMPFILE" "$SOURCE_URL")
+  if [[ "$http_code" != "200" ]]; then
+    log "ERROR: HTTP $http_code from $url"
+    exit 1
+  fi
+}
 
-if [[ "$HTTP_CODE" != "200" ]]; then
-  log "ERROR: HTTP $HTTP_CODE from $SOURCE_URL"
+replace_if_changed() {
+  local candidate="$1"
+  local destination="$2"
+  local label="$3"
+
+  if [[ -f "$destination" ]] && cmp -s "$candidate" "$destination"; then
+    log "$label is already up to date"
+    return
+  fi
+
+  cp "$candidate" "$destination"
+  log "Updated $label ($(($(wc -l < "$destination") - 1)) observations)"
+}
+
+log "Fetching presidential approval polling…"
+poll_tmp="$TMP_DIR/president.csv"
+download "$POLL_URL" "$poll_tmp"
+
+if [[ $(wc -l < "$poll_tmp") -lt 10 ]] || ! head -n 1 "$poll_tmp" | grep -q 'poll_id'; then
+  log "ERROR: Polling download looks malformed; keeping the existing cache"
   exit 1
 fi
 
-# Sanity check — file should have CSV headers and at least some data rows
-LINES=$(wc -l < "$TMPFILE")
-if [[ "$LINES" -lt 10 ]]; then
-  log "ERROR: Downloaded file has only $LINES lines — looks malformed, keeping old data"
+replace_if_changed "$poll_tmp" "$POLL_FILE" "polling data"
+
+log "Fetching economic indicators from FRED…"
+econ_tmp="$TMP_DIR/economic.csv"
+printf 'date,series,value\n' > "$econ_tmp"
+
+# Fetch extra history so twelve complete months remain available after release lags
+# and so PAYEMS can calculate the first displayed month-over-month change.
+start_date=$(date -d '15 months ago' +%F)
+series_ids=(SP500 NASDAQCOM DJIA CPIAUCSL PAYEMS GASREGW BOPGSTB)
+
+for series_id in "${series_ids[@]}"; do
+  series_tmp="$TMP_DIR/$series_id.csv"
+  download "$FRED_URL?id=$series_id&cosd=$start_date" "$series_tmp"
+
+  if ! head -n 1 "$series_tmp" | grep -q "$series_id"; then
+    log "ERROR: FRED response for $series_id looks malformed; keeping the existing cache"
+    exit 1
+  fi
+
+  awk -F, -v series="$series_id" '
+    NR > 1 {
+      gsub(/\r/, "", $2)
+      if ($2 != "" && $2 != ".") print $1 "," series "," $2
+    }
+  ' "$series_tmp" >> "$econ_tmp"
+done
+
+if [[ $(wc -l < "$econ_tmp") -lt 50 ]]; then
+  log "ERROR: Economic download has too few observations; keeping the existing cache"
   exit 1
 fi
 
-# Check if data actually changed
-if [[ -f "$CSV_FILE" ]] && cmp -s "$TMPFILE" "$CSV_FILE"; then
-  log "No changes — data is already up to date ($BEFORE lines)"
-  exit 0
-fi
-
-# Replace the file
-cp "$TMPFILE" "$CSV_FILE"
-AFTER=$(wc -l < "$CSV_FILE")
-DIFF=$((AFTER - BEFORE))
-
-if [[ "$BEFORE" -eq 0 ]]; then
-  log "Downloaded $AFTER lines (fresh download)"
-else
-  log "Updated: $BEFORE → $AFTER lines (${DIFF:+$DIFF} new)"
-fi
-
+replace_if_changed "$econ_tmp" "$ECON_FILE" "economic data"
 log "Done — $(date -Iseconds)"
