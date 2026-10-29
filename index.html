@@ -7,7 +7,7 @@
   <title>Approval &amp; the Economy</title>
   <meta name="description" content="A clear view of presidential approval and the U.S. economy, including markets, inflation, jobs, gas prices, and trade.">
   <meta property="og:title" content="Approval &amp; the Economy">
-  <meta property="og:description" content="Presidential approval and five essential U.S. economic indicators in one dashboard.">
+  <meta property="og:description" content="Presidential approval, 2026 Senate and House seat projections, and five essential U.S. economic indicators in one dashboard.">
   <meta property="og:type" content="website">
   <script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
@@ -427,6 +427,57 @@
     .market-dot { width: 0.55rem; height: 0.55rem; border-radius: 50%; }
     .market-value { display: block; margin-top: 0.15rem; font-family: Georgia, serif; font-size: 1.15rem; }
 
+    .seat-bar { margin: 0 0 1rem; }
+
+    .seat-labels {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 0.3rem 1rem;
+      margin-bottom: 0.45rem;
+      color: var(--ink-soft);
+      font-size: 0.72rem;
+      font-weight: 700;
+    }
+
+    .seat-label { display: inline-flex; gap: 0.4rem; align-items: center; }
+    .seat-label strong { color: var(--ink); font-family: Georgia, serif; font-size: 1.15rem; font-weight: 500; }
+
+    .seat-track {
+      position: relative;
+      display: flex;
+      gap: 2px;
+      height: 0.85rem;
+    }
+
+    .seat-segment:first-of-type { border-radius: 6px 0 0 6px; }
+    .seat-segment:last-of-type { border-radius: 0 6px 6px 0; }
+
+    .seat-majority {
+      position: absolute;
+      top: -0.3rem;
+      bottom: -0.3rem;
+      width: 2px;
+      margin-left: -1px;
+      border-radius: 1px;
+      background: var(--ink);
+    }
+
+    .seat-majority-label {
+      position: relative;
+      height: 1.1rem;
+      margin: 0.35rem 0 0;
+      color: var(--ink-soft);
+      font-size: 0.66rem;
+      font-weight: 700;
+    }
+
+    .seat-majority-label span {
+      position: absolute;
+      transform: translateX(-50%);
+      white-space: nowrap;
+    }
+
     .chart-note {
       margin: 0.7rem 0 0;
       color: var(--ink-soft);
@@ -619,6 +670,52 @@
       </div>
     </section>
 
+    <section class="dashboard-section" aria-labelledby="midterms-heading">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Midterms · November 3, 2026</p>
+          <h2 id="midterms-heading">The midterm outlook</h2>
+        </div>
+        <p>Seat projections built from current race polling. Each chamber is simulated 10,000 times, with a shared national polling error so that races can miss together.</p>
+      </div>
+
+      <div class="dashboard-grid">
+        <article class="card lavender">
+          <div class="card-header">
+            <div class="card-title">
+              <p class="eyebrow">Senate · 35 seats on the ballot</p>
+              <h3>Projected Senate seats</h3>
+              <p class="card-description">State polling averages for each race, plus the 65 seats not up this year.</p>
+            </div>
+            <div class="metric"><span class="metric-value" id="senateControl">—</span><span class="metric-detail" id="senateControlDetail">Chance of control</span></div>
+          </div>
+          <div class="seat-bar" id="senateSeats" aria-label="Projected Senate seats by party"></div>
+          <figure class="chart-wrap">
+            <canvas id="senateChart" role="img" aria-label="Distribution of simulated Republican Senate seat totals"></canvas>
+          </figure>
+          <p class="chart-note">Republicans win <strong id="senateRange">—</strong> seats in 80% of simulations. They need 50 for control because the vice president breaks ties. Democratic totals include the two independents who caucus with them; seats with no recent polls are assigned to the incumbent party.</p>
+          <details class="data-details"><summary>View race-by-race polling</summary><div class="data-table-wrap" id="senateTable"></div></details>
+        </article>
+
+        <article class="card sky">
+          <div class="card-header">
+            <div class="card-title">
+              <p class="eyebrow">House · all 435 seats</p>
+              <h3>Projected House seats</h3>
+              <p class="card-description">The generic ballot (<span id="genericBallot">—</span>) applied to each district's partisan lean, blended with district polls where available.</p>
+            </div>
+            <div class="metric"><span class="metric-value" id="houseControl">—</span><span class="metric-detail" id="houseControlDetail">Chance of control</span></div>
+          </div>
+          <div class="seat-bar" id="houseSeats" aria-label="Projected House seats by party"></div>
+          <figure class="chart-wrap">
+            <canvas id="houseChart" role="img" aria-label="Distribution of simulated Republican House seat totals"></canvas>
+          </figure>
+          <p class="chart-note">Republicans win <strong id="houseRange">—</strong> seats in 80% of simulations; 218 is a majority. Districts use 2026 Cook PVI with a 3-point incumbency edge.</p>
+          <details class="data-details"><summary>View <span id="houseCompetitive">—</span> competitive districts</summary><div class="data-table-wrap" id="houseTable"></div></details>
+        </article>
+      </div>
+    </section>
+
     <section class="dashboard-section" aria-labelledby="economy-heading">
       <div class="section-heading">
         <div>
@@ -714,7 +811,7 @@
 
   <footer>
     <div class="footer-inner">
-      <p>Polling data: <a href="https://www.nytimes.com/interactive/2024/us/elections/polls/approval-rating/donald-trump.html" target="_blank" rel="noopener">FiveThirtyEight / The New York Times</a>. Economic data: <a href="https://fred.stlouisfed.org/" target="_blank" rel="noopener">FRED, Federal Reserve Bank of St. Louis</a>. Market series may be subject to provider terms.</p>
+      <p>Polling data: <a href="https://www.nytimes.com/interactive/2024/us/elections/polls/approval-rating/donald-trump.html" target="_blank" rel="noopener">FiveThirtyEight / The New York Times</a>. District partisan lean: Cook PVI via <a href="https://en.wikipedia.org/wiki/2026_United_States_House_of_Representatives_elections" target="_blank" rel="noopener">Wikipedia</a>. Economic data: <a href="https://fred.stlouisfed.org/" target="_blank" rel="noopener">FRED, Federal Reserve Bank of St. Louis</a>. Market series may be subject to provider terms.</p>
       <p>Cached locally for a fast, reliable static dashboard.</p>
     </div>
   </footer>

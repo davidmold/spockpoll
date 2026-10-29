@@ -6,7 +6,7 @@
 #   ./update-data.sh --quiet      # fetch silently (for cron)
 
 # Sources:
-#   Polling: The New York Times / FiveThirtyEight
+#   Polling: The New York Times / FiveThirtyEight (approval, Senate, House)
 #   Economic series: FRED, Federal Reserve Bank of St. Louis
 
 set -euo pipefail
@@ -15,6 +15,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 POLL_FILE="$SCRIPT_DIR/president.csv"
 ECON_FILE="$SCRIPT_DIR/economic.csv"
 POLL_URL="https://www.nytimes.com/newsgraphics/polls/approval/president.csv"
+RACE_URL="https://www.nytimes.com/newsgraphics/polls"
 FRED_URL="https://fred.stlouisfed.org/graph/fredgraph.csv"
 QUIET="${1:-}"
 
@@ -63,6 +64,21 @@ if [[ $(wc -l < "$poll_tmp") -lt 10 ]] || ! head -n 1 "$poll_tmp" | grep -q 'pol
 fi
 
 replace_if_changed "$poll_tmp" "$POLL_FILE" "polling data"
+
+for chamber in senate house; do
+  log "Fetching $chamber race polling…"
+  raw_tmp="$TMP_DIR/$chamber-raw.csv"
+  race_tmp="$TMP_DIR/$chamber.csv"
+  download "$RACE_URL/$chamber.csv" "$raw_tmp"
+  python3 -I "$SCRIPT_DIR/scripts/trim-race-polls.py" "$raw_tmp" "$race_tmp"
+
+  if [[ $(wc -l < "$race_tmp") -lt 100 ]]; then
+    log "ERROR: $chamber polling has too few general-election rows; keeping the existing cache"
+    exit 1
+  fi
+
+  replace_if_changed "$race_tmp" "$SCRIPT_DIR/$chamber.csv" "$chamber race polling"
+done
 
 log "Fetching economic indicators from FRED…"
 econ_tmp="$TMP_DIR/economic.csv"
