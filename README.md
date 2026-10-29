@@ -8,6 +8,7 @@ A lightweight, auto-updating dashboard that pairs Donald Trump's presidential jo
 
 - **Weighted polling average** with 90% prediction bands, accounting for recency, sample size, methodology, population type, partisan sponsorship, outliers, tracker frequency, and pollster house effects
 - **Weighted net approval** with Full term / 1Y / 6M / 90D / 30D range controls
+- **2026 midterm seat projections** — simulated Senate and House seat totals for the November 3 election, with control probabilities, race-by-race Senate polling, and a list of competitive House districts
 - **Stock indexes** — S&P 500, NASDAQ Composite, and Dow Jones daily closes over the latest 12 months, rebased to 100 for comparison with latest prices shown separately
 - **Consumer Price Index** — seasonally adjusted monthly CPI-U
 - **Monthly change in jobs** — change in seasonally adjusted nonfarm payrolls with a three-month moving average
@@ -32,9 +33,18 @@ The weighted average uses local-linear kernel regression with exponential decay.
 
 The pastel bands are 90% prediction intervals for individual polls, inflated by 1.3× for model uncertainty.
 
+## How the midterm projections work
+
+Both chambers are simulated 10,000 times with a fixed random seed, so the numbers only change when the data does. Every simulation draws one shared national polling error (σ = 3 points of margin) so that races can miss in the same direction, plus an independent error for each race.
+
+- **Senate** — For each of the 35 seats on the ballot, the two leading candidates in the last 90 days of polling are averaged using the same recency (21-day half-life), sample size, methodology, population, sponsorship, and tracker weights as the approval model. Race error combines a 4.5-point floor with sampling noise that shrinks as polls accumulate. Seats with no recent polls are assigned to the incumbent party. Republicans control the chamber at 50 seats because the vice president breaks ties.
+- **House** — The generic ballot average (from the approval model, with house effects) is applied to each district's 2026 Cook PVI by uniform swing, with a 3-point incumbency edge. District polls, where they exist, are blended in by precision weighting. Districts without both major parties on the ballot are assigned to the party that is.
+
 ## Data sources
 
-Polling data comes from [The New York Times / FiveThirtyEight](https://www.nytimes.com/interactive/2024/us/elections/polls/approval-rating/donald-trump.html).
+Polling data comes from [The New York Times / FiveThirtyEight](https://www.nytimes.com/interactive/2024/us/elections/polls/approval-rating/donald-trump.html): presidential approval (`president.csv`) and Senate and House race polls (`senate.csv`, `house.csv`, trimmed to November 2026 general-election questions by `scripts/trim-race-polls.py`).
+
+District partisan lean (`house-districts.csv`) is the 2026 Cook PVI as published on [Wikipedia](https://en.wikipedia.org/wiki/2026_United_States_House_of_Representatives_elections), reflecting mid-decade redistricting. It is a static file; regenerate it with `python3 scripts/build-house-districts.py > house-districts.csv`.
 
 Economic data is cached from [FRED, Federal Reserve Bank of St. Louis](https://fred.stlouisfed.org/) using these series:
 
@@ -62,7 +72,7 @@ Then open `http://localhost:8080`.
 
 ## Updating data
 
-The daily GitHub Action refreshes both local CSV caches. To update them manually:
+The daily GitHub Action refreshes the approval, race polling, and economic CSV caches. To update them manually:
 
 ```bash
 ./update-data.sh

@@ -2,6 +2,9 @@
 
 const POLLING_PATH = "president.csv";
 const ECONOMIC_PATH = "economic.csv";
+const SENATE_PATH = "senate.csv";
+const HOUSE_PATH = "house.csv";
+const DISTRICTS_PATH = "house-districts.csv";
 const DAY = 86_400_000;
 const isMobile = window.matchMedia("(max-width: 600px)").matches;
 const charts = {};
@@ -764,6 +767,523 @@ async function loadEconomic() {
   return Math.max(...required.map((id) => grouped[id].at(-1).date.getTime()));
 }
 
+// ─── Election forecast ───────────────────────────────────────────────────────
+
+const ELECTION_CONFIG = {
+  simulations: 10_000,
+  seed: 20_261_103,
+  raceHalfLife: 21,
+  raceWindowDays: 90,
+  pollNoise: 6,
+  raceErrorFloor: 4.5,
+  nationalError: 3,
+  districtError: 7,
+  districtPollBias: 3,
+  incumbency: 3,
+  senateHoldover: { D: 34, R: 31 },
+  senateRepublicanControl: 50,
+  houseMajority: 218
+};
+
+// Seats on the 2026 ballot and the party that holds each. Holdovers include the two
+// independents who caucus with Democrats; the vice president breaks a 50–50 tie.
+const SENATE_SEATS = {
+  AL: "R", AK: "R", AR: "R", CO: "D", DE: "D", FL: "R", GA: "D", ID: "R", IL: "D",
+  IA: "R", KS: "R", KY: "R", LA: "R", ME: "R", MA: "D", MI: "D", MN: "D", MS: "R",
+  MT: "R", NE: "R", NH: "D", NJ: "D", NM: "D", NC: "R", OH: "R", OK: "R", OR: "D",
+  RI: "D", SC: "R", SD: "R", TN: "R", TX: "R", VA: "D", WV: "R", WY: "R"
+};
+
+const PARTY = {
+  D: { name: "Democrats", short: "D", color: "#3f73b2", fill: "rgba(63, 115, 178, 0.78)" },
+  R: { name: "Republicans", short: "R", color: "#c0505c", fill: "rgba(192, 80, 92, 0.78)" },
+  I: { name: "Independents", short: "I", color: "#a8861a", fill: "rgba(168, 134, 26, 0.78)" }
+};
+
+function partySide(party) {
+  if (party === "DEM") return "D";
+  if (party === "REP") return "R";
+  return "I";
+}
+
+function seededRandom(seed) {
+  let state = seed >>> 0;
+  return () => {
+    state = (state + 0x6d2b79f5) >>> 0;
+    let t = state;
+    t = Math.imul(t ^ (t >>> 15), t | 1);
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+    return ((t ^ (t >>> 14)) >>> 0) / 4_294_967_296;
+  };
+}
+
+function normalSampler(random) {
+  let spare = null;
+  return () => {
+    if (spare !== null) {
+      const value = spare;
+      spare = null;
+      return value;
+    }
+    const radius = Math.sqrt(-2 * Math.log(1 - random()));
+    const angle = 2 * Math.PI * random();
+    spare = radius * Math.sin(angle);
+    return radius * Math.cos(angle);
+  };
+}
+
+function groupQuestions(rows) {
+  const questions = new Map();
+  rows.forEach((row) => {
+    let question = questions.get(row.question_id);
+    if (!question) {
+      const startDate = parsePollingDate(row.start_date);
+      const endDate = parsePollingDate(row.end_date);
+      if (!endDate) return;
+      question = {
+        poll_id: row.poll_id,
+        pollster: row.pollster,
+        methodology: row.methodology,
+        population: row.population,
+        partisan: row.partisan,
+        reallocated: row.ranked_choice_reallocated === "TRUE",
+        sampleSize: Number(row.sample_size) || null,
+        race: row.state === "US" ? "US" : `${row.state}-${row.seat_number || ""}`,
+        endDate,
+        midDate: startDate ? new Date((startDate.getTime() + endDate.getTime()) / 2) : endDate,
+        answers: []
+      };
+      questions.set(row.question_id, question);
+    }
+    const pct = Number(row.pct);
+    if (row.party !== "NONE" && Number.isFinite(pct)) {
+      question.answers.push({ name: row.candidate_name, party: row.party, pct });
+    }
+  });
+  return [...questions.values()];
+}
+
+function groupByRace(questions) {
+  const races = new Map();
+  questions.forEach((question) => {
+    if (!races.has(question.race)) races.set(question.race, []);
+    races.get(question.race).push(question);
+  });
+  return races;
+}
+
+function preferredQuestion(current, candidate) {
+  if (!current) return candidate;
+  if (current.reallocated !== candidate.reallocated) return candidate.reallocated ? current : candidate;
+  const priority = MODEL_CONFIG.populationPriority;
+  const currentRank = priority.indexOf(current.population);
+  const candidateRank = priority.indexOf(candidate.population);
+  if (currentRank !== candidateRank) return candidateRank >= 0 && (currentRank < 0 || candidateRank < currentRank) ? candidate : current;
+  return candidate.answers.length > current.answers.length ? candidate : current;
+}
+
+// Recency-weighted average margin between a race's two leading candidates.
+function raceAverage(questions, referenceTime) {
+  const config = ELECTION_CONFIG;
+  const decay = Math.LN2 / config.raceHalfLife;
+  const recent = questions.filter((question) => referenceTime - question.endDate.getTime() <= config.raceWindowDays * DAY);
+  if (!recent.length) return null;
+
+  const scores = new Map();
+  recent.forEach((question) => {
+    const recency = Math.exp(-decay * (referenceTime - question.midDate.getTime()) / DAY);
+    question.answers.forEach((answer) => {
+      const key = `${answer.name}|${answer.party}`;
+      scores.set(key, (scores.get(key) || 0) + recency * answer.pct);
+    });
+  });
+  const leaders = [...scores.entries()].sort((a, b) => b[1] - a[1]).slice(0, 2).map(([key]) => {
+    const [name, party] = key.split("|");
+    return { name, party, side: partySide(party) };
+  });
+  if (leaders.length < 2) return null;
+
+  // Orient the margin so positive values favor the non-Republican candidate.
+  const [left, right] = leaders[1].side === "R" || leaders[0].side !== "R" ? leaders : [leaders[1], leaders[0]];
+  const nationalSign = left.side !== "R" && right.side === "R" ? 1 : 0;
+  const pctFor = (question, leader) => question.answers.find((answer) => answer.name === leader.name && answer.party === leader.party)?.pct;
+
+  const byPoll = new Map();
+  recent.forEach((question) => {
+    if (pctFor(question, left) === undefined || pctFor(question, right) === undefined) return;
+    byPoll.set(question.poll_id, preferredQuestion(byPoll.get(question.poll_id), question));
+  });
+  const polls = [...byPoll.values()].map((question) => {
+    const recency = Math.exp(-decay * Math.abs(referenceTime - question.midDate.getTime()) / DAY);
+    const sampleSize = Math.min(question.sampleSize || MODEL_CONFIG.sampleSizeDefault, MODEL_CONFIG.sampleSizeCap);
+    return {
+      pollster: question.pollster,
+      recency,
+      weight: recency
+        * Math.sqrt(sampleSize / MODEL_CONFIG.sampleSizeRef)
+        * methodologyWeight(question.methodology)
+        * (MODEL_CONFIG.populationWeights[question.population] || 0.8)
+        * (MODEL_CONFIG.partisanWeights[question.partisan] || 1),
+      margin: pctFor(question, left) - pctFor(question, right)
+    };
+  });
+  if (!polls.length) return null;
+
+  const pollsterMass = {};
+  polls.forEach((poll) => { pollsterMass[poll.pollster] = (pollsterMass[poll.pollster] || 0) + poll.recency; });
+  let total = 0;
+  let totalSquared = 0;
+  let weightedMargin = 0;
+  polls.forEach((poll) => {
+    const weight = poll.weight / Math.sqrt(Math.max(1, pollsterMass[poll.pollster]));
+    total += weight;
+    totalSquared += weight * weight;
+    weightedMargin += weight * poll.margin;
+  });
+  const effectivePolls = (total * total) / totalSquared;
+
+  return {
+    left,
+    right,
+    nationalSign,
+    margin: weightedMargin / total,
+    pollCount: polls.length,
+    samplingError: config.pollNoise / Math.sqrt(effectivePolls)
+  };
+}
+
+function latestPollTime(questions) {
+  return Math.max(...questions.map((question) => question.endDate.getTime()));
+}
+
+function buildSenateRaces(questions) {
+  const races = groupByRace(questions);
+  const referenceTime = latestPollTime(questions);
+  return Object.entries(SENATE_SEATS).map(([state, holder]) => {
+    const average = raceAverage(races.get(`${state}-`) || [], referenceTime);
+    if (!average) {
+      return { label: state, holder, safe: holder, note: "No recent polls; assumed hold" };
+    }
+    return {
+      label: state,
+      holder,
+      ...average,
+      error: Math.hypot(ELECTION_CONFIG.raceErrorFloor, average.samplingError)
+    };
+  });
+}
+
+function genericBallot(questions) {
+  const polls = questions.map((question) => {
+    const dem = question.answers.find((answer) => answer.party === "DEM")?.pct;
+    const rep = question.answers.find((answer) => answer.party === "REP")?.pct;
+    return { ...question, approve: dem, disapprove: rep };
+  }).filter((poll) => poll.approve && poll.disapprove)
+    .sort((a, b) => a.endDate - b.endDate);
+  const { estimates } = runModel(polls, "generic-ballot");
+  return { margin: estimates.at(-1).net, pollCount: new Set(polls.map((poll) => poll.poll_id)).size };
+}
+
+function buildHouseRaces(districts, questions, generic) {
+  const config = ELECTION_CONFIG;
+  const races = groupByRace(questions);
+  const referenceTime = latestPollTime(questions);
+
+  return districts.map((district) => {
+    const label = `${district.state}-${district.district}`;
+    const pvi = Number(district.pvi);
+    const hasD = district.sides.includes("D");
+    const hasR = district.sides.includes("R");
+    const independentIncumbent = district.incumbent === "I" && district.sides.includes("I");
+    const base = { label, pvi, incumbent: district.incumbent };
+
+    if (hasD && !hasR && !independentIncumbent) return { ...base, safe: "D", note: "No Republican on the ballot" };
+    if (hasR && !hasD) return { ...base, safe: "R", note: "No Democrat on the ballot" };
+
+    const right = hasR ? { side: "R", party: "REP" } : { side: "I", party: "IND" };
+    const incumbency = district.incumbent === "D" ? config.incumbency : district.incumbent === right.side ? -config.incumbency : 0;
+    const prior = generic.margin + 2 * pvi + incumbency;
+    let margin = prior;
+    let error = config.districtError;
+
+    const polled = raceAverage(races.get(label) || [], referenceTime);
+    if (polled && polled.left.side === "D" && polled.right.side === right.side) {
+      const pollError = Math.hypot(config.districtPollBias, polled.samplingError);
+      const priorPrecision = 1 / config.districtError ** 2;
+      const pollPrecision = 1 / pollError ** 2;
+      margin = (prior * priorPrecision + polled.margin * pollPrecision) / (priorPrecision + pollPrecision);
+      error = Math.sqrt(1 / (priorPrecision + pollPrecision));
+      Object.assign(base, { pollMargin: polled.margin, pollCount: polled.pollCount });
+    }
+
+    return { ...base, left: { side: "D" }, right, nationalSign: right.side === "R" ? 1 : 0, prior, margin, error };
+  });
+}
+
+function simulateChamber(races, fixedSeats, seed) {
+  const random = seededRandom(seed);
+  const normal = normalSampler(random);
+  const outcomes = [];
+  const contested = races.filter((race) => !race.safe);
+  const leftWins = new Array(contested.length).fill(0);
+  const fixed = { D: fixedSeats.D || 0, R: fixedSeats.R || 0, I: fixedSeats.I || 0 };
+  races.filter((race) => race.safe).forEach((race) => { fixed[race.safe] += 1; });
+
+  for (let run = 0; run < ELECTION_CONFIG.simulations; run += 1) {
+    const national = normal() * ELECTION_CONFIG.nationalError;
+    const seats = { ...fixed };
+    contested.forEach((race, index) => {
+      const margin = race.margin + race.nationalSign * national + normal() * race.error;
+      const winner = margin > 0 ? race.left : race.right;
+      if (margin > 0) leftWins[index] += 1;
+      seats[winner.side] += 1;
+    });
+    outcomes.push(seats);
+  }
+
+  contested.forEach((race, index) => { race.leftProbability = leftWins[index] / ELECTION_CONFIG.simulations; });
+  return outcomes;
+}
+
+function summarizeOutcomes(outcomes, total, republicanControl) {
+  const mean = (side) => outcomes.reduce((sum, seats) => sum + seats[side], 0) / outcomes.length;
+  const quantile = (side, q) => {
+    const sorted = outcomes.map((seats) => seats[side]).sort((a, b) => a - b);
+    return sorted[Math.min(sorted.length - 1, Math.floor(q * sorted.length))];
+  };
+  const D = Math.round(mean("D"));
+  const I = Math.round(mean("I"));
+  const histogram = new Map();
+  outcomes.forEach((seats) => histogram.set(seats.R, (histogram.get(seats.R) || 0) + 1));
+
+  return {
+    projected: { D, I, R: total - D - I },
+    republicanRange: [quantile("R", 0.1), quantile("R", 0.9)],
+    republicanControl: outcomes.filter((seats) => seats.R >= republicanControl).length / outcomes.length,
+    histogram
+  };
+}
+
+function marginLabel(margin, left, right) {
+  const leader = margin >= 0 ? left : right;
+  return `${leader.side}+${Math.abs(margin).toFixed(1)}`;
+}
+
+function percentLabel(probability) {
+  if (probability > 0.99) return ">99%";
+  if (probability < 0.01) return "<1%";
+  return `${Math.round(probability * 100)}%`;
+}
+
+function renderSeatBar(elementId, projected, total, majority, majorityLabel) {
+  const segments = ["D", "I", "R"].filter((side) => projected[side] > 0).map((side) => (
+    `<span class="seat-segment" style="flex:${projected[side]};background:${PARTY[side].color}" title="${PARTY[side].name}: ${projected[side]}"></span>`
+  )).join("");
+  const labels = ["D", "I", "R"].filter((side) => projected[side] > 0).map((side) => (
+    `<span class="seat-label"><span class="market-dot" style="background:${PARTY[side].color}"></span>${PARTY[side].name} <strong>${projected[side]}</strong></span>`
+  )).join("");
+  const position = `${(majority / total) * 100}%`;
+  document.getElementById(elementId).innerHTML = `
+    <div class="seat-labels">${labels}</div>
+    <div class="seat-track">${segments}<i class="seat-majority" style="left:${position}"></i></div>
+    <p class="seat-majority-label"><span style="left:${position}">${majorityLabel}</span></p>`;
+}
+
+function majorityLine(threshold) {
+  return {
+    id: `majorityLine-${threshold}`,
+    afterDatasetsDraw(chart) {
+      const { ctx, chartArea, scales } = chart;
+      const index = chart.data.labels.indexOf(threshold);
+      if (index < 0) return;
+      const x = scales.x.getPixelForValue(index) - (scales.x.getPixelForValue(1) - scales.x.getPixelForValue(0)) / 2;
+      ctx.save();
+      ctx.strokeStyle = "rgba(36, 48, 44, 0.55)";
+      ctx.setLineDash([4, 4]);
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.moveTo(x, chartArea.top);
+      ctx.lineTo(x, chartArea.bottom);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillStyle = "#24302c";
+      ctx.font = `700 ${isMobile ? 9 : 10}px Inter, sans-serif`;
+      ctx.textBaseline = "top";
+      const label = `${threshold}+ Republican control`;
+      const fitsRight = x + 6 + ctx.measureText(label).width <= chartArea.right;
+      ctx.textAlign = fitsRight ? "left" : "right";
+      ctx.fillText(label, fitsRight ? x + 6 : x - 6, chartArea.top + 2);
+      ctx.restore();
+    }
+  };
+}
+
+function renderSeatHistogram(name, summary, threshold, total) {
+  destroyChart(name);
+  // Trim the extreme 0.2% tails so the bulk of the distribution fills the chart.
+  const seatCounts = [...summary.histogram.keys()].sort((a, b) => a - b);
+  const tail = ELECTION_CONFIG.simulations * 0.002;
+  let cumulative = 0;
+  const kept = seatCounts.filter((seats) => {
+    const before = cumulative;
+    cumulative += summary.histogram.get(seats);
+    return cumulative > tail && before < ELECTION_CONFIG.simulations - tail;
+  });
+  const low = Math.min(kept[0], threshold - 1);
+  const high = Math.max(kept.at(-1), threshold);
+  const labels = [];
+  for (let seats = low; seats <= high; seats += 1) labels.push(seats);
+  const share = labels.map((seats) => (summary.histogram.get(seats) || 0) / ELECTION_CONFIG.simulations * 100);
+
+  charts[name] = new Chart(document.getElementById(`${name}Chart`), {
+    type: "bar",
+    data: {
+      labels,
+      datasets: [{
+        label: "Share of simulations",
+        data: share,
+        backgroundColor: labels.map((seats) => seats >= threshold ? PARTY.R.fill : PARTY.D.fill),
+        borderRadius: { topLeft: 4, topRight: 4 },
+        borderSkipped: "bottom",
+        barPercentage: 1,
+        categoryPercentage: labels.length > 40 ? 0.9 : 0.86
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      layout: { padding: { top: 6, right: 8 } },
+      scales: {
+        x: {
+          title: { display: true, text: "Republican seats" },
+          grid: { display: false },
+          ticks: { maxRotation: 0, autoSkipPadding: 10 }
+        },
+        y: {
+          beginAtZero: true,
+          ticks: { callback: (value) => `${value}%`, maxTicksLimit: 5 },
+          grid: { color: "rgba(84, 92, 87, 0.13)" }
+        }
+      },
+      plugins: {
+        legend: {
+          display: true,
+          position: "top",
+          align: "start",
+          labels: {
+            generateLabels: () => [
+              { text: "Democratic control", fillStyle: PARTY.D.color, strokeStyle: PARTY.D.color, pointStyle: "rectRounded" },
+              { text: "Republican control", fillStyle: PARTY.R.color, strokeStyle: PARTY.R.color, pointStyle: "rectRounded" }
+            ]
+          }
+        },
+        tooltip: {
+          callbacks: {
+            title: (items) => `Republicans ${items[0].label} · others ${total - Number(items[0].label)}`,
+            label: (context) => `${context.parsed.y.toFixed(1)}% of simulations`
+          }
+        }
+      }
+    },
+    plugins: [majorityLine(threshold)]
+  });
+}
+
+function controlText(probability) {
+  return probability >= 0.5
+    ? { value: percentLabel(probability), detail: "Chance of Republican control", side: "R" }
+    : { value: percentLabel(1 - probability), detail: "Chance of Democratic control", side: "D" };
+}
+
+function renderControlMetric(prefix, probability) {
+  const control = controlText(probability);
+  const value = document.getElementById(`${prefix}Control`);
+  value.textContent = control.value;
+  value.style.color = PARTY[control.side].color;
+  document.getElementById(`${prefix}ControlDetail`).textContent = control.detail;
+}
+
+function candidateName(candidate) {
+  return candidate.name ? `${candidate.name} (${candidate.side})` : candidate.side;
+}
+
+function renderSenate(questions) {
+  const races = buildSenateRaces(questions);
+  const outcomes = simulateChamber(races, ELECTION_CONFIG.senateHoldover, ELECTION_CONFIG.seed);
+  const summary = summarizeOutcomes(outcomes, 100, ELECTION_CONFIG.senateRepublicanControl);
+
+  renderControlMetric("senate", summary.republicanControl);
+  renderSeatBar("senateSeats", summary.projected, 100, 50, "50 + vice president’s tiebreak");
+  renderSeatHistogram("senate", summary, ELECTION_CONFIG.senateRepublicanControl, 100);
+  document.getElementById("senateRange").textContent = `${summary.republicanRange[0]}–${summary.republicanRange[1]}`;
+
+  const rows = races.slice().sort((a, b) => (a.safe ? 1 : 0) - (b.safe ? 1 : 0) || Math.abs(a.margin) - Math.abs(b.margin));
+  document.getElementById("senateTable").innerHTML = tableMarkup(
+    ["State", "Matchup", "Polling average", "Polls", "Win probability"],
+    rows.map((race) => race.safe
+      ? [race.label, race.note, "—", "0", `${PARTY[race.safe].short} assumed`]
+      : [
+        race.label,
+        `${candidateName(race.left)} vs. ${candidateName(race.right)}`,
+        marginLabel(race.margin, race.left, race.right),
+        String(race.pollCount),
+        race.leftProbability >= 0.5
+          ? `${race.left.side} ${percentLabel(race.leftProbability)}`
+          : `${race.right.side} ${percentLabel(1 - race.leftProbability)}`
+      ])
+  );
+}
+
+function renderHouse(questions, districts) {
+  const generic = genericBallot(questions.filter((question) => question.race === "US"));
+  const races = buildHouseRaces(districts, questions.filter((question) => question.race !== "US"), generic);
+  const outcomes = simulateChamber(races, {}, ELECTION_CONFIG.seed + 1);
+  const summary = summarizeOutcomes(outcomes, 435, ELECTION_CONFIG.houseMajority);
+
+  renderControlMetric("house", summary.republicanControl);
+  renderSeatBar("houseSeats", summary.projected, 435, ELECTION_CONFIG.houseMajority, `${ELECTION_CONFIG.houseMajority} for majority`);
+  renderSeatHistogram("house", summary, ELECTION_CONFIG.houseMajority, 435);
+  document.getElementById("houseRange").textContent = `${summary.republicanRange[0]}–${summary.republicanRange[1]}`;
+  document.getElementById("genericBallot").textContent = `${generic.margin >= 0 ? "D" : "R"}+${Math.abs(generic.margin).toFixed(1)}`;
+
+  const competitive = races
+    .filter((race) => !race.safe && race.leftProbability > 0.05 && race.leftProbability < 0.95)
+    .sort((a, b) => Math.abs(a.margin) - Math.abs(b.margin));
+  document.getElementById("houseCompetitive").textContent = String(competitive.length);
+  document.getElementById("houseTable").innerHTML = tableMarkup(
+    ["District", "PVI", "Incumbent", "District polls", "Projected margin", "Win probability"],
+    competitive.map((race) => [
+      race.label,
+      race.pvi === 0 ? "EVEN" : `${race.pvi > 0 ? "D" : "R"}+${Math.abs(race.pvi)}`,
+      race.incumbent || "Open",
+      race.pollCount ? `${marginLabel(race.pollMargin, race.left, race.right)} (${race.pollCount})` : "—",
+      marginLabel(race.margin, race.left, race.right),
+      race.leftProbability >= 0.5
+        ? `D ${percentLabel(race.leftProbability)}`
+        : `${race.right.side} ${percentLabel(1 - race.leftProbability)}`
+    ])
+  );
+}
+
+async function fetchCSV(path) {
+  const response = await fetch(path);
+  if (!response.ok) throw new Error(`${path} returned HTTP ${response.status}`);
+  return parseCSV(await response.text());
+}
+
+async function loadElection() {
+  const [senateRows, houseRows, districts] = await Promise.all([
+    fetchCSV(SENATE_PATH),
+    fetchCSV(HOUSE_PATH),
+    fetchCSV(DISTRICTS_PATH)
+  ]);
+  const senateQuestions = groupQuestions(senateRows);
+  const houseQuestions = groupQuestions(houseRows);
+  renderSenate(senateQuestions);
+  renderHouse(houseQuestions, districts);
+  return Math.max(latestPollTime(senateQuestions), latestPollTime(houseQuestions));
+}
+
 function bindControls() {
   document.getElementById("popFilter").addEventListener("change", renderPolling);
   document.getElementById("partisanFilter").addEventListener("change", renderPolling);
@@ -782,11 +1302,15 @@ function bindControls() {
 
 async function init() {
   bindControls();
-  const [pollingResult, economicResult] = await Promise.allSettled([loadPolling(), loadEconomic()]);
+  const [pollingResult, electionResult, economicResult] = await Promise.allSettled([loadPolling(), loadElection(), loadEconomic()]);
 
   if (pollingResult.status === "rejected") {
     console.error(pollingResult.reason);
     showError("Polling data could not be loaded. Run the site through a local web server and refresh the data cache.");
+  }
+  if (electionResult.status === "rejected") {
+    console.error(electionResult.reason);
+    showError("Senate and House polling could not be loaded. Run ./update-data.sh, then reload the page.");
   }
   if (economicResult.status === "rejected") {
     console.error(economicResult.reason);
@@ -795,6 +1319,7 @@ async function init() {
 
   const dates = [
     pollingResult.status === "fulfilled" ? pollingResult.value?.getTime() : null,
+    electionResult.status === "fulfilled" ? electionResult.value : null,
     economicResult.status === "fulfilled" ? economicResult.value : null
   ].filter(Number.isFinite);
   const freshness = document.getElementById("freshness");
