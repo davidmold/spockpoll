@@ -1,4 +1,35 @@
 poll_id,pollster,methodology,state,seat_number,start_date,end_date,question_id,sample_size,population,partisan,ranked_choice_reallocated,candidate_name,party,pct
+1e6f3670-4580-45df-928a-94a521db841c,Workbench Strategy,,FL,,10/18/26,10/22/26,cf48ec36-3f46-4fc8-8e0d-9f3a9d1a651c,800,lv,DEM,FALSE,Ashley Moody,REP,49
+1e6f3670-4580-45df-928a-94a521db841c,Workbench Strategy,,FL,,10/18/26,10/22/26,cf48ec36-3f46-4fc8-8e0d-9f3a9d1a651c,800,lv,DEM,FALSE,Angie Nixon,DEM,47
+81be1cc2-3c9d-4786-9ee7-9d01bceb06e7,Montana State University Billings,Live Phone/Nonprobability Panel,MT,,10/5/26,10/21/26,6bca737c-ba02-424d-bb2e-833c3dabb048,720,a,,FALSE,Don't know,NONE,17
+81be1cc2-3c9d-4786-9ee7-9d01bceb06e7,Montana State University Billings,Live Phone/Nonprobability Panel,MT,,10/5/26,10/21/26,6bca737c-ba02-424d-bb2e-833c3dabb048,720,a,,FALSE,Jami Woodman,NPA,1
+81be1cc2-3c9d-4786-9ee7-9d01bceb06e7,Montana State University Billings,Live Phone/Nonprobability Panel,MT,,10/5/26,10/21/26,6bca737c-ba02-424d-bb2e-833c3dabb048,720,a,,FALSE,Seth Bodnar,IND,26
+81be1cc2-3c9d-4786-9ee7-9d01bceb06e7,Montana State University Billings,Live Phone/Nonprobability Panel,MT,,10/5/26,10/21/26,6bca737c-ba02-424d-bb2e-833c3dabb048,720,a,,FALSE,Kyle Austin,LIB,3
+81be1cc2-3c9d-4786-9ee7-9d01bceb06e7,Montana State University Billings,Live Phone/Nonprobability Panel,MT,,10/5/26,10/21/26,6bca737c-ba02-424d-bb2e-833c3dabb048,720,a,,FALSE,Alani Bankhead,DEM,21
+81be1cc2-3c9d-4786-9ee7-9d01bceb06e7,Montana State University Billings,Live Phone/Nonprobability Panel,MT,,10/5/26,10/21/26,6bca737c-ba02-424d-bb2e-833c3dabb048,720,a,,FALSE,Kurt Alme,REP,30
+06629328-a105-4cea-9764-1768892a646d,ActiVote,App Panel,TX,,10/22/26,10/28/26,f17dc189-dcec-4330-992c-cccc695f72a6,400,lv,,FALSE,Don't know,NONE,47.9
+06629328-a105-4cea-9764-1768892a646d,ActiVote,App Panel,TX,,10/22/26,10/28/26,f17dc189-dcec-4330-992c-cccc695f72a6,400,lv,,FALSE,James Talarico,DEM,52.1
+4567e642-9d14-4530-9c86-e17199675130,Upswing Research,,MI,,10/24/26,10/25/26,4353b805-3580-492a-8724-00b582c6c6d9,505,lv,DEM,FALSE,Mike Rogers,REP,45
+4567e642-9d14-4530-9c86-e17199675130,Upswing Research,,MI,,10/24/26,10/25/26,4353b805-3580-492a-8724-00b582c6c6d9,505,lv,DEM,FALSE,Abdul El-Sayed,DEM,50
+c506a63c-4d38-4a19-9173-98e168424ae5,Michigan State University Office for Survey Research/Verasight,,MI,,10/8/26,10/23/26,db7880a2-fbb9-42db-be1c-cc6046217752,1383,lv,,FALSE,Someone else,NONE,6.4
+c506a63c-4d38-4a19-9173-98e168424ae5,Michigan State University Office for Survey Research/Verasight,,MI,,10/8/26,10/23/26,db7880a2-fbb9-42db-be1c-cc6046217752,1383,lv,,FALSE,Mike Rogers,REP,42.2
+c506a63c-4d38-4a19-9173-98e168424ae5,Michigan State University Office for Survey Research/Verasight,,MI,,10/8/26,10/23/26,db7880a2-fbb9-42db-be1c-cc6046217752,1383,lv,,FALSE,Abdul El-Sayed,DEM,51.4
+4dc32c45-083d-49e5-a155-7fbd9084ed08,A2 Insights,Nonprobability Panel,TX,,10/23/26,10/27/26,4f856b3c-d0b3-4c08-ac01-81bd04919863,631,lv,,FALSE,Don't know,NONE,0.3
+4dc32c45-083d-49e5-a155-7fbd9084ed08,A2 Insights,Nonprobability Panel,TX,,10/23/26,10/27/26,4f856b3c-d0b3-4c08-ac01-81bd04919863,631,lv,,FALSE,Someone else,NONE,2.3
+4dc32c45-083d-49e5-a155-7fbd9084ed08,A2 Insights,Nonprobability Panel,TX,,10/23/26,10/27/26,4f856b3c-d0b3-4c08-ac01-81bd04919863,631,lv,,FALSE,James Talarico,DEM,50.2
+4dc32c45-083d-49e5-a155-7fbd9084ed08,A2 Insights,Nonprobability Panel,TX,,10/23/26,10/27/26,4f856b3c-d0b3-4c08-ac01-81bd04919863,631,lv,,FALSE,Ken Paxton,REP,47.2
+379b9273-5e8d-461f-81ff-893c7e2cb8e6,East Carolina University Center for Survey Research,IVR/Text-to-Web/Nonprobability Panel,SC,,10/19/26,10/24/26,b07ee80b-8279-4a96-ad53-2bfd1255ac26,955,lv,,FALSE,Someone else,NONE,0.2
+379b9273-5e8d-461f-81ff-893c7e2cb8e6,East Carolina University Center for Survey Research,IVR/Text-to-Web/Nonprobability Panel,SC,,10/19/26,10/24/26,b07ee80b-8279-4a96-ad53-2bfd1255ac26,955,lv,,FALSE,Mark Hackett,CON,0.7
+379b9273-5e8d-461f-81ff-893c7e2cb8e6,East Carolina University Center for Survey Research,IVR/Text-to-Web/Nonprobability Panel,SC,,10/19/26,10/24/26,b07ee80b-8279-4a96-ad53-2bfd1255ac26,955,lv,,FALSE,Kasie Whitener,LIB,0.7
+379b9273-5e8d-461f-81ff-893c7e2cb8e6,East Carolina University Center for Survey Research,IVR/Text-to-Web/Nonprobability Panel,SC,,10/19/26,10/24/26,b07ee80b-8279-4a96-ad53-2bfd1255ac26,955,lv,,FALSE,Annie Andrews,DEM,47.3
+379b9273-5e8d-461f-81ff-893c7e2cb8e6,East Carolina University Center for Survey Research,IVR/Text-to-Web/Nonprobability Panel,SC,,10/19/26,10/24/26,b07ee80b-8279-4a96-ad53-2bfd1255ac26,955,lv,,FALSE,Darline Graham,REP,51.2
+0d52e74a-4d26-4572-8b02-034b624ede40,co/efficient,Text/Live Phone,IA,,10/28/26,10/28/26,f1fe613f-f0e6-48e0-ae6e-24facfaddda7,1020,lv,,FALSE,Don't know,NONE,6
+0d52e74a-4d26-4572-8b02-034b624ede40,co/efficient,Text/Live Phone,IA,,10/28/26,10/28/26,f1fe613f-f0e6-48e0-ae6e-24facfaddda7,1020,lv,,FALSE,Josh Turek,DEM,46
+0d52e74a-4d26-4572-8b02-034b624ede40,co/efficient,Text/Live Phone,IA,,10/28/26,10/28/26,f1fe613f-f0e6-48e0-ae6e-24facfaddda7,1020,lv,,FALSE,Ashley Hinson,REP,48
+0d52e74a-4d26-4572-8b02-034b624ede40,co/efficient,Text/Live Phone,IA,,10/28/26,10/28/26,90c15ee0-fb68-469f-8d0c-27cef00d08f9,1020,lv,,FALSE,Don't know,NONE,5
+0d52e74a-4d26-4572-8b02-034b624ede40,co/efficient,Text/Live Phone,IA,,10/28/26,10/28/26,90c15ee0-fb68-469f-8d0c-27cef00d08f9,1020,lv,,FALSE,Thomas Laehn,LIB,1
+0d52e74a-4d26-4572-8b02-034b624ede40,co/efficient,Text/Live Phone,IA,,10/28/26,10/28/26,90c15ee0-fb68-469f-8d0c-27cef00d08f9,1020,lv,,FALSE,Josh Turek,DEM,46
+0d52e74a-4d26-4572-8b02-034b624ede40,co/efficient,Text/Live Phone,IA,,10/28/26,10/28/26,90c15ee0-fb68-469f-8d0c-27cef00d08f9,1020,lv,,FALSE,Ashley Hinson,REP,48
 641ee852-f596-4554-a4f7-c74286914371,GrayHouse,Text-to-Web/Live Phone,AR,,10/27/26,10/28/26,2e1b0d01-6660-4ce8-ba99-84990932443b,509,lv,REP,FALSE,Don't know,NONE,2
 641ee852-f596-4554-a4f7-c74286914371,GrayHouse,Text-to-Web/Live Phone,AR,,10/27/26,10/28/26,2e1b0d01-6660-4ce8-ba99-84990932443b,509,lv,REP,FALSE,Jeff Wadlin,LIB,4
 641ee852-f596-4554-a4f7-c74286914371,GrayHouse,Text-to-Web/Live Phone,AR,,10/27/26,10/28/26,2e1b0d01-6660-4ce8-ba99-84990932443b,509,lv,REP,FALSE,Hallie Shoffner,DEM,39
@@ -45,6 +76,10 @@ e05bf93a-250d-4ff3-bc42-01804850b159,CNN/SSRS,Live Phone/Probability Panel,MI,,1
 87c6b869-73ff-4c58-b40e-35f7f60e6cc6,Blueprint Polling,Text-to-Web,AL,,10/22/26,10/24/26,cf8f809f-e5d0-4b42-a1be-f4f47c2106aa,695,lv,,FALSE,Don't know,NONE,12.7
 87c6b869-73ff-4c58-b40e-35f7f60e6cc6,Blueprint Polling,Text-to-Web,AL,,10/22/26,10/24/26,cf8f809f-e5d0-4b42-a1be-f4f47c2106aa,695,lv,,FALSE,Everett Wess,DEM,39.5
 87c6b869-73ff-4c58-b40e-35f7f60e6cc6,Blueprint Polling,Text-to-Web,AL,,10/22/26,10/24/26,cf8f809f-e5d0-4b42-a1be-f4f47c2106aa,695,lv,,FALSE,Barry Moore,REP,47.8
+b8ae6e54-601a-409d-aa76-8fcaf9a3636c,Mitchell Research & Communications,Text-to-Web,MI,,10/26/26,10/27/26,f7998992-e6f5-4932-acbb-a358221f4f9b,636,lv,,FALSE,Timothy Long,CON,0
+b8ae6e54-601a-409d-aa76-8fcaf9a3636c,Mitchell Research & Communications,Text-to-Web,MI,,10/26/26,10/27/26,f7998992-e6f5-4932-acbb-a358221f4f9b,636,lv,,FALSE,Douglas Marsh,GRE,0
+b8ae6e54-601a-409d-aa76-8fcaf9a3636c,Mitchell Research & Communications,Text-to-Web,MI,,10/26/26,10/27/26,f7998992-e6f5-4932-acbb-a358221f4f9b,636,lv,,FALSE,Walter Kristy,NAT,1
+b8ae6e54-601a-409d-aa76-8fcaf9a3636c,Mitchell Research & Communications,Text-to-Web,MI,,10/26/26,10/27/26,f7998992-e6f5-4932-acbb-a358221f4f9b,636,lv,,FALSE,Lydia Christensen,LIB,1
 b8ae6e54-601a-409d-aa76-8fcaf9a3636c,Mitchell Research & Communications,Text-to-Web,MI,,10/26/26,10/27/26,f7998992-e6f5-4932-acbb-a358221f4f9b,636,lv,,FALSE,Don't know,NONE,3
 b8ae6e54-601a-409d-aa76-8fcaf9a3636c,Mitchell Research & Communications,Text-to-Web,MI,,10/26/26,10/27/26,f7998992-e6f5-4932-acbb-a358221f4f9b,636,lv,,FALSE,Mike Rogers,REP,44
 b8ae6e54-601a-409d-aa76-8fcaf9a3636c,Mitchell Research & Communications,Text-to-Web,MI,,10/26/26,10/27/26,f7998992-e6f5-4932-acbb-a358221f4f9b,636,lv,,FALSE,Abdul El-Sayed,DEM,51
@@ -90,19 +125,19 @@ f563358e-6428-4c39-b20d-84027b8795a4,The New York Times/Siena University,Live Ph
 f563358e-6428-4c39-b20d-84027b8795a4,The New York Times/Siena University,Live Phone,SC,,10/19/26,10/26/26,4377654d-c6b1-49d1-9540-cf833100a098,707,lv,,FALSE,Someone else,NONE,0.47
 f563358e-6428-4c39-b20d-84027b8795a4,The New York Times/Siena University,Live Phone,SC,,10/19/26,10/26/26,4377654d-c6b1-49d1-9540-cf833100a098,707,lv,,FALSE,Darline Graham,REP,48.47
 f563358e-6428-4c39-b20d-84027b8795a4,The New York Times/Siena University,Live Phone,SC,,10/19/26,10/26/26,4377654d-c6b1-49d1-9540-cf833100a098,707,lv,,FALSE,Annie Andrews,DEM,47.76
-57649163-682d-4897-bea8-5e8679901359,The Citadel School of Humanities and Social Sciences,Live Phone/Text,SC,,10/14/26,10/25/26,4153e2a4-42ba-4212-8411-527391251ebd,1009,rv,,FALSE,Would not vote,NONE,2
-57649163-682d-4897-bea8-5e8679901359,The Citadel School of Humanities and Social Sciences,Live Phone/Text,SC,,10/14/26,10/25/26,4153e2a4-42ba-4212-8411-527391251ebd,1009,rv,,FALSE,Ralph Norman,REP,3
-57649163-682d-4897-bea8-5e8679901359,The Citadel School of Humanities and Social Sciences,Live Phone/Text,SC,,10/14/26,10/25/26,4153e2a4-42ba-4212-8411-527391251ebd,1009,rv,,FALSE,Don't know,NONE,18
-57649163-682d-4897-bea8-5e8679901359,The Citadel School of Humanities and Social Sciences,Live Phone/Text,SC,,10/14/26,10/25/26,4153e2a4-42ba-4212-8411-527391251ebd,1009,rv,,FALSE,Mark Hackett,CON,2
-57649163-682d-4897-bea8-5e8679901359,The Citadel School of Humanities and Social Sciences,Live Phone/Text,SC,,10/14/26,10/25/26,4153e2a4-42ba-4212-8411-527391251ebd,1009,rv,,FALSE,Kasie Whitener,LIB,1
-57649163-682d-4897-bea8-5e8679901359,The Citadel School of Humanities and Social Sciences,Live Phone/Text,SC,,10/14/26,10/25/26,4153e2a4-42ba-4212-8411-527391251ebd,1009,rv,,FALSE,Darline Graham,REP,34
-57649163-682d-4897-bea8-5e8679901359,The Citadel School of Humanities and Social Sciences,Live Phone/Text,SC,,10/14/26,10/25/26,4153e2a4-42ba-4212-8411-527391251ebd,1009,rv,,FALSE,Annie Andrews,DEM,40
-57649163-682d-4897-bea8-5e8679901359,The Citadel School of Humanities and Social Sciences,Live Phone/Text,SC,,10/14/26,10/25/26,d2ef23bf-014c-470a-8640-7986e948b9e9,890,lv,,FALSE,Ralph Norman,REP,2
-57649163-682d-4897-bea8-5e8679901359,The Citadel School of Humanities and Social Sciences,Live Phone/Text,SC,,10/14/26,10/25/26,d2ef23bf-014c-470a-8640-7986e948b9e9,890,lv,,FALSE,Don't know,NONE,14
-57649163-682d-4897-bea8-5e8679901359,The Citadel School of Humanities and Social Sciences,Live Phone/Text,SC,,10/14/26,10/25/26,d2ef23bf-014c-470a-8640-7986e948b9e9,890,lv,,FALSE,Mark Hackett,CON,1
-57649163-682d-4897-bea8-5e8679901359,The Citadel School of Humanities and Social Sciences,Live Phone/Text,SC,,10/14/26,10/25/26,d2ef23bf-014c-470a-8640-7986e948b9e9,890,lv,,FALSE,Kasie Whitener,LIB,1
-57649163-682d-4897-bea8-5e8679901359,The Citadel School of Humanities and Social Sciences,Live Phone/Text,SC,,10/14/26,10/25/26,d2ef23bf-014c-470a-8640-7986e948b9e9,890,lv,,FALSE,Darline Graham,REP,42
-57649163-682d-4897-bea8-5e8679901359,The Citadel School of Humanities and Social Sciences,Live Phone/Text,SC,,10/14/26,10/25/26,d2ef23bf-014c-470a-8640-7986e948b9e9,890,lv,,FALSE,Annie Andrews,DEM,39
+57649163-682d-4897-bea8-5e8679901359,The Citadel Poll,Live Phone/Text,SC,,10/14/26,10/25/26,4153e2a4-42ba-4212-8411-527391251ebd,1009,rv,,FALSE,Would not vote,NONE,2
+57649163-682d-4897-bea8-5e8679901359,The Citadel Poll,Live Phone/Text,SC,,10/14/26,10/25/26,4153e2a4-42ba-4212-8411-527391251ebd,1009,rv,,FALSE,Ralph Norman,REP,3
+57649163-682d-4897-bea8-5e8679901359,The Citadel Poll,Live Phone/Text,SC,,10/14/26,10/25/26,4153e2a4-42ba-4212-8411-527391251ebd,1009,rv,,FALSE,Don't know,NONE,18
+57649163-682d-4897-bea8-5e8679901359,The Citadel Poll,Live Phone/Text,SC,,10/14/26,10/25/26,4153e2a4-42ba-4212-8411-527391251ebd,1009,rv,,FALSE,Mark Hackett,CON,2
+57649163-682d-4897-bea8-5e8679901359,The Citadel Poll,Live Phone/Text,SC,,10/14/26,10/25/26,4153e2a4-42ba-4212-8411-527391251ebd,1009,rv,,FALSE,Kasie Whitener,LIB,1
+57649163-682d-4897-bea8-5e8679901359,The Citadel Poll,Live Phone/Text,SC,,10/14/26,10/25/26,4153e2a4-42ba-4212-8411-527391251ebd,1009,rv,,FALSE,Darline Graham,REP,34
+57649163-682d-4897-bea8-5e8679901359,The Citadel Poll,Live Phone/Text,SC,,10/14/26,10/25/26,4153e2a4-42ba-4212-8411-527391251ebd,1009,rv,,FALSE,Annie Andrews,DEM,40
+57649163-682d-4897-bea8-5e8679901359,The Citadel Poll,Live Phone/Text,SC,,10/14/26,10/25/26,d2ef23bf-014c-470a-8640-7986e948b9e9,890,lv,,FALSE,Ralph Norman,REP,2
+57649163-682d-4897-bea8-5e8679901359,The Citadel Poll,Live Phone/Text,SC,,10/14/26,10/25/26,d2ef23bf-014c-470a-8640-7986e948b9e9,890,lv,,FALSE,Don't know,NONE,14
+57649163-682d-4897-bea8-5e8679901359,The Citadel Poll,Live Phone/Text,SC,,10/14/26,10/25/26,d2ef23bf-014c-470a-8640-7986e948b9e9,890,lv,,FALSE,Mark Hackett,CON,1
+57649163-682d-4897-bea8-5e8679901359,The Citadel Poll,Live Phone/Text,SC,,10/14/26,10/25/26,d2ef23bf-014c-470a-8640-7986e948b9e9,890,lv,,FALSE,Kasie Whitener,LIB,1
+57649163-682d-4897-bea8-5e8679901359,The Citadel Poll,Live Phone/Text,SC,,10/14/26,10/25/26,d2ef23bf-014c-470a-8640-7986e948b9e9,890,lv,,FALSE,Darline Graham,REP,42
+57649163-682d-4897-bea8-5e8679901359,The Citadel Poll,Live Phone/Text,SC,,10/14/26,10/25/26,d2ef23bf-014c-470a-8640-7986e948b9e9,890,lv,,FALSE,Annie Andrews,DEM,39
 b6037ae7-e4a6-46a2-a8e9-83eb3cc01ae4,Cor Strategies,IVR/Live Phone/Nonprobability Panel,TX,,10/10/26,10/15/26,0a38926a-9a08-4300-a29f-0c4ba739ed1c,1409,lv,REP,FALSE,Don't know,NONE,16
 b6037ae7-e4a6-46a2-a8e9-83eb3cc01ae4,Cor Strategies,IVR/Live Phone/Nonprobability Panel,TX,,10/10/26,10/15/26,0a38926a-9a08-4300-a29f-0c4ba739ed1c,1409,lv,REP,FALSE,Ken Paxton,REP,40
 b6037ae7-e4a6-46a2-a8e9-83eb3cc01ae4,Cor Strategies,IVR/Live Phone/Nonprobability Panel,TX,,10/10/26,10/15/26,0a38926a-9a08-4300-a29f-0c4ba739ed1c,1409,lv,REP,FALSE,James Talarico,DEM,44
@@ -455,9 +490,9 @@ c5000c5b-f88e-460a-9b37-9c068f09cd9c,YouGov,,MA,,10/5/26,10/12/26,8d58fb28-ffbe-
 c5000c5b-f88e-460a-9b37-9c068f09cd9c,YouGov,,MA,,10/5/26,10/12/26,8d58fb28-ffbe-4d5b-8b7d-6edbd4535dce,800,rv,,FALSE,Shiva Ayyadurai,IND,6
 c5000c5b-f88e-460a-9b37-9c068f09cd9c,YouGov,,MA,,10/5/26,10/12/26,8d58fb28-ffbe-4d5b-8b7d-6edbd4535dce,800,rv,,FALSE,John Deaton,REP,29
 c5000c5b-f88e-460a-9b37-9c068f09cd9c,YouGov,,MA,,10/5/26,10/12/26,8d58fb28-ffbe-4d5b-8b7d-6edbd4535dce,800,rv,,FALSE,Ed Markey,DEM,56
-06cde9f9-1d19-466c-b7aa-42e4ec649862,"Mason-Dixon Polling & Research, Inc.",Live Phone,SD,,10/12/26,10/14/26,3e7e4333-aa9d-4bbd-98ef-cadffb91157c,500,lv,,FALSE,Don't know,NONE,6
-06cde9f9-1d19-466c-b7aa-42e4ec649862,"Mason-Dixon Polling & Research, Inc.",Live Phone,SD,,10/12/26,10/14/26,3e7e4333-aa9d-4bbd-98ef-cadffb91157c,500,lv,,FALSE,Brian Bengs,IND,37
-06cde9f9-1d19-466c-b7aa-42e4ec649862,"Mason-Dixon Polling & Research, Inc.",Live Phone,SD,,10/12/26,10/14/26,3e7e4333-aa9d-4bbd-98ef-cadffb91157c,500,lv,,FALSE,Mike Rounds,REP,56
+06cde9f9-1d19-466c-b7aa-42e4ec649862,"Mason-Dixon Polling & Research, Inc.",Live Phone,SD,,10/12/26,10/14/26,3e7e4333-aa9d-4bbd-98ef-cadffb91157c,500,lv,,FALSE,Don't know,NONE,6.2
+06cde9f9-1d19-466c-b7aa-42e4ec649862,"Mason-Dixon Polling & Research, Inc.",Live Phone,SD,,10/12/26,10/14/26,3e7e4333-aa9d-4bbd-98ef-cadffb91157c,500,lv,,FALSE,Brian Bengs,IND,37.4
+06cde9f9-1d19-466c-b7aa-42e4ec649862,"Mason-Dixon Polling & Research, Inc.",Live Phone,SD,,10/12/26,10/14/26,3e7e4333-aa9d-4bbd-98ef-cadffb91157c,500,lv,,FALSE,Mike Rounds,REP,56.4
 cec80170-8597-4cef-90ad-2ed9e6f2a4ed,University of Houston Hobby School of Public Affairs,Text-to-Web,TX,,10/10/26,10/14/26,afc559a0-0dd9-43b9-b838-e2633e3f7eea,2000,lv,,FALSE,Don't know,NONE,3
 cec80170-8597-4cef-90ad-2ed9e6f2a4ed,University of Houston Hobby School of Public Affairs,Text-to-Web,TX,,10/10/26,10/14/26,afc559a0-0dd9-43b9-b838-e2633e3f7eea,2000,lv,,FALSE,Ted Brown,LIB,3
 cec80170-8597-4cef-90ad-2ed9e6f2a4ed,University of Houston Hobby School of Public Affairs,Text-to-Web,TX,,10/10/26,10/14/26,afc559a0-0dd9-43b9-b838-e2633e3f7eea,2000,lv,,FALSE,Ken Paxton,REP,46

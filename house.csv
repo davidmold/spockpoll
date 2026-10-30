@@ -1,4 +1,28 @@
 poll_id,pollster,methodology,state,seat_number,start_date,end_date,question_id,sample_size,population,partisan,ranked_choice_reallocated,candidate_name,party,pct
+295f5a4e-efb8-46b6-b1f8-546c2b574d03,The Argument/Verasight,,US,,10/21/26,10/23/26,90419579-e1fd-4af0-aa4c-900e62cc8a3c,,lv,,FALSE,Generic Republican,REP,44.6
+295f5a4e-efb8-46b6-b1f8-546c2b574d03,The Argument/Verasight,,US,,10/21/26,10/23/26,90419579-e1fd-4af0-aa4c-900e62cc8a3c,,lv,,FALSE,Generic Democrat,DEM,55.4
+295f5a4e-efb8-46b6-b1f8-546c2b574d03,The Argument/Verasight,,US,,10/21/26,10/23/26,b9017772-6511-4c75-86f7-47681d82319a,1549,rv,,FALSE,Generic Republican,REP,45.3
+295f5a4e-efb8-46b6-b1f8-546c2b574d03,The Argument/Verasight,,US,,10/21/26,10/23/26,b9017772-6511-4c75-86f7-47681d82319a,1549,rv,,FALSE,Generic Democrat,DEM,54.7
+81be1cc2-3c9d-4786-9ee7-9d01bceb06e7,Montana State University Billings,Live Phone/Nonprobability Panel,MT,2,10/5/26,10/21/26,b58771db-ecb1-4541-9630-7d90f0df9fad,350,a,,FALSE,Don't know,NONE,31
+81be1cc2-3c9d-4786-9ee7-9d01bceb06e7,Montana State University Billings,Live Phone/Nonprobability Panel,MT,2,10/5/26,10/21/26,b58771db-ecb1-4541-9630-7d90f0df9fad,350,a,,FALSE,Michael Eisenhauer,IND,15
+81be1cc2-3c9d-4786-9ee7-9d01bceb06e7,Montana State University Billings,Live Phone/Nonprobability Panel,MT,2,10/5/26,10/21/26,b58771db-ecb1-4541-9630-7d90f0df9fad,350,a,,FALSE,Patrick McCracken,LIB,2
+81be1cc2-3c9d-4786-9ee7-9d01bceb06e7,Montana State University Billings,Live Phone/Nonprobability Panel,MT,2,10/5/26,10/21/26,b58771db-ecb1-4541-9630-7d90f0df9fad,350,a,,FALSE,Brian Miller,DEM,18
+81be1cc2-3c9d-4786-9ee7-9d01bceb06e7,Montana State University Billings,Live Phone/Nonprobability Panel,MT,2,10/5/26,10/21/26,b58771db-ecb1-4541-9630-7d90f0df9fad,350,a,,FALSE,Troy Downing,REP,29
+81be1cc2-3c9d-4786-9ee7-9d01bceb06e7,Montana State University Billings,Live Phone/Nonprobability Panel,MT,1,10/5/26,10/21/26,8a35f1b1-0eb3-4702-a753-60a3e6ec50fa,287,a,,FALSE,Don't know,NONE,11
+81be1cc2-3c9d-4786-9ee7-9d01bceb06e7,Montana State University Billings,Live Phone/Nonprobability Panel,MT,1,10/5/26,10/21/26,8a35f1b1-0eb3-4702-a753-60a3e6ec50fa,287,a,,FALSE,Nick Sheedy,LIB,4
+81be1cc2-3c9d-4786-9ee7-9d01bceb06e7,Montana State University Billings,Live Phone/Nonprobability Panel,MT,1,10/5/26,10/21/26,8a35f1b1-0eb3-4702-a753-60a3e6ec50fa,287,a,,FALSE,Sam Forstag,DEM,49
+81be1cc2-3c9d-4786-9ee7-9d01bceb06e7,Montana State University Billings,Live Phone/Nonprobability Panel,MT,1,10/5/26,10/21/26,8a35f1b1-0eb3-4702-a753-60a3e6ec50fa,287,a,,FALSE,Aaron Flint,REP,32
+07bc5c84-fd75-4eab-b04c-6970b1f32c53,The Honest Poll,Text/Nonprobability Panel,US,,10/28/26,10/29/26,2ffaa021-779a-4e5e-a0a0-02a0efee677b,1158,lv,,FALSE,Don't know,NONE,3
+07bc5c84-fd75-4eab-b04c-6970b1f32c53,The Honest Poll,Text/Nonprobability Panel,US,,10/28/26,10/29/26,2ffaa021-779a-4e5e-a0a0-02a0efee677b,1158,lv,,FALSE,Someone else,NONE,2
+07bc5c84-fd75-4eab-b04c-6970b1f32c53,The Honest Poll,Text/Nonprobability Panel,US,,10/28/26,10/29/26,2ffaa021-779a-4e5e-a0a0-02a0efee677b,1158,lv,,FALSE,Generic Republican,REP,41
+07bc5c84-fd75-4eab-b04c-6970b1f32c53,The Honest Poll,Text/Nonprobability Panel,US,,10/28/26,10/29/26,2ffaa021-779a-4e5e-a0a0-02a0efee677b,1158,lv,,FALSE,Generic Democrat,DEM,54
+07bc5c84-fd75-4eab-b04c-6970b1f32c53,The Honest Poll,Text/Nonprobability Panel,US,,10/28/26,10/29/26,12e5464a-fa10-40f0-a87a-15c8ecb393d0,1290,rv,,FALSE,Someone else,NONE,3
+07bc5c84-fd75-4eab-b04c-6970b1f32c53,The Honest Poll,Text/Nonprobability Panel,US,,10/28/26,10/29/26,12e5464a-fa10-40f0-a87a-15c8ecb393d0,1290,rv,,FALSE,Don't know,NONE,5
+07bc5c84-fd75-4eab-b04c-6970b1f32c53,The Honest Poll,Text/Nonprobability Panel,US,,10/28/26,10/29/26,12e5464a-fa10-40f0-a87a-15c8ecb393d0,1290,rv,,FALSE,Generic Republican,REP,40
+07bc5c84-fd75-4eab-b04c-6970b1f32c53,The Honest Poll,Text/Nonprobability Panel,US,,10/28/26,10/29/26,12e5464a-fa10-40f0-a87a-15c8ecb393d0,1290,rv,,FALSE,Generic Democrat,DEM,52
+e3ae7f70-b77f-490f-8726-1d0c8a9cf212,"Keating Research, Inc.",,AZ,1,10/26/26,10/28/26,8d9925e0-0ade-4b86-9fff-4f58f41bab9d,500,lv,,FALSE,Don't know,NONE,5.64
+e3ae7f70-b77f-490f-8726-1d0c8a9cf212,"Keating Research, Inc.",,AZ,1,10/26/26,10/28/26,8d9925e0-0ade-4b86-9fff-4f58f41bab9d,500,lv,,FALSE,Jay Feely,REP,45
+e3ae7f70-b77f-490f-8726-1d0c8a9cf212,"Keating Research, Inc.",,AZ,1,10/26/26,10/28/26,8d9925e0-0ade-4b86-9fff-4f58f41bab9d,500,lv,,FALSE,Amish Shah,DEM,49.4
 d1443dbf-115d-4805-bf7a-685b040b0291,Public Policy Polling,,MN,8,10/25/26,10/26/26,67011c4c-6337-4301-812a-6faaefda4707,585,rv,DEM,FALSE,Don't know,NONE,8
 d1443dbf-115d-4805-bf7a-685b040b0291,Public Policy Polling,,MN,8,10/25/26,10/26/26,67011c4c-6337-4301-812a-6faaefda4707,585,rv,DEM,FALSE,Generic Republican,REP,48
 d1443dbf-115d-4805-bf7a-685b040b0291,Public Policy Polling,,MN,8,10/25/26,10/26/26,67011c4c-6337-4301-812a-6faaefda4707,585,rv,DEM,FALSE,Generic Democrat,DEM,44
@@ -374,9 +398,9 @@ ed02a8a5-f335-4c1e-b467-d73df2d076d4,SEA Polling,,FL,9,10/13/26,10/15/26,8876696
 eea45d78-eb39-4836-9819-ab58a933cdb7,Morning Consult,,US,,10/12/26,10/18/26,005d0308-d4a0-4fb7-945e-9de9091eed3b,17706,lv,,FALSE,Don't know,NONE,6.42
 eea45d78-eb39-4836-9819-ab58a933cdb7,Morning Consult,,US,,10/12/26,10/18/26,005d0308-d4a0-4fb7-945e-9de9091eed3b,17706,lv,,FALSE,Generic Republican,REP,43.14
 eea45d78-eb39-4836-9819-ab58a933cdb7,Morning Consult,,US,,10/12/26,10/18/26,005d0308-d4a0-4fb7-945e-9de9091eed3b,17706,lv,,FALSE,Generic Democrat,DEM,50.44
-06cde9f9-1d19-466c-b7aa-42e4ec649862,"Mason-Dixon Polling & Research, Inc.",Live Phone,SD,1,10/12/26,10/14/26,f9e80da1-6abe-4ba5-9fa1-5ad0f2320c24,500,lv,,FALSE,Don't know,NONE,9
-06cde9f9-1d19-466c-b7aa-42e4ec649862,"Mason-Dixon Polling & Research, Inc.",Live Phone,SD,1,10/12/26,10/14/26,f9e80da1-6abe-4ba5-9fa1-5ad0f2320c24,500,lv,,FALSE,Marty Jackley,REP,60
-06cde9f9-1d19-466c-b7aa-42e4ec649862,"Mason-Dixon Polling & Research, Inc.",Live Phone,SD,1,10/12/26,10/14/26,f9e80da1-6abe-4ba5-9fa1-5ad0f2320c24,500,lv,,FALSE,Nikki Gronli,DEM,32
+06cde9f9-1d19-466c-b7aa-42e4ec649862,"Mason-Dixon Polling & Research, Inc.",Live Phone,SD,1,10/12/26,10/14/26,f9e80da1-6abe-4ba5-9fa1-5ad0f2320c24,500,lv,,FALSE,Don't know,NONE,8.6
+06cde9f9-1d19-466c-b7aa-42e4ec649862,"Mason-Dixon Polling & Research, Inc.",Live Phone,SD,1,10/12/26,10/14/26,f9e80da1-6abe-4ba5-9fa1-5ad0f2320c24,500,lv,,FALSE,Marty Jackley,REP,59.6
+06cde9f9-1d19-466c-b7aa-42e4ec649862,"Mason-Dixon Polling & Research, Inc.",Live Phone,SD,1,10/12/26,10/14/26,f9e80da1-6abe-4ba5-9fa1-5ad0f2320c24,500,lv,,FALSE,Nikki Gronli,DEM,31.8
 600f428f-379b-453f-8b57-5a2f71b4b1e3,Ipsos,Probability Panel,US,,10/9/26,10/13/26,9cd60dd4-dfef-41e4-9a04-d11dd4a02ee1,2032,lv,,FALSE,Don't know,NONE,1
 600f428f-379b-453f-8b57-5a2f71b4b1e3,Ipsos,Probability Panel,US,,10/9/26,10/13/26,9cd60dd4-dfef-41e4-9a04-d11dd4a02ee1,2032,lv,,FALSE,Would not vote,NONE,3
 600f428f-379b-453f-8b57-5a2f71b4b1e3,Ipsos,Probability Panel,US,,10/9/26,10/13/26,9cd60dd4-dfef-41e4-9a04-d11dd4a02ee1,2032,lv,,FALSE,Generic Republican,REP,44
@@ -626,6 +650,9 @@ ac1e919c-0677-4178-b88e-fa5f600108dc,Public Policy Polling,Live Phone/Text,FL,16
 64c06578-fb0d-4228-aced-bf780b718605,Ipsos,Probability Panel,US,,9/30/26,10/5/26,5081796d-eb22-405f-9592-3af5aa88bb84,4506,a,,FALSE,Generic Candidate,OTH,2
 64c06578-fb0d-4228-aced-bf780b718605,Ipsos,Probability Panel,US,,9/30/26,10/5/26,5081796d-eb22-405f-9592-3af5aa88bb84,4506,a,,FALSE,Generic Republican,REP,30
 64c06578-fb0d-4228-aced-bf780b718605,Ipsos,Probability Panel,US,,9/30/26,10/5/26,5081796d-eb22-405f-9592-3af5aa88bb84,4506,a,,FALSE,Generic Democrat,DEM,37
+8135a0ef-11e2-4c3a-b183-d1a57b2aad14,The Winston Group,,US,,9/12/26,9/16/26,3533c500-adde-4cd6-8183-eb6b1cbaa0b7,1000,rv,REP,FALSE,Don't know,NONE,7
+8135a0ef-11e2-4c3a-b183-d1a57b2aad14,The Winston Group,,US,,9/12/26,9/16/26,3533c500-adde-4cd6-8183-eb6b1cbaa0b7,1000,rv,REP,FALSE,Generic Democrat,DEM,51
+8135a0ef-11e2-4c3a-b183-d1a57b2aad14,The Winston Group,,US,,9/12/26,9/16/26,3533c500-adde-4cd6-8183-eb6b1cbaa0b7,1000,rv,REP,FALSE,Generic Republican,REP,42
 ab70490c-1e3e-411d-9b3f-d2ccbfdcddeb,Morning Consult,,US,,9/28/26,10/4/26,5710cedd-596e-45a9-8d59-9b39d16d3dcb,17659,lv,,FALSE,Don't know,NONE,6.88
 ab70490c-1e3e-411d-9b3f-d2ccbfdcddeb,Morning Consult,,US,,9/28/26,10/4/26,5710cedd-596e-45a9-8d59-9b39d16d3dcb,17659,lv,,FALSE,Generic Republican,REP,43.24
 ab70490c-1e3e-411d-9b3f-d2ccbfdcddeb,Morning Consult,,US,,9/28/26,10/4/26,5710cedd-596e-45a9-8d59-9b39d16d3dcb,17659,lv,,FALSE,Generic Democrat,DEM,49.88
@@ -2658,9 +2685,9 @@ b9dcd19d-0475-4b53-8b3d-d9bf954aa229,Tavern Research,,US,,4/6/26,4/9/26,b0377e5a
 52a63e3a-c6ce-4f4d-9a9b-3d32a232d876,RMG Research,,US,,4/6/26,4/9/26,9c4c7a18-059f-4523-badc-aa9a2ed8f86e,2000,rv,,FALSE,Don't know,NONE,5
 52a63e3a-c6ce-4f4d-9a9b-3d32a232d876,RMG Research,,US,,4/6/26,4/9/26,9c4c7a18-059f-4523-badc-aa9a2ed8f86e,2000,rv,,FALSE,Generic Democrat,DEM,49
 52a63e3a-c6ce-4f4d-9a9b-3d32a232d876,RMG Research,,US,,4/6/26,4/9/26,9c4c7a18-059f-4523-badc-aa9a2ed8f86e,2000,rv,,FALSE,Generic Republican,REP,44
-d2003e23-3a8c-48f7-a1db-f8973230d6f4,Winston Group,,US,,3/15/26,3/17/26,7ab036d3-b687-46e6-80a3-683ceaffec9f,1000,rv,REP,FALSE,Don't know,NONE,11
-d2003e23-3a8c-48f7-a1db-f8973230d6f4,Winston Group,,US,,3/15/26,3/17/26,7ab036d3-b687-46e6-80a3-683ceaffec9f,1000,rv,REP,FALSE,Generic Democrat,DEM,49
-d2003e23-3a8c-48f7-a1db-f8973230d6f4,Winston Group,,US,,3/15/26,3/17/26,7ab036d3-b687-46e6-80a3-683ceaffec9f,1000,rv,REP,FALSE,Generic Republican,REP,40
+d2003e23-3a8c-48f7-a1db-f8973230d6f4,The Winston Group,,US,,3/15/26,3/17/26,7ab036d3-b687-46e6-80a3-683ceaffec9f,1000,rv,REP,FALSE,Don't know,NONE,11
+d2003e23-3a8c-48f7-a1db-f8973230d6f4,The Winston Group,,US,,3/15/26,3/17/26,7ab036d3-b687-46e6-80a3-683ceaffec9f,1000,rv,REP,FALSE,Generic Democrat,DEM,49
+d2003e23-3a8c-48f7-a1db-f8973230d6f4,The Winston Group,,US,,3/15/26,3/17/26,7ab036d3-b687-46e6-80a3-683ceaffec9f,1000,rv,REP,FALSE,Generic Republican,REP,40
 cc66ac94-0e9b-4a5a-bcb9-2d333a06aef1,University of Massachusetts Lowell Center for Public Opinion/YouGov,Nonprobability Panel,US,,3/26/26,3/30/26,fc81003a-62ce-449c-8029-636ede53d3cf,1000,a,,FALSE,Don't know,NONE,15
 cc66ac94-0e9b-4a5a-bcb9-2d333a06aef1,University of Massachusetts Lowell Center for Public Opinion/YouGov,Nonprobability Panel,US,,3/26/26,3/30/26,fc81003a-62ce-449c-8029-636ede53d3cf,1000,a,,FALSE,Would not vote,NONE,11
 cc66ac94-0e9b-4a5a-bcb9-2d333a06aef1,University of Massachusetts Lowell Center for Public Opinion/YouGov,Nonprobability Panel,US,,3/26/26,3/30/26,fc81003a-62ce-449c-8029-636ede53d3cf,1000,a,,FALSE,Someone else,NONE,1
