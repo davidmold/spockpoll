@@ -1,6 +1,29 @@
 poll_id,pollster,methodology,state,seat_number,start_date,end_date,question_id,sample_size,population,partisan,ranked_choice_reallocated,candidate_name,party,pct
-295f5a4e-efb8-46b6-b1f8-546c2b574d03,The Argument/Verasight,,US,,10/21/26,10/23/26,90419579-e1fd-4af0-aa4c-900e62cc8a3c,,lv,,FALSE,Generic Republican,REP,44.6
-295f5a4e-efb8-46b6-b1f8-546c2b574d03,The Argument/Verasight,,US,,10/21/26,10/23/26,90419579-e1fd-4af0-aa4c-900e62cc8a3c,,lv,,FALSE,Generic Democrat,DEM,55.4
+b606d0d2-4431-44ba-a917-409b7f7367ec,ActiVote,App Panel,US,,10/22/26,10/30/26,2f2a6739-f7c1-487c-bb20-725ceab9d4a3,2000,lv,,FALSE,Generic Republican,REP,46.5
+b606d0d2-4431-44ba-a917-409b7f7367ec,ActiVote,App Panel,US,,10/22/26,10/30/26,2f2a6739-f7c1-487c-bb20-725ceab9d4a3,2000,lv,,FALSE,Generic Democrat,DEM,53.5
+04053aa5-3fee-407a-8628-1f4e4ff038b9,Ipsos,,US,,10/9/26,10/28/26,cc4a35fe-7cd3-444b-b772-4372e39c9434,1209,lv,,FALSE,Generic Republican,REP,44
+04053aa5-3fee-407a-8628-1f4e4ff038b9,Ipsos,,US,,10/9/26,10/28/26,cc4a35fe-7cd3-444b-b772-4372e39c9434,1209,lv,,FALSE,Generic Democrat,DEM,50
+5ff99874-d9f3-44e3-b1d0-abb3a5913419,Pennsylvania State University McCourtney Institute for Democracy/YouGov,Nonprobability Panel,US,,10/14/26,10/20/26,3a3bf850-8bda-4d0f-953d-158972c2f794,724,lv,,FALSE,Don't know,NONE,8
+5ff99874-d9f3-44e3-b1d0-abb3a5913419,Pennsylvania State University McCourtney Institute for Democracy/YouGov,Nonprobability Panel,US,,10/14/26,10/20/26,3a3bf850-8bda-4d0f-953d-158972c2f794,724,lv,,FALSE,Generic Candidate,OTH,2
+5ff99874-d9f3-44e3-b1d0-abb3a5913419,Pennsylvania State University McCourtney Institute for Democracy/YouGov,Nonprobability Panel,US,,10/14/26,10/20/26,3a3bf850-8bda-4d0f-953d-158972c2f794,724,lv,,FALSE,Generic Democrat,DEM,47
+5ff99874-d9f3-44e3-b1d0-abb3a5913419,Pennsylvania State University McCourtney Institute for Democracy/YouGov,Nonprobability Panel,US,,10/14/26,10/20/26,3a3bf850-8bda-4d0f-953d-158972c2f794,724,lv,,FALSE,Generic Republican,REP,43
+fc5ad0d1-af35-4f32-92ed-867bd3a31a13,USC Democracy and Fair Elections Lab,Email/Text,CA,48,10/22/26,10/27/26,dcf42607-d811-4219-80d7-585dcdd28ce7,474,lv,,FALSE,Would not vote,NONE,4
+fc5ad0d1-af35-4f32-92ed-867bd3a31a13,USC Democracy and Fair Elections Lab,Email/Text,CA,48,10/22/26,10/27/26,dcf42607-d811-4219-80d7-585dcdd28ce7,474,lv,,FALSE,Jim Desmond,REP,44
+fc5ad0d1-af35-4f32-92ed-867bd3a31a13,USC Democracy and Fair Elections Lab,Email/Text,CA,48,10/22/26,10/27/26,dcf42607-d811-4219-80d7-585dcdd28ce7,474,lv,,FALSE,Marni von Wilpert,DEM,52
+ad1fed79-6d60-436e-9da3-eeabf167f693,USC Democracy and Fair Elections Lab,Email/Text,CA,22,10/22/26,10/28/26,9c889edc-4428-4680-a469-ad36091a2f0f,356,lv,,FALSE,Would not vote,NONE,2
+ad1fed79-6d60-436e-9da3-eeabf167f693,USC Democracy and Fair Elections Lab,Email/Text,CA,22,10/22/26,10/28/26,9c889edc-4428-4680-a469-ad36091a2f0f,356,lv,,FALSE,David G. Valadao,REP,44
+ad1fed79-6d60-436e-9da3-eeabf167f693,USC Democracy and Fair Elections Lab,Email/Text,CA,22,10/22/26,10/28/26,9c889edc-4428-4680-a469-ad36091a2f0f,356,lv,,FALSE,Randy Villegas,DEM,54
+66b29119-e2b2-4e4d-bc04-da0f9e0080ad,USC Democracy and Fair Elections Lab,Email/Text,CA,6,10/22/26,10/26/26,738a45c4-689c-4883-8719-5442e1d23b1d,439,lv,,FALSE,Would not vote,NONE,2
+66b29119-e2b2-4e4d-bc04-da0f9e0080ad,USC Democracy and Fair Elections Lab,Email/Text,CA,6,10/22/26,10/26/26,738a45c4-689c-4883-8719-5442e1d23b1d,439,lv,,FALSE,Kevin Kiley,IND,43
+66b29119-e2b2-4e4d-bc04-da0f9e0080ad,USC Democracy and Fair Elections Lab,Email/Text,CA,6,10/22/26,10/26/26,738a45c4-689c-4883-8719-5442e1d23b1d,439,lv,,FALSE,Richard Pan,DEM,55
+66b29119-e2b2-4e4d-bc04-da0f9e0080ad,USC Democracy and Fair Elections Lab,Email/Text,CA,1,10/22/26,10/26/26,a8a40e6d-05a2-4379-af9a-a49c2c01a8ea,444,lv,,FALSE,Would not vote,NONE,2
+66b29119-e2b2-4e4d-bc04-da0f9e0080ad,USC Democracy and Fair Elections Lab,Email/Text,CA,1,10/22/26,10/26/26,a8a40e6d-05a2-4379-af9a-a49c2c01a8ea,444,lv,,FALSE,James Gallagher,REP,41
+66b29119-e2b2-4e4d-bc04-da0f9e0080ad,USC Democracy and Fair Elections Lab,Email/Text,CA,1,10/22/26,10/26/26,a8a40e6d-05a2-4379-af9a-a49c2c01a8ea,444,lv,,FALSE,Mike McGuire,DEM,56
+ffca2d0e-17d9-4897-8155-875ad1a4185c,Emerson College,Text-to-Web/Probability Panel/Nonprobability Panel,US,,10/24/26,10/26/26,ffdde437-4462-4c1c-8933-ca178367390c,1000,lv,,FALSE,Don't know,NONE,5.2
+ffca2d0e-17d9-4897-8155-875ad1a4185c,Emerson College,Text-to-Web/Probability Panel/Nonprobability Panel,US,,10/24/26,10/26/26,ffdde437-4462-4c1c-8933-ca178367390c,1000,lv,,FALSE,Generic Republican,REP,42.4
+ffca2d0e-17d9-4897-8155-875ad1a4185c,Emerson College,Text-to-Web/Probability Panel/Nonprobability Panel,US,,10/24/26,10/26/26,ffdde437-4462-4c1c-8933-ca178367390c,1000,lv,,FALSE,Generic Democrat,DEM,52.4
+295f5a4e-efb8-46b6-b1f8-546c2b574d03,The Argument/Verasight,,US,,10/21/26,10/23/26,90419579-e1fd-4af0-aa4c-900e62cc8a3c,1549,lv,,FALSE,Generic Republican,REP,44.6
+295f5a4e-efb8-46b6-b1f8-546c2b574d03,The Argument/Verasight,,US,,10/21/26,10/23/26,90419579-e1fd-4af0-aa4c-900e62cc8a3c,1549,lv,,FALSE,Generic Democrat,DEM,55.4
 295f5a4e-efb8-46b6-b1f8-546c2b574d03,The Argument/Verasight,,US,,10/21/26,10/23/26,b9017772-6511-4c75-86f7-47681d82319a,1549,rv,,FALSE,Generic Republican,REP,45.3
 295f5a4e-efb8-46b6-b1f8-546c2b574d03,The Argument/Verasight,,US,,10/21/26,10/23/26,b9017772-6511-4c75-86f7-47681d82319a,1549,rv,,FALSE,Generic Democrat,DEM,54.7
 81be1cc2-3c9d-4786-9ee7-9d01bceb06e7,Montana State University Billings,Live Phone/Nonprobability Panel,MT,2,10/5/26,10/21/26,b58771db-ecb1-4541-9630-7d90f0df9fad,350,a,,FALSE,Don't know,NONE,31
