@@ -1,4 +1,18 @@
 poll_id,pollster,methodology,state,seat_number,start_date,end_date,question_id,sample_size,population,partisan,ranked_choice_reallocated,candidate_name,party,pct
+dbd1593d-daad-413f-93bf-083273ec85f9,ActiVote,App Panel,OH,,10/18/26,10/31/26,6d483faf-e8cd-4b28-bd73-75222ad82034,400,lv,,FALSE,Jon Husted,REP,49.8
+dbd1593d-daad-413f-93bf-083273ec85f9,ActiVote,App Panel,OH,,10/18/26,10/31/26,6d483faf-e8cd-4b28-bd73-75222ad82034,400,lv,,FALSE,Sherrod Brown,DEM,50.2
+c69c6758-b7d5-450d-81dd-c1c7f2ad1268,The Political Matrix/The Listener Group,,FL,,10/26/26,10/28/26,d11d5f5e-d28f-43d6-8882-fee61bfd205b,500,lv,,FALSE,Don't know,NONE,22.4
+c69c6758-b7d5-450d-81dd-c1c7f2ad1268,The Political Matrix/The Listener Group,,FL,,10/26/26,10/28/26,d11d5f5e-d28f-43d6-8882-fee61bfd205b,500,lv,,FALSE,Angie Nixon,DEM,35.8
+c69c6758-b7d5-450d-81dd-c1c7f2ad1268,The Political Matrix/The Listener Group,,FL,,10/26/26,10/28/26,d11d5f5e-d28f-43d6-8882-fee61bfd205b,500,lv,,FALSE,Ashley Moody,REP,41.8
+1463c401-194c-4f2b-a897-d274eaa1618f,Stetson University Center for Public Opinion Research,Nonprobability Panel,FL,,10/26/26,10/30/26,1cce081f-190f-448f-81a8-a5b7a4bc577a,859,lv,,FALSE,Don't know,NONE,3
+1463c401-194c-4f2b-a897-d274eaa1618f,Stetson University Center for Public Opinion Research,Nonprobability Panel,FL,,10/26/26,10/30/26,1cce081f-190f-448f-81a8-a5b7a4bc577a,859,lv,,FALSE,Someone else,NONE,3
+1463c401-194c-4f2b-a897-d274eaa1618f,Stetson University Center for Public Opinion Research,Nonprobability Panel,FL,,10/26/26,10/30/26,1cce081f-190f-448f-81a8-a5b7a4bc577a,859,lv,,FALSE,Angie Nixon,DEM,45
+1463c401-194c-4f2b-a897-d274eaa1618f,Stetson University Center for Public Opinion Research,Nonprobability Panel,FL,,10/26/26,10/30/26,1cce081f-190f-448f-81a8-a5b7a4bc577a,859,lv,,FALSE,Ashley Moody,REP,49
+45558885-837e-4d56-958e-ddd52081bad8,Kreate Strategies,Nonprobability Panel,TX,,10/27/26,10/30/26,a1f09c9b-5461-43b8-abb2-ac01816a26d6,900,lv,,FALSE,Don't know,NONE,6
+45558885-837e-4d56-958e-ddd52081bad8,Kreate Strategies,Nonprobability Panel,TX,,10/27/26,10/30/26,a1f09c9b-5461-43b8-abb2-ac01816a26d6,900,lv,,FALSE,Someone else,NONE,0
+45558885-837e-4d56-958e-ddd52081bad8,Kreate Strategies,Nonprobability Panel,TX,,10/27/26,10/30/26,a1f09c9b-5461-43b8-abb2-ac01816a26d6,900,lv,,FALSE,Ted Brown,LIB,0
+45558885-837e-4d56-958e-ddd52081bad8,Kreate Strategies,Nonprobability Panel,TX,,10/27/26,10/30/26,a1f09c9b-5461-43b8-abb2-ac01816a26d6,900,lv,,FALSE,Ken Paxton,REP,45
+45558885-837e-4d56-958e-ddd52081bad8,Kreate Strategies,Nonprobability Panel,TX,,10/27/26,10/30/26,a1f09c9b-5461-43b8-abb2-ac01816a26d6,900,lv,,FALSE,James Talarico,DEM,48
 96d6e3cb-710e-4140-86b4-4f4f2545b2bd,The New York Times/Siena University,Live Phone,NE,,10/23/26,10/29/26,78584ab5-d30e-42b1-8fc7-64832f1db9c2,809,lv,,FALSE,Don't know,NONE,8.29
 96d6e3cb-710e-4140-86b4-4f4f2545b2bd,The New York Times/Siena University,Live Phone,NE,,10/23/26,10/29/26,78584ab5-d30e-42b1-8fc7-64832f1db9c2,809,lv,,FALSE,Pete Ricketts,REP,48.7
 96d6e3cb-710e-4140-86b4-4f4f2545b2bd,The New York Times/Siena University,Live Phone,NE,,10/23/26,10/29/26,78584ab5-d30e-42b1-8fc7-64832f1db9c2,809,lv,,FALSE,Dan Osborn,DEM,43.01
@@ -42,10 +56,10 @@ ace5053f-e892-4ca2-a2d9-b96249dc8c27,Data for Progress,Live Phone/Text/Nonprobab
 8336d95c-e120-482d-ba1c-42b88a343483,Hart Research Associates,Live Phone/Text-to-Web,LA,,10/28/26,10/29/26,991ffdf0-cfe0-44eb-8299-13c908b761a7,502,lv,DEM,FALSE,Don't know,NONE,10
 8336d95c-e120-482d-ba1c-42b88a343483,Hart Research Associates,Live Phone/Text-to-Web,LA,,10/28/26,10/29/26,991ffdf0-cfe0-44eb-8299-13c908b761a7,502,lv,DEM,FALSE,Julia Letlow,REP,45
 8336d95c-e120-482d-ba1c-42b88a343483,Hart Research Associates,Live Phone/Text-to-Web,LA,,10/28/26,10/29/26,991ffdf0-cfe0-44eb-8299-13c908b761a7,502,lv,DEM,FALSE,Jamie Davis,DEM,45
-5823662f-30b2-42b1-a224-9352ede8ad74,InsiderAdvantage,,FL,,10/28/26,10/29/26,fc429313-70a2-43da-8882-9f31debb6272,1200,lv,,FALSE,Don't know,NONE,6
-5823662f-30b2-42b1-a224-9352ede8ad74,InsiderAdvantage,,FL,,10/28/26,10/29/26,fc429313-70a2-43da-8882-9f31debb6272,1200,lv,,FALSE,Someone else,NONE,2
-5823662f-30b2-42b1-a224-9352ede8ad74,InsiderAdvantage,,FL,,10/28/26,10/29/26,fc429313-70a2-43da-8882-9f31debb6272,1200,lv,,FALSE,Angie Nixon,DEM,43
-5823662f-30b2-42b1-a224-9352ede8ad74,InsiderAdvantage,,FL,,10/28/26,10/29/26,fc429313-70a2-43da-8882-9f31debb6272,1200,lv,,FALSE,Ashley Moody,REP,49
+5823662f-30b2-42b1-a224-9352ede8ad74,InsiderAdvantage,,FL,,10/28/26,10/29/26,fc429313-70a2-43da-8882-9f31debb6272,1200,lv,,FALSE,Don't know,NONE,6.4
+5823662f-30b2-42b1-a224-9352ede8ad74,InsiderAdvantage,,FL,,10/28/26,10/29/26,fc429313-70a2-43da-8882-9f31debb6272,1200,lv,,FALSE,Neil Gillespie,NPA,2.4
+5823662f-30b2-42b1-a224-9352ede8ad74,InsiderAdvantage,,FL,,10/28/26,10/29/26,fc429313-70a2-43da-8882-9f31debb6272,1200,lv,,FALSE,Angie Nixon,DEM,42.7
+5823662f-30b2-42b1-a224-9352ede8ad74,InsiderAdvantage,,FL,,10/28/26,10/29/26,fc429313-70a2-43da-8882-9f31debb6272,1200,lv,,FALSE,Ashley Moody,REP,48.5
 a2abf79d-4ebe-451a-9fa7-aeaa27e1ee2d,ActiVote,App Panel,IL,,10/21/26,10/30/26,63eaba5e-79e7-4d71-a1a5-b321a953daa8,400,lv,,FALSE,Don Tracy,REP,44.4
 a2abf79d-4ebe-451a-9fa7-aeaa27e1ee2d,ActiVote,App Panel,IL,,10/21/26,10/30/26,63eaba5e-79e7-4d71-a1a5-b321a953daa8,400,lv,,FALSE,Juliana Stratton,DEM,55.6
 61f15781-75a4-47c4-a04a-da825f9d1778,Concord Public Opinion Partners,Live Phone/Text-to-Web,SD,,10/22/26,10/26/26,03525770-da88-4df8-8ca8-96f2779e06ed,448,lv,DEM,FALSE,Don't know,NONE,6

@@ -1,4 +1,18 @@
 poll_id,pollster,methodology,state,seat_number,start_date,end_date,question_id,sample_size,population,partisan,ranked_choice_reallocated,candidate_name,party,pct
+ad3ff838-af47-4dca-8c1d-356fd150fb80,Center for Strategic Politics,Text-to-Web,MI,13,10/28/26,10/30/26,6b1a87be-394b-4b8a-91db-6fdc56505814,310,lv,DEM,FALSE,Would not vote,NONE,2
+ad3ff838-af47-4dca-8c1d-356fd150fb80,Center for Strategic Politics,Text-to-Web,MI,13,10/28/26,10/30/26,6b1a87be-394b-4b8a-91db-6fdc56505814,310,lv,DEM,FALSE,Don't know,NONE,8
+ad3ff838-af47-4dca-8c1d-356fd150fb80,Center for Strategic Politics,Text-to-Web,MI,13,10/28/26,10/30/26,6b1a87be-394b-4b8a-91db-6fdc56505814,310,lv,DEM,FALSE,Christopher Dardzinski,CON,1
+ad3ff838-af47-4dca-8c1d-356fd150fb80,Center for Strategic Politics,Text-to-Web,MI,13,10/28/26,10/30/26,6b1a87be-394b-4b8a-91db-6fdc56505814,310,lv,DEM,FALSE,Simone Coleman,WCP,1
+ad3ff838-af47-4dca-8c1d-356fd150fb80,Center for Strategic Politics,Text-to-Web,MI,13,10/28/26,10/30/26,6b1a87be-394b-4b8a-91db-6fdc56505814,310,lv,DEM,FALSE,Taras Nykoriak,REP,19
+ad3ff838-af47-4dca-8c1d-356fd150fb80,Center for Strategic Politics,Text-to-Web,MI,13,10/28/26,10/30/26,6b1a87be-394b-4b8a-91db-6fdc56505814,310,lv,DEM,FALSE,Donavan McKinney,DEM,69
+cffea967-f365-47a4-ab0b-1017eddd4030,Big Data Poll,Live Phone/Text-to-Web/Text/Nonprobability Panel,US,,10/27/26,10/30/26,041f66e6-534e-4833-af4f-0ea093ea5464,3214,lv,,FALSE,Generic Republican,REP,40
+cffea967-f365-47a4-ab0b-1017eddd4030,Big Data Poll,Live Phone/Text-to-Web/Text/Nonprobability Panel,US,,10/27/26,10/30/26,041f66e6-534e-4833-af4f-0ea093ea5464,3214,lv,,FALSE,Generic Democrat,DEM,52.3
+cffea967-f365-47a4-ab0b-1017eddd4030,Big Data Poll,Live Phone/Text-to-Web/Text/Nonprobability Panel,US,,10/27/26,10/30/26,e2c8e76d-2eb0-4a69-b656-1ace57556eb2,3418,rv,,FALSE,Generic Republican,REP,39.5
+cffea967-f365-47a4-ab0b-1017eddd4030,Big Data Poll,Live Phone/Text-to-Web/Text/Nonprobability Panel,US,,10/27/26,10/30/26,e2c8e76d-2eb0-4a69-b656-1ace57556eb2,3418,rv,,FALSE,Generic Democrat,DEM,51.2
+116f25c3-11a6-4551-914d-8bf81ae565e8,Targoz Market Research,,US,,10/20/26,10/22/26,9e6440e4-357d-4d51-9ca4-a7f2f285947e,1118,lv,,FALSE,Don't know,NONE,3
+116f25c3-11a6-4551-914d-8bf81ae565e8,Targoz Market Research,,US,,10/20/26,10/22/26,9e6440e4-357d-4d51-9ca4-a7f2f285947e,1118,lv,,FALSE,Someone else,NONE,1
+116f25c3-11a6-4551-914d-8bf81ae565e8,Targoz Market Research,,US,,10/20/26,10/22/26,9e6440e4-357d-4d51-9ca4-a7f2f285947e,1118,lv,,FALSE,Generic Republican,REP,46
+116f25c3-11a6-4551-914d-8bf81ae565e8,Targoz Market Research,,US,,10/20/26,10/22/26,9e6440e4-357d-4d51-9ca4-a7f2f285947e,1118,lv,,FALSE,Generic Democrat,DEM,49
 b606d0d2-4431-44ba-a917-409b7f7367ec,ActiVote,App Panel,US,,10/22/26,10/30/26,2f2a6739-f7c1-487c-bb20-725ceab9d4a3,2000,lv,,FALSE,Generic Republican,REP,46.5
 b606d0d2-4431-44ba-a917-409b7f7367ec,ActiVote,App Panel,US,,10/22/26,10/30/26,2f2a6739-f7c1-487c-bb20-725ceab9d4a3,2000,lv,,FALSE,Generic Democrat,DEM,53.5
 04053aa5-3fee-407a-8628-1f4e4ff038b9,Ipsos,,US,,10/9/26,10/28/26,cc4a35fe-7cd3-444b-b772-4372e39c9434,1209,lv,,FALSE,Generic Republican,REP,44
