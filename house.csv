@@ -1,4 +1,42 @@
 poll_id,pollster,methodology,state,seat_number,start_date,end_date,question_id,sample_size,population,partisan,ranked_choice_reallocated,candidate_name,party,pct
+98e6e19d-90c9-4ed9-8eff-be7511d5def7,TIPP Insights,,US,,10/27/26,10/30/26,b3c4aaae-0d8f-485a-96fa-8d970107207d,1158,lv,,FALSE,Don't know,NONE,5
+98e6e19d-90c9-4ed9-8eff-be7511d5def7,TIPP Insights,,US,,10/27/26,10/30/26,b3c4aaae-0d8f-485a-96fa-8d970107207d,1158,lv,,FALSE,Generic Republican,REP,42
+98e6e19d-90c9-4ed9-8eff-be7511d5def7,TIPP Insights,,US,,10/27/26,10/30/26,b3c4aaae-0d8f-485a-96fa-8d970107207d,1158,lv,,FALSE,Generic Democrat,DEM,52
+dd7a5188-9604-411b-b895-8472c9a0b6cf,AtlasIntel,,US,,10/28/26,11/1/26,1f83be8c-d3ed-4f86-a3c5-fa5520670325,3566,a,,FALSE,Would not vote,NONE,0.8
+dd7a5188-9604-411b-b895-8472c9a0b6cf,AtlasIntel,,US,,10/28/26,11/1/26,1f83be8c-d3ed-4f86-a3c5-fa5520670325,3566,a,,FALSE,Don't know,NONE,2.3
+dd7a5188-9604-411b-b895-8472c9a0b6cf,AtlasIntel,,US,,10/28/26,11/1/26,1f83be8c-d3ed-4f86-a3c5-fa5520670325,3566,a,,FALSE,Generic Republican,REP,41.4
+dd7a5188-9604-411b-b895-8472c9a0b6cf,AtlasIntel,,US,,10/28/26,11/1/26,1f83be8c-d3ed-4f86-a3c5-fa5520670325,3566,a,,FALSE,Generic Democrat,DEM,55.5
+874e66b5-2a4c-4aca-98bf-0a195be794af,University of New Hampshire,Probability Panel,ME,1,10/27/26,10/31/26,38da3cc4-c8cf-4510-8e06-9b8f3d351fbd,839,lv,,FALSE,Don't know,NONE,0
+874e66b5-2a4c-4aca-98bf-0a195be794af,University of New Hampshire,Probability Panel,ME,1,10/27/26,10/31/26,38da3cc4-c8cf-4510-8e06-9b8f3d351fbd,839,lv,,FALSE,Someone else,NONE,3
+874e66b5-2a4c-4aca-98bf-0a195be794af,University of New Hampshire,Probability Panel,ME,1,10/27/26,10/31/26,38da3cc4-c8cf-4510-8e06-9b8f3d351fbd,839,lv,,FALSE,Ronald Russell,REP,32
+874e66b5-2a4c-4aca-98bf-0a195be794af,University of New Hampshire,Probability Panel,ME,1,10/27/26,10/31/26,38da3cc4-c8cf-4510-8e06-9b8f3d351fbd,839,lv,,FALSE,Chellie Pingree,DEM,65
+874e66b5-2a4c-4aca-98bf-0a195be794af,University of New Hampshire,Probability Panel,ME,2,10/27/26,10/31/26,99bb9b9d-1698-47ee-af9d-6938da9ea8d7,793,lv,,FALSE,Don't know,NONE,1
+874e66b5-2a4c-4aca-98bf-0a195be794af,University of New Hampshire,Probability Panel,ME,2,10/27/26,10/31/26,99bb9b9d-1698-47ee-af9d-6938da9ea8d7,793,lv,,FALSE,Someone else,NONE,1
+874e66b5-2a4c-4aca-98bf-0a195be794af,University of New Hampshire,Probability Panel,ME,2,10/27/26,10/31/26,99bb9b9d-1698-47ee-af9d-6938da9ea8d7,793,lv,,FALSE,Paul LePage,REP,52
+874e66b5-2a4c-4aca-98bf-0a195be794af,University of New Hampshire,Probability Panel,ME,2,10/27/26,10/31/26,99bb9b9d-1698-47ee-af9d-6938da9ea8d7,793,lv,,FALSE,Matt Dunlap,DEM,47
+63516926-7ba4-457a-8b7c-e52aed2edb55,University of New Hampshire,Probability Panel,NH,2,10/27/26,10/31/26,4d97e2a6-2f00-4c5e-b06e-b8e670e22af7,997,lv,,FALSE,Don't know,NONE,1
+63516926-7ba4-457a-8b7c-e52aed2edb55,University of New Hampshire,Probability Panel,NH,2,10/27/26,10/31/26,4d97e2a6-2f00-4c5e-b06e-b8e670e22af7,997,lv,,FALSE,Lily Tang Williams,REP,41
+63516926-7ba4-457a-8b7c-e52aed2edb55,University of New Hampshire,Probability Panel,NH,2,10/27/26,10/31/26,4d97e2a6-2f00-4c5e-b06e-b8e670e22af7,997,lv,,FALSE,Robbie Mahrou,IND,2
+63516926-7ba4-457a-8b7c-e52aed2edb55,University of New Hampshire,Probability Panel,NH,2,10/27/26,10/31/26,4d97e2a6-2f00-4c5e-b06e-b8e670e22af7,997,lv,,FALSE,Maggie Goodlander,DEM,56
+63516926-7ba4-457a-8b7c-e52aed2edb55,University of New Hampshire,Probability Panel,NH,1,10/27/26,10/31/26,19b3b0b4-78a2-41ec-935b-161da355b85b,1029,lv,,FALSE,Don't know,NONE,1
+63516926-7ba4-457a-8b7c-e52aed2edb55,University of New Hampshire,Probability Panel,NH,1,10/27/26,10/31/26,19b3b0b4-78a2-41ec-935b-161da355b85b,1029,lv,,FALSE,Someone else,NONE,1
+63516926-7ba4-457a-8b7c-e52aed2edb55,University of New Hampshire,Probability Panel,NH,1,10/27/26,10/31/26,19b3b0b4-78a2-41ec-935b-161da355b85b,1029,lv,,FALSE,Stefany Shaheen,DEM,56
+63516926-7ba4-457a-8b7c-e52aed2edb55,University of New Hampshire,Probability Panel,NH,1,10/27/26,10/31/26,19b3b0b4-78a2-41ec-935b-161da355b85b,1029,lv,,FALSE,Anthony DiLorenzo,REP,43
+a0d99ae7-a6c2-430d-ad8f-92e91d659b66,The New York Times/Siena University,Live Phone,AK,1,10/23/26,10/30/26,604ee3d1-9988-440c-ba9f-c8d91d0bf6f4,610,lv,,FALSE,Don't know,NONE,7.6
+a0d99ae7-a6c2-430d-ad8f-92e91d659b66,The New York Times/Siena University,Live Phone,AK,1,10/23/26,10/30/26,604ee3d1-9988-440c-ba9f-c8d91d0bf6f4,610,lv,,FALSE,Someone else,NONE,0.2
+a0d99ae7-a6c2-430d-ad8f-92e91d659b66,The New York Times/Siena University,Live Phone,AK,1,10/23/26,10/30/26,604ee3d1-9988-440c-ba9f-c8d91d0bf6f4,610,lv,,FALSE,Jim C. McDermott,LIB,5.4
+a0d99ae7-a6c2-430d-ad8f-92e91d659b66,The New York Times/Siena University,Live Phone,AK,1,10/23/26,10/30/26,604ee3d1-9988-440c-ba9f-c8d91d0bf6f4,610,lv,,FALSE,Bill Hill,IND,37.2
+a0d99ae7-a6c2-430d-ad8f-92e91d659b66,The New York Times/Siena University,Live Phone,AK,1,10/23/26,10/30/26,604ee3d1-9988-440c-ba9f-c8d91d0bf6f4,610,lv,,FALSE,Nick Begich,REP,44
+a0d99ae7-a6c2-430d-ad8f-92e91d659b66,The New York Times/Siena University,Live Phone,AK,1,10/23/26,10/30/26,604ee3d1-9988-440c-ba9f-c8d91d0bf6f4,610,lv,,FALSE,Eric Hafner,DEM,5.6
+a0d99ae7-a6c2-430d-ad8f-92e91d659b66,The New York Times/Siena University,Live Phone,AK,1,10/23/26,10/30/26,521dd9f5-976f-4272-9d61-08322710747e,562,lv,,TRUE,Bill Hill,IND,48.2
+a0d99ae7-a6c2-430d-ad8f-92e91d659b66,The New York Times/Siena University,Live Phone,AK,1,10/23/26,10/30/26,521dd9f5-976f-4272-9d61-08322710747e,562,lv,,TRUE,Nick Begich,REP,51.8
+a0d99ae7-a6c2-430d-ad8f-92e91d659b66,The New York Times/Siena University,Live Phone,AK,1,10/23/26,10/30/26,15a4224d-bafd-41e2-9954-ae6a323a6fd7,576,lv,,TRUE,Jim C. McDermott,LIB,5.9
+a0d99ae7-a6c2-430d-ad8f-92e91d659b66,The New York Times/Siena University,Live Phone,AK,1,10/23/26,10/30/26,15a4224d-bafd-41e2-9954-ae6a323a6fd7,576,lv,,TRUE,Bill Hill,IND,40.4
+a0d99ae7-a6c2-430d-ad8f-92e91d659b66,The New York Times/Siena University,Live Phone,AK,1,10/23/26,10/30/26,15a4224d-bafd-41e2-9954-ae6a323a6fd7,576,lv,,TRUE,Nick Begich,REP,47.7
+a0d99ae7-a6c2-430d-ad8f-92e91d659b66,The New York Times/Siena University,Live Phone,AK,1,10/23/26,10/30/26,15a4224d-bafd-41e2-9954-ae6a323a6fd7,576,lv,,TRUE,Eric Hafner,DEM,6
+b42ce1dd-155d-4705-9bb4-dc23234fa2b5,Hart Research Associates/Public Opinion Strategies,Live Phone/Text-to-Web,US,,10/28/26,10/30/26,f4d45635-6016-4003-b854-50f9241559b5,1000,rv,,FALSE,Don't know,NONE,3
+b42ce1dd-155d-4705-9bb4-dc23234fa2b5,Hart Research Associates/Public Opinion Strategies,Live Phone/Text-to-Web,US,,10/28/26,10/30/26,f4d45635-6016-4003-b854-50f9241559b5,1000,rv,,FALSE,Generic Republican,REP,45
+b42ce1dd-155d-4705-9bb4-dc23234fa2b5,Hart Research Associates/Public Opinion Strategies,Live Phone/Text-to-Web,US,,10/28/26,10/30/26,f4d45635-6016-4003-b854-50f9241559b5,1000,rv,,FALSE,Generic Democrat,DEM,52
 ad3ff838-af47-4dca-8c1d-356fd150fb80,Center for Strategic Politics,Text-to-Web,MI,13,10/28/26,10/30/26,6b1a87be-394b-4b8a-91db-6fdc56505814,310,lv,DEM,FALSE,Would not vote,NONE,2
 ad3ff838-af47-4dca-8c1d-356fd150fb80,Center for Strategic Politics,Text-to-Web,MI,13,10/28/26,10/30/26,6b1a87be-394b-4b8a-91db-6fdc56505814,310,lv,DEM,FALSE,Don't know,NONE,8
 ad3ff838-af47-4dca-8c1d-356fd150fb80,Center for Strategic Politics,Text-to-Web,MI,13,10/28/26,10/30/26,6b1a87be-394b-4b8a-91db-6fdc56505814,310,lv,DEM,FALSE,Christopher Dardzinski,CON,1
