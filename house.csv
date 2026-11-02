@@ -1,4 +1,37 @@
 poll_id,pollster,methodology,state,seat_number,start_date,end_date,question_id,sample_size,population,partisan,ranked_choice_reallocated,candidate_name,party,pct
+2f272977-578b-432e-a3d2-3a8282f8797c,YouGov,Nonprobability Panel,US,,10/27/26,10/30/26,086aac04-af31-4493-a3b4-d6693977b1ae,3908,lv,,FALSE,Would not vote,NONE,1
+2f272977-578b-432e-a3d2-3a8282f8797c,YouGov,Nonprobability Panel,US,,10/27/26,10/30/26,086aac04-af31-4493-a3b4-d6693977b1ae,3908,lv,,FALSE,Someone else,NONE,2
+2f272977-578b-432e-a3d2-3a8282f8797c,YouGov,Nonprobability Panel,US,,10/27/26,10/30/26,086aac04-af31-4493-a3b4-d6693977b1ae,3908,lv,,FALSE,Generic Republican,REP,44
+2f272977-578b-432e-a3d2-3a8282f8797c,YouGov,Nonprobability Panel,US,,10/27/26,10/30/26,086aac04-af31-4493-a3b4-d6693977b1ae,3908,lv,,FALSE,Generic Democrat,DEM,53
+19b79352-7109-4aaa-b799-2ed3b467e3b2,Focaldata,,US,,10/30/26,11/1/26,24bd6fb2-1a1d-4bb5-8cc8-71c135a061b2,2090,lv,,FALSE,Someone else,NONE,2.9
+19b79352-7109-4aaa-b799-2ed3b467e3b2,Focaldata,,US,,10/30/26,11/1/26,24bd6fb2-1a1d-4bb5-8cc8-71c135a061b2,2090,lv,,FALSE,Generic Republican,REP,44.83
+19b79352-7109-4aaa-b799-2ed3b467e3b2,Focaldata,,US,,10/30/26,11/1/26,24bd6fb2-1a1d-4bb5-8cc8-71c135a061b2,2090,lv,,FALSE,Generic Democrat,DEM,52.27
+19b79352-7109-4aaa-b799-2ed3b467e3b2,Focaldata,,US,,10/30/26,11/1/26,fd152be6-fa56-4440-8675-0d39db0fa46c,2163,rv,,FALSE,Would not vote,NONE,3.5
+19b79352-7109-4aaa-b799-2ed3b467e3b2,Focaldata,,US,,10/30/26,11/1/26,fd152be6-fa56-4440-8675-0d39db0fa46c,2163,rv,,FALSE,Someone else,NONE,3.86
+19b79352-7109-4aaa-b799-2ed3b467e3b2,Focaldata,,US,,10/30/26,11/1/26,fd152be6-fa56-4440-8675-0d39db0fa46c,2163,rv,,FALSE,Generic Republican,REP,42.54
+19b79352-7109-4aaa-b799-2ed3b467e3b2,Focaldata,,US,,10/30/26,11/1/26,fd152be6-fa56-4440-8675-0d39db0fa46c,2163,rv,,FALSE,Generic Democrat,DEM,50.1
+19b79352-7109-4aaa-b799-2ed3b467e3b2,Focaldata,,US,,10/30/26,11/1/26,43a14a62-bb19-4db0-8770-4787970ed934,2444,a,,FALSE,Would not vote,NONE,8.29
+19b79352-7109-4aaa-b799-2ed3b467e3b2,Focaldata,,US,,10/30/26,11/1/26,43a14a62-bb19-4db0-8770-4787970ed934,2444,a,,FALSE,Someone else,NONE,3.93
+19b79352-7109-4aaa-b799-2ed3b467e3b2,Focaldata,,US,,10/30/26,11/1/26,43a14a62-bb19-4db0-8770-4787970ed934,2444,a,,FALSE,Generic Republican,REP,40.62
+19b79352-7109-4aaa-b799-2ed3b467e3b2,Focaldata,,US,,10/30/26,11/1/26,43a14a62-bb19-4db0-8770-4787970ed934,2444,a,,FALSE,Generic Democrat,DEM,47.16
+4b9bda6c-8271-42bc-adf6-286f4078ae6f,USC Democracy and Fair Elections Lab,Email,CA,7,10/28/26,11/1/26,6d14be3c-3229-41bc-85ff-fb582f584172,442,lv,,FALSE,Would not vote,NONE,12
+4b9bda6c-8271-42bc-adf6-286f4078ae6f,USC Democracy and Fair Elections Lab,Email,CA,7,10/28/26,11/1/26,6d14be3c-3229-41bc-85ff-fb582f584172,442,lv,,FALSE,Mai Vang,DEM,39
+4b9bda6c-8271-42bc-adf6-286f4078ae6f,USC Democracy and Fair Elections Lab,Email,CA,7,10/28/26,11/1/26,6d14be3c-3229-41bc-85ff-fb582f584172,442,lv,,FALSE,Doris Matsui,DEM,49
+a9616bee-7807-49fd-8259-072cdba5bea5,Ipsos,Probability Panel,US,,10/29/26,11/2/26,7f8b5e3d-1d6e-43fa-b05a-22258b69f4da,1357,rv,,FALSE,Would not vote,NONE,5
+a9616bee-7807-49fd-8259-072cdba5bea5,Ipsos,Probability Panel,US,,10/29/26,11/2/26,7f8b5e3d-1d6e-43fa-b05a-22258b69f4da,1357,rv,,FALSE,Generic Candidate,OTH,2
+a9616bee-7807-49fd-8259-072cdba5bea5,Ipsos,Probability Panel,US,,10/29/26,11/2/26,4d0fd3ce-d936-4d38-9a2a-8c282d4fa197,1212,lv,,FALSE,Don't know,NONE,1
+a9616bee-7807-49fd-8259-072cdba5bea5,Ipsos,Probability Panel,US,,10/29/26,11/2/26,4d0fd3ce-d936-4d38-9a2a-8c282d4fa197,1212,lv,,FALSE,Generic Candidate,OTH,3
+a9616bee-7807-49fd-8259-072cdba5bea5,Ipsos,Probability Panel,US,,10/29/26,11/2/26,4d0fd3ce-d936-4d38-9a2a-8c282d4fa197,1212,lv,,FALSE,Generic Republican,REP,44
+a9616bee-7807-49fd-8259-072cdba5bea5,Ipsos,Probability Panel,US,,10/29/26,11/2/26,4d0fd3ce-d936-4d38-9a2a-8c282d4fa197,1212,lv,,FALSE,Generic Democrat,DEM,52
+a9616bee-7807-49fd-8259-072cdba5bea5,Ipsos,Probability Panel,US,,10/29/26,11/2/26,7f8b5e3d-1d6e-43fa-b05a-22258b69f4da,1357,rv,,FALSE,Don't know,NONE,2
+a9616bee-7807-49fd-8259-072cdba5bea5,Ipsos,Probability Panel,US,,10/29/26,11/2/26,7f8b5e3d-1d6e-43fa-b05a-22258b69f4da,1357,rv,,FALSE,Generic Republican,REP,42
+a9616bee-7807-49fd-8259-072cdba5bea5,Ipsos,Probability Panel,US,,10/29/26,11/2/26,7f8b5e3d-1d6e-43fa-b05a-22258b69f4da,1357,rv,,FALSE,Generic Democrat,DEM,49
+4f3d7bb4-fac9-4d13-aa12-12971392b48a,Change Research,,US,,10/12/26,10/18/26,bcc28d27-3a97-42a3-ad04-4dd052cfc6c8,2240,rv,,FALSE,Don't know,NONE,12
+4f3d7bb4-fac9-4d13-aa12-12971392b48a,Change Research,,US,,10/12/26,10/18/26,bcc28d27-3a97-42a3-ad04-4dd052cfc6c8,2240,rv,,FALSE,Generic Republican,REP,39
+4f3d7bb4-fac9-4d13-aa12-12971392b48a,Change Research,,US,,10/12/26,10/18/26,bcc28d27-3a97-42a3-ad04-4dd052cfc6c8,2240,rv,,FALSE,Generic Democrat,DEM,50
+3bb2626d-67e3-4219-b58a-b5a89cb3fe5a,Morning Consult,,US,,10/26/26,11/1/26,d21d02cf-10e0-4a1f-8f03-ab919f8eac15,16929,lv,,FALSE,Don't know,NONE,5.89
+3bb2626d-67e3-4219-b58a-b5a89cb3fe5a,Morning Consult,,US,,10/26/26,11/1/26,d21d02cf-10e0-4a1f-8f03-ab919f8eac15,16929,lv,,FALSE,Generic Republican,REP,43.09
+3bb2626d-67e3-4219-b58a-b5a89cb3fe5a,Morning Consult,,US,,10/26/26,11/1/26,d21d02cf-10e0-4a1f-8f03-ab919f8eac15,16929,lv,,FALSE,Generic Democrat,DEM,51.02
 98e6e19d-90c9-4ed9-8eff-be7511d5def7,TIPP Insights,,US,,10/27/26,10/30/26,b3c4aaae-0d8f-485a-96fa-8d970107207d,1158,lv,,FALSE,Don't know,NONE,5
 98e6e19d-90c9-4ed9-8eff-be7511d5def7,TIPP Insights,,US,,10/27/26,10/30/26,b3c4aaae-0d8f-485a-96fa-8d970107207d,1158,lv,,FALSE,Generic Republican,REP,42
 98e6e19d-90c9-4ed9-8eff-be7511d5def7,TIPP Insights,,US,,10/27/26,10/30/26,b3c4aaae-0d8f-485a-96fa-8d970107207d,1158,lv,,FALSE,Generic Democrat,DEM,52
