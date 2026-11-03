@@ -1,4 +1,15 @@
 poll_id,pollster,methodology,state,seat_number,start_date,end_date,question_id,sample_size,population,partisan,ranked_choice_reallocated,candidate_name,party,pct
+9e0f87da-c6ab-408d-bae8-5e87561286d6,Emerson College,,MT,1,10/31/26,11/1/26,097ca0e7-86b5-4477-bc48-abb8925dc801,311,lv,,FALSE,Aaron Flint,REP,48.5
+9e0f87da-c6ab-408d-bae8-5e87561286d6,Emerson College,,MT,1,10/31/26,11/1/26,097ca0e7-86b5-4477-bc48-abb8925dc801,311,lv,,FALSE,Sam Forstag,DEM,48.8
+f401ff8a-e171-40fd-965d-609713aa35c5,Emerson College,,MO,2,10/31/26,11/1/26,9a86146d-d731-4edd-ae55-f57945769713,413,lv,,FALSE,Ann Wagner,REP,48.7
+f401ff8a-e171-40fd-965d-609713aa35c5,Emerson College,,MO,2,10/31/26,11/1/26,9a86146d-d731-4edd-ae55-f57945769713,413,lv,,FALSE,Fred Wellman,DEM,49.5
+3aa7e2be-bfad-4a59-80ba-a7c5add4aeea,AtlasIntel,,AK,1,10/28/26,11/1/26,563bb6e7-21b5-4c84-b936-5af13f5727de,522,lv,,FALSE,Jim C. McDermott,LIB,0.3
+3aa7e2be-bfad-4a59-80ba-a7c5add4aeea,AtlasIntel,,AK,1,10/28/26,11/1/26,563bb6e7-21b5-4c84-b936-5af13f5727de,522,lv,,FALSE,Someone else,NONE,0.6
+3aa7e2be-bfad-4a59-80ba-a7c5add4aeea,AtlasIntel,,AK,1,10/28/26,11/1/26,563bb6e7-21b5-4c84-b936-5af13f5727de,522,lv,,FALSE,Eric Hafner,DEM,5.9
+3aa7e2be-bfad-4a59-80ba-a7c5add4aeea,AtlasIntel,,AK,1,10/28/26,11/1/26,563bb6e7-21b5-4c84-b936-5af13f5727de,522,lv,,FALSE,Nick Begich,REP,46.5
+3aa7e2be-bfad-4a59-80ba-a7c5add4aeea,AtlasIntel,,AK,1,10/28/26,11/1/26,563bb6e7-21b5-4c84-b936-5af13f5727de,522,lv,,FALSE,Bill Hill,IND,46.6
+15f97ae3-1cb5-4947-a3a7-45c0d9899585,John Zogby Strategies,,US,,11/1/26,11/2/26,d81847df-e060-43b0-a127-0079a1a5e966,1001,lv,,FALSE,Generic Republican,REP,47
+15f97ae3-1cb5-4947-a3a7-45c0d9899585,John Zogby Strategies,,US,,11/1/26,11/2/26,d81847df-e060-43b0-a127-0079a1a5e966,1001,lv,,FALSE,Generic Democrat,DEM,53
 2f272977-578b-432e-a3d2-3a8282f8797c,YouGov,Nonprobability Panel,US,,10/27/26,10/30/26,086aac04-af31-4493-a3b4-d6693977b1ae,3908,lv,,FALSE,Would not vote,NONE,1
 2f272977-578b-432e-a3d2-3a8282f8797c,YouGov,Nonprobability Panel,US,,10/27/26,10/30/26,086aac04-af31-4493-a3b4-d6693977b1ae,3908,lv,,FALSE,Someone else,NONE,2
 2f272977-578b-432e-a3d2-3a8282f8797c,YouGov,Nonprobability Panel,US,,10/27/26,10/30/26,086aac04-af31-4493-a3b4-d6693977b1ae,3908,lv,,FALSE,Generic Republican,REP,44

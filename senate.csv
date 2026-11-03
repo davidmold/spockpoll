@@ -1,16 +1,92 @@
 poll_id,pollster,methodology,state,seat_number,start_date,end_date,question_id,sample_size,population,partisan,ranked_choice_reallocated,candidate_name,party,pct
-b112cbf3-ab0d-490b-b374-6f83fd7f9545,Research Co.,,TX,,10/31/26,11/2/26,1dad712d-090f-46bb-b637-ce5f5c19a8d7,450,lv,,FALSE,Ken Paxton,REP,48
-b112cbf3-ab0d-490b-b374-6f83fd7f9545,Research Co.,,TX,,10/31/26,11/2/26,1dad712d-090f-46bb-b637-ce5f5c19a8d7,450,lv,,FALSE,James Talarico,DEM,51
-9d7b82a6-e65d-460b-a09f-ac6d2fa865c8,Research Co.,,NM,,10/31/26,11/2/26,dca9ba8b-08fb-4649-9f51-30d1de8ddeb7,450,lv,,FALSE,Larry Marker,REP,40
-9d7b82a6-e65d-460b-a09f-ac6d2fa865c8,Research Co.,,NM,,10/31/26,11/2/26,dca9ba8b-08fb-4649-9f51-30d1de8ddeb7,450,lv,,FALSE,Ben Ray Luján,DEM,60
-5b734364-d6c9-4d6d-9585-4deac2cc6890,Research Co.,,IL,,10/31/26,11/2/26,683f2b95-c5c1-40e8-ae1b-5b6c3cd1404f,450,lv,,FALSE,Don Tracy,REP,43
-5b734364-d6c9-4d6d-9585-4deac2cc6890,Research Co.,,IL,,10/31/26,11/2/26,683f2b95-c5c1-40e8-ae1b-5b6c3cd1404f,450,lv,,FALSE,Juliana Stratton,DEM,56
-e324d57b-4426-403d-9ca8-23cf08f2c082,Research Co.,,GA,,10/31/26,11/2/26,77bff359-9256-450d-a38b-a13a40d81fc7,450,lv,,FALSE,Mike Collins,REP,45
-e324d57b-4426-403d-9ca8-23cf08f2c082,Research Co.,,GA,,10/31/26,11/2/26,77bff359-9256-450d-a38b-a13a40d81fc7,450,lv,,FALSE,Jon Ossoff,DEM,55
-cd6d6c9c-946e-406c-8a1b-1d54c5da3ae3,Research Co.,,FL,,10/31/26,11/2/26,61be82d8-bb37-4de2-8dcd-1d1a57bcf7ac,450,lv,,FALSE,Angie Nixon,DEM,46
-cd6d6c9c-946e-406c-8a1b-1d54c5da3ae3,Research Co.,,FL,,10/31/26,11/2/26,61be82d8-bb37-4de2-8dcd-1d1a57bcf7ac,450,lv,,FALSE,Ashley Moody,REP,53
-d936e903-4367-4a56-b855-942ae35fce12,Research Co.,,CO,,10/31/26,11/2/26,5a8dc49b-961c-433d-a80d-0b53b826534a,450,lv,,FALSE,Mark Baisley,REP,37
-d936e903-4367-4a56-b855-942ae35fce12,Research Co.,,CO,,10/31/26,11/2/26,5a8dc49b-961c-433d-a80d-0b53b826534a,450,lv,,FALSE,John Hickenlooper,DEM,61
+002d090f-ed00-4351-ae62-3e25da1fcd33,Targoz Market Research,,TN,,10/24/25,11/2/26,1c964902-35f4-49bd-9eb6-858644c0eaf9,716,lv,,FALSE,Don't know,NONE,3
+002d090f-ed00-4351-ae62-3e25da1fcd33,Targoz Market Research,,TN,,10/24/25,11/2/26,1c964902-35f4-49bd-9eb6-858644c0eaf9,716,lv,,FALSE,Someone else,NONE,3
+002d090f-ed00-4351-ae62-3e25da1fcd33,Targoz Market Research,,TN,,10/24/25,11/2/26,1c964902-35f4-49bd-9eb6-858644c0eaf9,716,lv,,FALSE,Marquita Bradshaw,DEM,37
+002d090f-ed00-4351-ae62-3e25da1fcd33,Targoz Market Research,,TN,,10/24/25,11/2/26,1c964902-35f4-49bd-9eb6-858644c0eaf9,716,lv,,FALSE,Bill Hagerty,REP,57
+29c14fdc-68af-4eb3-95ca-942bf46ca65b,Emerson College,,MI,,11/1/26,11/1/26,805882b8-cd41-45d8-90a5-629bb8704316,500,lv,,FALSE,Douglas Marsh,GRE,0.1
+29c14fdc-68af-4eb3-95ca-942bf46ca65b,Emerson College,,MI,,11/1/26,11/1/26,805882b8-cd41-45d8-90a5-629bb8704316,500,lv,,FALSE,Walter Kristy,NAT,0.4
+29c14fdc-68af-4eb3-95ca-942bf46ca65b,Emerson College,,MI,,11/1/26,11/1/26,805882b8-cd41-45d8-90a5-629bb8704316,500,lv,,FALSE,Lydia Christensen,LIB,3.2
+29c14fdc-68af-4eb3-95ca-942bf46ca65b,Emerson College,,MI,,11/1/26,11/1/26,805882b8-cd41-45d8-90a5-629bb8704316,500,lv,,FALSE,Mike Rogers,REP,45.2
+29c14fdc-68af-4eb3-95ca-942bf46ca65b,Emerson College,,MI,,11/1/26,11/1/26,805882b8-cd41-45d8-90a5-629bb8704316,500,lv,,FALSE,Abdul El-Sayed,DEM,51.2
+ad45957d-ad76-4dd4-8ade-9fe70e9df712,Emerson College,,TX,,10/31/26,11/1/26,5eb68805-10ce-4d7f-a23c-e601de9d009b,500,lv,,FALSE,Ted Brown,LIB,1.8
+ad45957d-ad76-4dd4-8ade-9fe70e9df712,Emerson College,,TX,,10/31/26,11/1/26,5eb68805-10ce-4d7f-a23c-e601de9d009b,500,lv,,FALSE,Ken Paxton,REP,48.4
+ad45957d-ad76-4dd4-8ade-9fe70e9df712,Emerson College,,TX,,10/31/26,11/1/26,5eb68805-10ce-4d7f-a23c-e601de9d009b,500,lv,,FALSE,James Talarico,DEM,49.8
+dde77adc-e56c-41eb-84ae-188896f36496,Emerson College,,ME,,10/31/26,11/1/26,7cfe8bdb-d5fa-4c38-854d-d79b85c23981,600,lv,,FALSE,Troy Jackson,DEM,49.4
+dde77adc-e56c-41eb-84ae-188896f36496,Emerson College,,ME,,10/31/26,11/1/26,7cfe8bdb-d5fa-4c38-854d-d79b85c23981,600,lv,,FALSE,Susan Collins,REP,50.6
+b511d518-7c80-408f-8eb2-667b9c308aac,Emerson College,,OH,,10/31/26,11/1/26,9f7a3a17-ae3b-4f5c-81ff-62963bf10109,930,lv,,FALSE,Gregory Levy,IND,2.3
+b511d518-7c80-408f-8eb2-667b9c308aac,Emerson College,,OH,,10/31/26,11/1/26,9f7a3a17-ae3b-4f5c-81ff-62963bf10109,930,lv,,FALSE,Bill Redpath,LIB,3.6
+b511d518-7c80-408f-8eb2-667b9c308aac,Emerson College,,OH,,10/31/26,11/1/26,9f7a3a17-ae3b-4f5c-81ff-62963bf10109,930,lv,,FALSE,Sherrod Brown,DEM,45.8
+b511d518-7c80-408f-8eb2-667b9c308aac,Emerson College,,OH,,10/31/26,11/1/26,9f7a3a17-ae3b-4f5c-81ff-62963bf10109,930,lv,,FALSE,Jon Husted,REP,48.3
+7386956a-1647-4ea3-a671-60ad31bb308f,Concord Public Opinion Partners,Live Phone/Text-to-Web,MI,,10/30/26,11/1/26,7a616448-7e81-47e4-8e21-8f3ac4046147,510,lv,DEM,FALSE,Don't know,NONE,4
+7386956a-1647-4ea3-a671-60ad31bb308f,Concord Public Opinion Partners,Live Phone/Text-to-Web,MI,,10/30/26,11/1/26,7a616448-7e81-47e4-8e21-8f3ac4046147,510,lv,DEM,FALSE,Someone else,NONE,4
+7386956a-1647-4ea3-a671-60ad31bb308f,Concord Public Opinion Partners,Live Phone/Text-to-Web,MI,,10/30/26,11/1/26,7a616448-7e81-47e4-8e21-8f3ac4046147,510,lv,DEM,FALSE,Mike Rogers,REP,41
+7386956a-1647-4ea3-a671-60ad31bb308f,Concord Public Opinion Partners,Live Phone/Text-to-Web,MI,,10/30/26,11/1/26,7a616448-7e81-47e4-8e21-8f3ac4046147,510,lv,DEM,FALSE,Abdul El-Sayed,DEM,51
+3aa7e2be-bfad-4a59-80ba-a7c5add4aeea,AtlasIntel,,AK,,10/28/26,11/1/26,1e414927-2456-4691-a0c5-de1cdf2e9a58,522,lv,,FALSE,Dan J. Sullivan,REP,0.6
+3aa7e2be-bfad-4a59-80ba-a7c5add4aeea,AtlasIntel,,AK,,10/28/26,11/1/26,1e414927-2456-4691-a0c5-de1cdf2e9a58,522,lv,,FALSE,Someone else,NONE,2.2
+3aa7e2be-bfad-4a59-80ba-a7c5add4aeea,AtlasIntel,,AK,,10/28/26,11/1/26,1e414927-2456-4691-a0c5-de1cdf2e9a58,522,lv,,FALSE,Gerald Heikes,REP,2.5
+3aa7e2be-bfad-4a59-80ba-a7c5add4aeea,AtlasIntel,,AK,,10/28/26,11/1/26,1e414927-2456-4691-a0c5-de1cdf2e9a58,522,lv,,FALSE,Mary Peltola,DEM,50.1
+3aa7e2be-bfad-4a59-80ba-a7c5add4aeea,AtlasIntel,,AK,,10/28/26,11/1/26,1e414927-2456-4691-a0c5-de1cdf2e9a58,522,lv,,FALSE,Dan Sullivan,REP,44.6
+471675d9-7773-409a-b6b8-2ab979f62d01,AtlasIntel,,MI,,10/28/26,11/1/26,e014e631-c06c-403e-892f-8f8c7eacf061,1316,lv,,FALSE,Someone else,NONE,0
+471675d9-7773-409a-b6b8-2ab979f62d01,AtlasIntel,,MI,,10/28/26,11/1/26,e014e631-c06c-403e-892f-8f8c7eacf061,1316,lv,,FALSE,Don't know,NONE,0.1
+471675d9-7773-409a-b6b8-2ab979f62d01,AtlasIntel,,MI,,10/28/26,11/1/26,e014e631-c06c-403e-892f-8f8c7eacf061,1316,lv,,FALSE,Mike Rogers,REP,46.4
+471675d9-7773-409a-b6b8-2ab979f62d01,AtlasIntel,,MI,,10/28/26,11/1/26,e014e631-c06c-403e-892f-8f8c7eacf061,1316,lv,,FALSE,Abdul El-Sayed,DEM,53.5
+ee8d2d9a-9050-4dde-8ff3-225b1609c81e,AtlasIntel,,KS,,10/28/26,11/1/26,17f5a5c0-ece7-4555-be7e-baf9dede3866,2038,lv,,FALSE,Don't know,NONE,0.5
+ee8d2d9a-9050-4dde-8ff3-225b1609c81e,AtlasIntel,,KS,,10/28/26,11/1/26,17f5a5c0-ece7-4555-be7e-baf9dede3866,2038,lv,,FALSE,Would not vote,NONE,1.2
+ee8d2d9a-9050-4dde-8ff3-225b1609c81e,AtlasIntel,,KS,,10/28/26,11/1/26,17f5a5c0-ece7-4555-be7e-baf9dede3866,2038,lv,,FALSE,Someone else,NONE,1.6
+ee8d2d9a-9050-4dde-8ff3-225b1609c81e,AtlasIntel,,KS,,10/28/26,11/1/26,17f5a5c0-ece7-4555-be7e-baf9dede3866,2038,lv,,FALSE,Roger Marshall,REP,44.9
+ee8d2d9a-9050-4dde-8ff3-225b1609c81e,AtlasIntel,,KS,,10/28/26,11/1/26,17f5a5c0-ece7-4555-be7e-baf9dede3866,2038,lv,,FALSE,Adam Hamilton,DEM,51.9
+67dd80f7-8245-428f-b578-85171441c671,AtlasIntel,,ME,,10/28/26,11/1/26,af460b29-6202-4560-bf0a-2d910903d416,967,lv,,FALSE,Don't know,NONE,0.8
+67dd80f7-8245-428f-b578-85171441c671,AtlasIntel,,ME,,10/28/26,11/1/26,af460b29-6202-4560-bf0a-2d910903d416,967,lv,,FALSE,Would not vote,NONE,2.1
+67dd80f7-8245-428f-b578-85171441c671,AtlasIntel,,ME,,10/28/26,11/1/26,af460b29-6202-4560-bf0a-2d910903d416,967,lv,,FALSE,Troy Jackson,DEM,53.1
+67dd80f7-8245-428f-b578-85171441c671,AtlasIntel,,ME,,10/28/26,11/1/26,af460b29-6202-4560-bf0a-2d910903d416,967,lv,,FALSE,Susan Collins,REP,44
+1f1b2e83-9099-441c-9043-1c82ac488b78,AtlasIntel,,NH,,10/28/26,11/1/26,7af2017b-6780-4124-ae8a-a6aef60302e8,1057,lv,,FALSE,Would not vote,NONE,1.9
+1f1b2e83-9099-441c-9043-1c82ac488b78,AtlasIntel,,NH,,10/28/26,11/1/26,7af2017b-6780-4124-ae8a-a6aef60302e8,1057,lv,,FALSE,Don't know,NONE,1.6
+1f1b2e83-9099-441c-9043-1c82ac488b78,AtlasIntel,,NH,,10/28/26,11/1/26,7af2017b-6780-4124-ae8a-a6aef60302e8,1057,lv,,FALSE,John Sununu,REP,44.2
+1f1b2e83-9099-441c-9043-1c82ac488b78,AtlasIntel,,NH,,10/28/26,11/1/26,7af2017b-6780-4124-ae8a-a6aef60302e8,1057,lv,,FALSE,Chris Pappas,DEM,52.3
+bbfbc9c9-b73c-4db5-ae91-458ccde4c6ec,AtlasIntel,,IA,,10/28/26,11/1/26,0e881301-a827-4619-8aeb-a8d29024e7d5,1219,lv,,FALSE,Don't know,NONE,0.2
+bbfbc9c9-b73c-4db5-ae91-458ccde4c6ec,AtlasIntel,,IA,,10/28/26,11/1/26,0e881301-a827-4619-8aeb-a8d29024e7d5,1219,lv,,FALSE,Would not vote,NONE,0.3
+bbfbc9c9-b73c-4db5-ae91-458ccde4c6ec,AtlasIntel,,IA,,10/28/26,11/1/26,0e881301-a827-4619-8aeb-a8d29024e7d5,1219,lv,,FALSE,Someone else,NONE,2.7
+bbfbc9c9-b73c-4db5-ae91-458ccde4c6ec,AtlasIntel,,IA,,10/28/26,11/1/26,0e881301-a827-4619-8aeb-a8d29024e7d5,1219,lv,,FALSE,Ashley Hinson,REP,46.4
+bbfbc9c9-b73c-4db5-ae91-458ccde4c6ec,AtlasIntel,,IA,,10/28/26,11/1/26,0e881301-a827-4619-8aeb-a8d29024e7d5,1219,lv,,FALSE,Josh Turek,DEM,50.5
+9d59ada9-f021-49e8-b627-4c0308822798,John Zogby Strategies,,MI,,10/31/26,11/2/26,d7bf11cc-9121-41e0-be8e-c962f1710452,1001,lv,,FALSE,Mike Rogers,REP,49
+9d59ada9-f021-49e8-b627-4c0308822798,John Zogby Strategies,,MI,,10/31/26,11/2/26,d7bf11cc-9121-41e0-be8e-c962f1710452,1001,lv,,FALSE,Abdul El-Sayed,DEM,51
+a1e3f1ce-417d-4436-b948-485544ecdf39,AtlasIntel,,MN,,10/28/26,11/1/26,6c66d3fb-effc-4c85-9618-f924ef2ba510,2133,lv,,FALSE,Would not vote,NONE,2.5
+a1e3f1ce-417d-4436-b948-485544ecdf39,AtlasIntel,,MN,,10/28/26,11/1/26,6c66d3fb-effc-4c85-9618-f924ef2ba510,2133,lv,,FALSE,Don't know,NONE,1.1
+a1e3f1ce-417d-4436-b948-485544ecdf39,AtlasIntel,,MN,,10/28/26,11/1/26,6c66d3fb-effc-4c85-9618-f924ef2ba510,2133,lv,,FALSE,Someone else,NONE,2.5
+a1e3f1ce-417d-4436-b948-485544ecdf39,AtlasIntel,,MN,,10/28/26,11/1/26,6c66d3fb-effc-4c85-9618-f924ef2ba510,2133,lv,,FALSE,Michele Tafoya,REP,45.7
+a1e3f1ce-417d-4436-b948-485544ecdf39,AtlasIntel,,MN,,10/28/26,11/1/26,6c66d3fb-effc-4c85-9618-f924ef2ba510,2133,lv,,FALSE,Peggy Flanagan,DEM,48.1
+0251982d-6972-49dc-85a5-59a59f153bef,AtlasIntel,,OH,,10/28/26,11/1/26,1d69fe17-8af5-4539-aa96-27f168ad5871,1801,lv,,FALSE,Don't know,NONE,0.6
+0251982d-6972-49dc-85a5-59a59f153bef,AtlasIntel,,OH,,10/28/26,11/1/26,1d69fe17-8af5-4539-aa96-27f168ad5871,1801,lv,,FALSE,Would not vote,NONE,1.2
+0251982d-6972-49dc-85a5-59a59f153bef,AtlasIntel,,OH,,10/28/26,11/1/26,1d69fe17-8af5-4539-aa96-27f168ad5871,1801,lv,,FALSE,Someone else,NONE,2.9
+0251982d-6972-49dc-85a5-59a59f153bef,AtlasIntel,,OH,,10/28/26,11/1/26,1d69fe17-8af5-4539-aa96-27f168ad5871,1801,lv,,FALSE,Jon Husted,REP,43.9
+0251982d-6972-49dc-85a5-59a59f153bef,AtlasIntel,,OH,,10/28/26,11/1/26,1d69fe17-8af5-4539-aa96-27f168ad5871,1801,lv,,FALSE,Sherrod Brown,DEM,51.4
+5e6a38ed-064b-4310-8cc2-eff8991ebae5,AtlasIntel,,NC,,10/28/26,11/1/26,42aa4b3b-4a87-475e-b67f-ba3943b753a4,1459,lv,,FALSE,Would not vote,NONE,0.4
+5e6a38ed-064b-4310-8cc2-eff8991ebae5,AtlasIntel,,NC,,10/28/26,11/1/26,42aa4b3b-4a87-475e-b67f-ba3943b753a4,1459,lv,,FALSE,Don't know,NONE,0.4
+5e6a38ed-064b-4310-8cc2-eff8991ebae5,AtlasIntel,,NC,,10/28/26,11/1/26,42aa4b3b-4a87-475e-b67f-ba3943b753a4,1459,lv,,FALSE,Someone else,NONE,1.3
+5e6a38ed-064b-4310-8cc2-eff8991ebae5,AtlasIntel,,NC,,10/28/26,11/1/26,42aa4b3b-4a87-475e-b67f-ba3943b753a4,1459,lv,,FALSE,Michael Whatley,REP,41.5
+5e6a38ed-064b-4310-8cc2-eff8991ebae5,AtlasIntel,,NC,,10/28/26,11/1/26,42aa4b3b-4a87-475e-b67f-ba3943b753a4,1459,lv,,FALSE,Roy Cooper,DEM,56.4
+b112cbf3-ab0d-490b-b374-6f83fd7f9545,Research Co.,,TX,,10/31/26,11/2/26,1dad712d-090f-46bb-b637-ce5f5c19a8d7,450,lv,,FALSE,Don't know,NONE,4
+b112cbf3-ab0d-490b-b374-6f83fd7f9545,Research Co.,,TX,,10/31/26,11/2/26,1dad712d-090f-46bb-b637-ce5f5c19a8d7,450,lv,,FALSE,Ted Brown,LIB,1
+b112cbf3-ab0d-490b-b374-6f83fd7f9545,Research Co.,,TX,,10/31/26,11/2/26,1dad712d-090f-46bb-b637-ce5f5c19a8d7,450,lv,,FALSE,Ken Paxton,REP,46
+b112cbf3-ab0d-490b-b374-6f83fd7f9545,Research Co.,,TX,,10/31/26,11/2/26,1dad712d-090f-46bb-b637-ce5f5c19a8d7,450,lv,,FALSE,James Talarico,DEM,49
+9d7b82a6-e65d-460b-a09f-ac6d2fa865c8,Research Co.,,NM,,10/31/26,11/2/26,dca9ba8b-08fb-4649-9f51-30d1de8ddeb7,450,lv,,FALSE,Don't know,NONE,7
+9d7b82a6-e65d-460b-a09f-ac6d2fa865c8,Research Co.,,NM,,10/31/26,11/2/26,dca9ba8b-08fb-4649-9f51-30d1de8ddeb7,450,lv,,FALSE,Larry Marker,REP,37
+9d7b82a6-e65d-460b-a09f-ac6d2fa865c8,Research Co.,,NM,,10/31/26,11/2/26,dca9ba8b-08fb-4649-9f51-30d1de8ddeb7,450,lv,,FALSE,Ben Ray Luján,DEM,56
+5b734364-d6c9-4d6d-9585-4deac2cc6890,Research Co.,,IL,,10/31/26,11/2/26,683f2b95-c5c1-40e8-ae1b-5b6c3cd1404f,450,lv,,FALSE,Don't know,NONE,5
+5b734364-d6c9-4d6d-9585-4deac2cc6890,Research Co.,,IL,,10/31/26,11/2/26,683f2b95-c5c1-40e8-ae1b-5b6c3cd1404f,450,lv,,FALSE,Someone else,NONE,1
+5b734364-d6c9-4d6d-9585-4deac2cc6890,Research Co.,,IL,,10/31/26,11/2/26,683f2b95-c5c1-40e8-ae1b-5b6c3cd1404f,450,lv,,FALSE,Don Tracy,REP,41
+5b734364-d6c9-4d6d-9585-4deac2cc6890,Research Co.,,IL,,10/31/26,11/2/26,683f2b95-c5c1-40e8-ae1b-5b6c3cd1404f,450,lv,,FALSE,Juliana Stratton,DEM,53
+e324d57b-4426-403d-9ca8-23cf08f2c082,Research Co.,,GA,,10/31/26,11/2/26,77bff359-9256-450d-a38b-a13a40d81fc7,450,lv,,FALSE,Don't know,NONE,6
+e324d57b-4426-403d-9ca8-23cf08f2c082,Research Co.,,GA,,10/31/26,11/2/26,77bff359-9256-450d-a38b-a13a40d81fc7,450,lv,,FALSE,Mike Collins,REP,42
+e324d57b-4426-403d-9ca8-23cf08f2c082,Research Co.,,GA,,10/31/26,11/2/26,77bff359-9256-450d-a38b-a13a40d81fc7,450,lv,,FALSE,Jon Ossoff,DEM,52
+cd6d6c9c-946e-406c-8a1b-1d54c5da3ae3,Research Co.,,FL,,10/31/26,11/2/26,61be82d8-bb37-4de2-8dcd-1d1a57bcf7ac,450,lv,,FALSE,Don't know,NONE,4
+cd6d6c9c-946e-406c-8a1b-1d54c5da3ae3,Research Co.,,FL,,10/31/26,11/2/26,61be82d8-bb37-4de2-8dcd-1d1a57bcf7ac,450,lv,,FALSE,Neil Gillespie,NPA,1
+cd6d6c9c-946e-406c-8a1b-1d54c5da3ae3,Research Co.,,FL,,10/31/26,11/2/26,61be82d8-bb37-4de2-8dcd-1d1a57bcf7ac,450,lv,,FALSE,Angie Nixon,DEM,44
+cd6d6c9c-946e-406c-8a1b-1d54c5da3ae3,Research Co.,,FL,,10/31/26,11/2/26,61be82d8-bb37-4de2-8dcd-1d1a57bcf7ac,450,lv,,FALSE,Ashley Moody,REP,51
+d936e903-4367-4a56-b855-942ae35fce12,Research Co.,,CO,,10/31/26,11/2/26,5a8dc49b-961c-433d-a80d-0b53b826534a,450,lv,,FALSE,Don't know,NONE,6
+d936e903-4367-4a56-b855-942ae35fce12,Research Co.,,CO,,10/31/26,11/2/26,5a8dc49b-961c-433d-a80d-0b53b826534a,450,lv,,FALSE,Someone else,NONE,2
+d936e903-4367-4a56-b855-942ae35fce12,Research Co.,,CO,,10/31/26,11/2/26,5a8dc49b-961c-433d-a80d-0b53b826534a,450,lv,,FALSE,Mark Baisley,REP,35
+d936e903-4367-4a56-b855-942ae35fce12,Research Co.,,CO,,10/31/26,11/2/26,5a8dc49b-961c-433d-a80d-0b53b826534a,450,lv,,FALSE,John Hickenlooper,DEM,57
 24da89e7-102c-4aa4-89a1-451e5301fd0d,Survey 160,Text-to-Web/Text/IVR,MN,,10/27/26,11/1/26,36f299e4-042c-47f7-abbb-6d8fec55cc7a,1365,lv,,FALSE,Don't know,NONE,2
 24da89e7-102c-4aa4-89a1-451e5301fd0d,Survey 160,Text-to-Web/Text/IVR,MN,,10/27/26,11/1/26,36f299e4-042c-47f7-abbb-6d8fec55cc7a,1365,lv,,FALSE,Someone else,NONE,2
 24da89e7-102c-4aa4-89a1-451e5301fd0d,Survey 160,Text-to-Web/Text/IVR,MN,,10/27/26,11/1/26,36f299e4-042c-47f7-abbb-6d8fec55cc7a,1365,lv,,FALSE,Michele Tafoya,REP,43
