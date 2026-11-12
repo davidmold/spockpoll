@@ -1,8 +1,8 @@
 poll_id,pollster,methodology,state,seat_number,start_date,end_date,question_id,sample_size,population,partisan,ranked_choice_reallocated,candidate_name,party,pct
-002d090f-ed00-4351-ae62-3e25da1fcd33,Targoz Market Research,,TN,,10/24/25,11/2/26,1c964902-35f4-49bd-9eb6-858644c0eaf9,716,lv,,FALSE,Don't know,NONE,3
-002d090f-ed00-4351-ae62-3e25da1fcd33,Targoz Market Research,,TN,,10/24/25,11/2/26,1c964902-35f4-49bd-9eb6-858644c0eaf9,716,lv,,FALSE,Someone else,NONE,3
-002d090f-ed00-4351-ae62-3e25da1fcd33,Targoz Market Research,,TN,,10/24/25,11/2/26,1c964902-35f4-49bd-9eb6-858644c0eaf9,716,lv,,FALSE,Marquita Bradshaw,DEM,37
-002d090f-ed00-4351-ae62-3e25da1fcd33,Targoz Market Research,,TN,,10/24/25,11/2/26,1c964902-35f4-49bd-9eb6-858644c0eaf9,716,lv,,FALSE,Bill Hagerty,REP,57
+002d090f-ed00-4351-ae62-3e25da1fcd33,Targoz Market Research,,TN,,10/24/26,11/2/26,1c964902-35f4-49bd-9eb6-858644c0eaf9,716,lv,,FALSE,Don't know,NONE,3
+002d090f-ed00-4351-ae62-3e25da1fcd33,Targoz Market Research,,TN,,10/24/26,11/2/26,1c964902-35f4-49bd-9eb6-858644c0eaf9,716,lv,,FALSE,Someone else,NONE,3
+002d090f-ed00-4351-ae62-3e25da1fcd33,Targoz Market Research,,TN,,10/24/26,11/2/26,1c964902-35f4-49bd-9eb6-858644c0eaf9,716,lv,,FALSE,Marquita Bradshaw,DEM,37
+002d090f-ed00-4351-ae62-3e25da1fcd33,Targoz Market Research,,TN,,10/24/26,11/2/26,1c964902-35f4-49bd-9eb6-858644c0eaf9,716,lv,,FALSE,Bill Hagerty,REP,57
 29c14fdc-68af-4eb3-95ca-942bf46ca65b,Emerson College,,MI,,11/1/26,11/1/26,805882b8-cd41-45d8-90a5-629bb8704316,500,lv,,FALSE,Douglas Marsh,GRE,0.1
 29c14fdc-68af-4eb3-95ca-942bf46ca65b,Emerson College,,MI,,11/1/26,11/1/26,805882b8-cd41-45d8-90a5-629bb8704316,500,lv,,FALSE,Walter Kristy,NAT,0.4
 29c14fdc-68af-4eb3-95ca-942bf46ca65b,Emerson College,,MI,,11/1/26,11/1/26,805882b8-cd41-45d8-90a5-629bb8704316,500,lv,,FALSE,Lydia Christensen,LIB,3.2
